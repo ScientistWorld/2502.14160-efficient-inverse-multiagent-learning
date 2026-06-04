@@ -18,7 +18,9 @@ set -e
 
 cd /home/user
 
-# TODO: implement full reproduction pipeline
-# e.g.:
-#   bash scripts/baseline.sh
-#   bash scripts/method.sh
+python -m data.fisher_markets --output data/fisher_cd_budget_instances.jsonl --count 100 --seed 2025
+python -m baseline.observed_expenditure
+python -m method.adversarial_inverse_fisher
+bash scripts/evaluate.sh \
+  artifacts/baseline_observed_expenditure/predictions.jsonl \
+  artifacts/fisher_cd_budgets/predictions.jsonl

@@ -4,12 +4,12 @@ How success is measured. Describe only the metrics, targets, and evaluation proc
 
 ## Metrics
 
-<!-- What metrics are used? How are they computed? What does higher/lower mean? -->
+The benchmark reports `parameter_recovery_rate`, the fraction of instances whose relative parameter error is at most 0.1 in L2 norm; `mean_relative_l2`, the average relative parameter error; and `average_exploitability`, the average maximum unilateral-deviation regret of the observed equilibrium under recovered parameters. Higher recovery rate is better. Lower relative error and exploitability are better.
 
 ## Baselines and Targets
 
-<!-- What performance levels exist as reference points? Include the paper's reported numbers as targets, and any standard baselines. A scientist agent should know what "good" looks like. -->
+For static Cobb-Douglas Fisher markets with known utility types and unknown budgets, the paper reports 100% parameter recovery and average exploitability 0.0004 over 500 markets. This reproduction uses the same 3-buyer, 2-good structure and a smaller generated set for the first runnable benchmark.
 
 ## Evaluation Protocol
 
-<!-- How should evaluation be run? What data split, what conditions? Any important details about how to compare fairly (e.g., fixed seeds, specific test sets, averaging over runs). -->
+Run a method to write JSONL predictions with one row per market instance, including estimated budgets and per-instance exploitability. Then run `scripts/evaluate.sh <predictions.jsonl>`, which aggregates metrics and writes `scoring/scores.json`. The evaluator imports only `eval/` code and reads method artifacts, so future methods can be scored by matching the same output format.

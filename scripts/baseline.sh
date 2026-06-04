@@ -17,4 +17,5 @@ set -e
 
 cd /home/user
 
-# TODO: run baseline
+python -m baseline.observed_expenditure "$@"
+bash scripts/evaluate.sh artifacts/baseline_observed_expenditure/predictions.jsonl

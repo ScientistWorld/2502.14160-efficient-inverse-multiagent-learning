@@ -26,5 +26,8 @@ cd /home/user
 
 mkdir -p scoring
 
-# TODO: implement evaluation using code in eval/
-# Must write scoring/scores.json at the end
+if [ "$#" -eq 0 ]; then
+  python -m eval.evaluate_fisher
+else
+  python -m eval.evaluate_fisher --predictions "$@"
+fi

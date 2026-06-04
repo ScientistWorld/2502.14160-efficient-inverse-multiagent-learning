@@ -13,8 +13,9 @@ set -e
 
 cd /home/user
 
-# Example: train a model
-python method/train.py --epochs 10 --lr 0.001
-
-# Example: evaluate
-bash scripts/evaluate.sh checkpoints/best.pt
+python -m data.fisher_markets --output data/fisher_cd_budget_instances.jsonl --count 100 --seed 2025
+python -m baseline.observed_expenditure
+python -m method.adversarial_inverse_fisher --iterations 5000 --lr-theta 0.01 --lr-y 0.01
+bash scripts/evaluate.sh \
+  artifacts/baseline_observed_expenditure/predictions.jsonl \
+  artifacts/fisher_cd_budgets/predictions.jsonl

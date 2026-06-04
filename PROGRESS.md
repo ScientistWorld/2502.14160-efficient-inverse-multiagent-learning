@@ -2,36 +2,28 @@
 
 ## What Works
 
-<!-- What has been successfully reproduced so far. -->
+- Implemented the static Cobb-Douglas Fisher budget-recovery benchmark with 3 buyers and 2 goods.
+- Implemented Algorithm 1 as projected gradient descent-ascent on the Eisenberg-Gale inverse regret objective.
+- Implemented a method-agnostic evaluator that aggregates JSONL prediction artifacts into `scoring/scores.json`.
+- `python validate.py` passes for the staged workspace.
 
 ## Results
 
-<!-- Reproduced numbers compared to the paper's reported numbers. -->
+- No compute-node results yet. A CPU job is being submitted to run 100 generated markets for the method and baseline.
+- Paper target for this reproduced slice: 100% recovery and 0.0004 average exploitability for Cobb-Douglas Fisher budget recovery.
 
 ## Remaining
 
-<!-- What still needs to be done to reach higher milestones. -->
+- Run the submitted CPU job and inspect `scoring/scores.json`.
+- If the method supports the core claim, update milestone to `core_claim`; otherwise tune initialization, steps, or projection while preserving Algorithm 1.
+- Potential expansion: add linear Fisher budget recovery or Cournot marginal-cost recovery.
 
 ## Issues
 
-<!-- Blockers, bugs, or difficulties encountered. -->
+- The login-node Python environment lacks NumPy, so only structural validation was run locally. The container setup installs NumPy for compute jobs.
+- The paper does not report the Fisher adversary learning rate, initialization, or whether final, averaged, or best iterates are used. This implementation uses matched `eta_theta=eta_y=0.01` and returns the time-average of budget iterates, consistent with the theorem.
 
 ## Deviations from Paper
 
-<!-- Do not edit this section unless you deviated from the paper's original setup.
-     For each deviation, document: what the paper used, what you substituted, and why.
-
-     ACCEPTABLE deviations (data/resource/scale substitutions — milestones still valid):
-       - Replaced a proprietary dataset with a public one
-       - Used a smaller model of the same architecture
-       - Scaled down training (fewer epochs, smaller batch)
-       - Used a different library for the same algorithm
-
-     UNACCEPTABLE deviations (algorithm substitutions — milestones above 'none' are void):
-       - Replaced the paper's algorithm with a fundamentally different one
-       - Wrote a generic model trained to approximate the method's outputs
-         instead of implementing the method's computational steps
-
-     The test: could someone reading your code identify which algorithm from
-     the paper you implemented? If not, you replaced the method. -->
-
+- Scale: the paper uses 500 generated markets per utility class; the first submitted reproduction uses 100 Cobb-Douglas markets to keep the initial CPU job small. The game size, utility family, recovery task, objective, and optimization procedure are preserved.
+- Numerical domain: the paper samples budgets and types from `U[0,10]`, which can create singular zero values for logs and relative error. This reproduction samples from `[0.1, 10]` for numerical stability while preserving the same non-trivial continuous market setup.

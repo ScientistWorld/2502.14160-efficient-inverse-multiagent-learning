@@ -6,12 +6,12 @@ Do NOT describe the paper's method or solution here — only the problem itself.
 
 ## Research Question
 
-<!-- What problem or challenge does this paper tackle? What gap in existing work does it address? -->
+Given observations of strategic behavior that are assumed to be an equilibrium of an unknown parametric game, recover game parameters for which the observed behavior is rational. In the static market benchmark, the task is to recover buyer budgets in synthetic Fisher markets from observed competitive-equilibrium allocations and prices, with the utility family and utility types fixed.
 
 ## Why It Matters
 
-<!-- Why is this problem important? What would a good solution enable? Make it short -->
+Recovering payoff or market parameters from equilibrium behavior supports counterfactual prediction, preference estimation, and economic model calibration when rewards or utilities are not directly observed.
 
 ## Success Criteria
 
-<!-- What would a successful solution look like? What properties should it have? This is about the goal, not the paper's specific approach. Make it short -->
+A successful solution estimates parameters close to the data-generating parameters and keeps the observed behavior close to equilibrium under those estimates. Parameter recovery alone is insufficient if the recovered game assigns high exploitability to the observed behavior.
