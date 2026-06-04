@@ -1,0 +1,20 @@
+{
+  "experiments": {
+    "fisher_cd_budget_recovery": {
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 0.5921413493544133,
+          "mean_relative_l2": 0.29661137418258227,
+          "num_instances": 100,
+          "parameter_recovery_rate": 0.28
+        },
+        "observed_expenditure": {
+          "average_exploitability": 8.566122661361804e-17,
+          "mean_relative_l2": 1.2388231517497194e-16,
+          "num_instances": 100,
+          "parameter_recovery_rate": 1.0
+        }
+      }
+    }
+  }
+}
