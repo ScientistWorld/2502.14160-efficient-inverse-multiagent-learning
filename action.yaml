@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: true
 milestone: core_claim_plus
-notes: "Retry CPU expansion after replacing SLSQP linear Fisher generation with an exact two-good equilibrium construction; score all three implemented experiments."
+notes: "Retry CPU expansion after adding the no-tie interval case to exact two-good linear Fisher generation; score all three implemented experiments."
