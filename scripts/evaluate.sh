@@ -37,6 +37,9 @@ if [ "$#" -eq 0 ]; then
   if [ -e artifacts/cournot_costs/predictions.jsonl ]; then
     python -m eval.evaluate_cournot
   fi
+  if [ -e artifacts/bertrand_costs/predictions.jsonl ]; then
+    python -m eval.evaluate_bertrand
+  fi
 elif [ "$1" = "--experiment" ]; then
   experiment="$2"
   shift 2
@@ -53,6 +56,13 @@ elif [ "$1" = "--experiment" ]; then
         python -m eval.evaluate_cournot
       else
         python -m eval.evaluate_cournot --predictions "$@"
+      fi
+      ;;
+    bertrand)
+      if [ "$#" -eq 0 ]; then
+        python -m eval.evaluate_bertrand
+      else
+        python -m eval.evaluate_bertrand --predictions "$@"
       fi
       ;;
     *)

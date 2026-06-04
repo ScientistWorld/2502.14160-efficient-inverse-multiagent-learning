@@ -23,6 +23,11 @@
 - Completed CPU jobs for all three implemented settings and validated the workspace with `python validate.py --compare`.
 - Reproduced all three implemented settings with 100% recovery and low exploitability on 100 instances each.
 
+### [2026-06-04 23:58] - core_claim_plus
+- Audited the inherited reproduction and confirmed that the implemented Fisher and Cournot methods solve the paper's inverse-regret min-max objective rather than a surrogate.
+- Added duopoly Bertrand marginal-cost recovery code, method-agnostic evaluation, scripts, and paper reference targets.
+- Submitted a CPU test job to run the full four-experiment reproduction in the container.
+
 ## Stop Justification
-- Completed at milestone `core_claim_plus`: the environment implements the paper's actual Algorithm 1 min-max inverse planning objective for three reported static economic settings, scores both recovery and exploitability constraints, and passes structural validation.
-- Remaining paper settings, including Leontief Fisher markets, type-plus-budget recovery, Bertrand competition, and Spanish electricity simulacral learning, are not implemented.
+- Current confirmed milestone remains `core_claim_plus` until the Bertrand job finishes.
+- Remaining paper settings after Bertrand include Leontief Fisher markets, type-plus-budget recovery, stochastic Fisher markets, and Spanish electricity simulacral learning.

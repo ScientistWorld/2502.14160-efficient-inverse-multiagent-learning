@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: done
+action: submit
 gpus: 0
-test: false
+test: true
 milestone: core_claim_plus
-notes: "Finished a validated core_claim_plus reproduction: Algorithm 1 runs on Cobb-Douglas Fisher, linear Fisher, and Cournot settings; scores.json contains reproduced recovery and exploitability metrics; validate.py --compare passes."
+notes: "CPU container test: run the full reproduction with the newly added Bertrand duopoly marginal-cost recovery experiment, then evaluate and validate all four static inverse-game settings."

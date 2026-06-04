@@ -12,6 +12,8 @@
 - CPU job `6c98072b-9ae` reproduced Cournot marginal-cost recovery on 100 games, reaching `core_claim_plus`.
 - Added a third paper setting: linear Fisher budget recovery with known utility types.
 - CPU job `21307677-f64` reproduced linear Fisher budget recovery on 100 markets and all three implemented experiments validate.
+- Continuing audit on 2026-06-04 confirmed the existing method is a real specialization of Algorithm 1 rather than a surrogate: it optimizes the paper's inverse-regret min-max objective and evaluation reads method artifacts independently.
+- Added a fourth reported static setting for the next job: duopoly Bertrand marginal-cost recovery from observed equilibrium prices.
 
 ## Results
 
@@ -26,8 +28,8 @@
 
 ## Remaining
 
-- Higher milestones would require adding remaining reported settings: Leontief Fisher, type-plus-budget recovery, Bertrand competition, stochastic Fisher markets, or Spanish electricity simulacral learning.
-- The current environment is usable as a research gym for three static inverse-game experiments with shared data, method outputs, and method-agnostic evaluation.
+- Higher milestones after the Bertrand job would require adding remaining reported settings: Leontief Fisher, type-plus-budget recovery, stochastic Fisher markets, or Spanish electricity simulacral learning.
+- The current environment is usable as a research gym for the implemented static inverse-game experiments with shared data, method outputs, and method-agnostic evaluation.
 
 ## Issues
 
@@ -43,3 +45,4 @@
 - Optimization detail: the tuned run uses the exact closed-form Cobb-Douglas adversarial allocation in the inverse-regret objective rather than relying on one projected ascent step per iteration. This keeps the paper's min-max inverse-planning computation but uses additional structure of the reproduced Fisher-market setting.
 - Cournot expansion scale: this reproduction uses 100 games instead of the paper's 500 while preserving duopoly linear-demand generation, the marginal-cost recovery target, and the inverse-regret objective.
 - Linear Fisher expansion scale: this reproduction uses 100 markets instead of the paper's 500 while preserving the utility family, known-type budget recovery task, and inverse-regret objective.
+- Bertrand expansion scale: the pending reproduction uses 100 games instead of the paper's 500 while preserving duopoly linear-demand generation, the marginal-cost recovery target, and the inverse-regret objective. The exact Bertrand payoff has a strict-undercut discontinuity, represented numerically with a small deterministic undercut epsilon in the adversarial best response.

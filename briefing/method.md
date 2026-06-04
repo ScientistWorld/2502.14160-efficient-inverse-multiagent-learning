@@ -14,6 +14,8 @@ This reproduction specializes the inverse-planning min-max objective to static e
 
 For Cournot duopoly games, the observed strategy is each firm's equilibrium quantity and the unknown parameter is marginal cost. The same inverse-regret objective minimizes the maximum unilateral profit improvement under the recovered cost. Linear inverse demand gives a closed-form adversarial best response for each firm, which is used inside projected descent on the cost.
 
+For Bertrand duopoly games, the observed strategy is each firm's equilibrium price and the unknown parameter is marginal cost. The method again minimizes cumulative unilateral-deviation regret under linear demand, using the price-setting adversarial best response inside projected descent on marginal cost.
+
 ## Main Claims
 
 Primary claim: adversarial inverse planning can recover parameters that rationalize observed equilibria in economic games, measured by high parameter recovery and low exploitability.
