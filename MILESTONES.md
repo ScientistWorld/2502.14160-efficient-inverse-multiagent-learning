@@ -39,5 +39,4 @@
 - Reproduced Cobb-Douglas Fisher, linear Fisher, Cournot, and Bertrand static inverse-game settings with 100% recovery and near-zero exploitability on 100 instances each.
 
 ## Stop Justification
-- Completed at milestone `secondary_claims`: the workspace now reproduces four reported static economic inverse-game settings, including both Fisher and general-sum oligopoly experiments, with independent recovery and exploitability evaluation.
-- Remaining paper settings after Bertrand include Leontief Fisher markets, type-plus-budget recovery, stochastic Fisher markets, and Spanish electricity simulacral learning.
+- Completed at milestone `secondary_claims`.
