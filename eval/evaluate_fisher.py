@@ -8,7 +8,7 @@ from pathlib import Path
 
 import numpy as np
 
-from data.fisher_markets import cd_regret, read_jsonl, relative_l2
+from data.fisher_markets import fisher_regret, read_jsonl, relative_l2
 
 
 def read_predictions(path: Path) -> list[dict]:
@@ -32,7 +32,7 @@ def summarize(rows: list[dict], instances: dict[int, dict]) -> dict:
             {
                 "relative_l2": rel,
                 "recovered": rel <= 0.1,
-                "exploitability": cd_regret(estimated, types, prices, allocation),
+                "exploitability": fisher_regret(instance["utility"], estimated, types, prices, allocation),
             }
         )
     n = len(rows)
@@ -54,6 +54,7 @@ def main() -> None:
     )
     parser.add_argument("--instances", type=Path, default=Path("data/fisher_cd_budget_instances.jsonl"))
     parser.add_argument("--output", type=Path, default=Path("scoring/scores.json"))
+    parser.add_argument("--experiment-name", default="fisher_cd_budget_recovery")
     args = parser.parse_args()
 
     instances = {int(row["instance_id"]): row for row in read_jsonl(args.instances)}
@@ -63,13 +64,8 @@ def main() -> None:
         method_name = rows[0].get("method", prediction_path.parent.name)
         results[method_name] = summarize(rows, instances)
 
-    scores = {
-        "experiments": {
-            "fisher_cd_budget_recovery": {
-                "results": results,
-            }
-        }
-    }
+    scores = json.loads(args.output.read_text(encoding="utf-8")) if args.output.exists() else {"experiments": {}}
+    scores.setdefault("experiments", {})[args.experiment_name] = {"results": results}
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(scores, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 

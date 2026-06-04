@@ -1,8 +1,8 @@
 """Adversarial inverse multiagent planning for static Fisher markets.
 
 This is Algorithm 1 from the paper specialized to the Eisenberg-Gale game for
-static Cobb-Douglas Fisher markets with observed competitive equilibrium
-(X*, p*) and known utility types.  It minimizes over candidate budgets and
+static Fisher markets with observed competitive equilibrium (X*, p*) and known
+utility types.  It minimizes over candidate budgets and
 maximizes over adversarial allocations:
 
     min_b max_Y sum_i b_i [log u_i(Y_i) - log u_i(X*_i)]
@@ -19,7 +19,15 @@ from pathlib import Path
 
 import numpy as np
 
-from data.fisher_markets import EPS, cd_best_response, cd_regret, read_jsonl, relative_l2
+from data.fisher_markets import (
+    EPS,
+    cd_best_response,
+    fisher_regret,
+    linear_best_response,
+    log_linear_utility,
+    read_jsonl,
+    relative_l2,
+)
 
 
 def log_cd(allocation: np.ndarray, shares: np.ndarray) -> np.ndarray:
@@ -58,7 +66,32 @@ def run_algorithm_1(
 
     averaged = avg_budgets / float(iterations)
     estimated = averaged if return_iterate == "average" else budgets
-    return estimated, cd_regret(estimated, types, prices, observed_allocation)
+    return estimated, fisher_regret("cobb_douglas", estimated, types, prices, observed_allocation)
+
+
+def run_linear_algorithm_1(
+    types: np.ndarray,
+    observed_allocation: np.ndarray,
+    prices: np.ndarray,
+    *,
+    iterations: int,
+    lr_theta: float,
+    seed: int,
+    return_iterate: str,
+) -> tuple[np.ndarray, float]:
+    rng = np.random.default_rng(seed)
+    budgets = rng.uniform(0.1, 10.0, size=types.shape[0])
+    avg_budgets = np.zeros_like(budgets)
+    log_u_observed = log_linear_utility(observed_allocation, types)
+    for _ in range(1, iterations + 1):
+        y = linear_best_response(budgets, types, prices)
+        grad_budgets = log_linear_utility(y, types) - log_u_observed
+        budgets = np.clip(budgets - lr_theta * grad_budgets, 0.001, 10.0)
+        avg_budgets += budgets
+
+    averaged = avg_budgets / float(iterations)
+    estimated = averaged if return_iterate == "average" else budgets
+    return estimated, fisher_regret("linear", estimated, types, prices, observed_allocation)
 
 
 def main() -> None:
@@ -80,17 +113,28 @@ def main() -> None:
         observed_allocation = np.asarray(instance["allocation"], dtype=float)
         prices = np.asarray(instance["prices"], dtype=float)
         true_budgets = np.asarray(instance["budgets"], dtype=float)
-        estimated, exploitability = run_algorithm_1(
-            types,
-            observed_allocation,
-            prices,
-            iterations=args.iterations,
-            lr_theta=args.lr_theta,
-            lr_y=args.lr_y,
-            seed=args.seed + int(instance["instance_id"]),
-            adversary_mode=args.adversary_mode,
-            return_iterate=args.return_iterate,
-        )
+        if instance["utility"] == "linear":
+            estimated, exploitability = run_linear_algorithm_1(
+                types,
+                observed_allocation,
+                prices,
+                iterations=args.iterations,
+                lr_theta=args.lr_theta,
+                seed=args.seed + int(instance["instance_id"]),
+                return_iterate=args.return_iterate,
+            )
+        else:
+            estimated, exploitability = run_algorithm_1(
+                types,
+                observed_allocation,
+                prices,
+                iterations=args.iterations,
+                lr_theta=args.lr_theta,
+                lr_y=args.lr_y,
+                seed=args.seed + int(instance["instance_id"]),
+                adversary_mode=args.adversary_mode,
+                return_iterate=args.return_iterate,
+            )
         rows.append(
             {
                 "instance_id": instance["instance_id"],

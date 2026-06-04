@@ -9,6 +9,8 @@
 - The evaluator now recomputes recovery and exploitability from predicted budgets and benchmark instances instead of trusting method-written diagnostics.
 - CPU job `4cb5b2c6-88f` reproduced the core Cobb-Douglas Fisher budget-recovery claim on 100 markets.
 - Added a second paper setting: duopoly Cournot marginal-cost recovery from observed equilibrium quantities.
+- CPU job `6c98072b-9ae` reproduced Cournot marginal-cost recovery on 100 games, reaching `core_claim_plus`.
+- Added a third paper setting: linear Fisher budget recovery with known utility types.
 
 ## Results
 
@@ -17,23 +19,25 @@
 - Diagnostic observed-expenditure baseline: 100% recovery and near-zero exploitability, confirming that the generated markets and metric implementation are coherent.
 - Paper target for this reproduced slice: 100% recovery and 0.0004 average exploitability for Cobb-Douglas Fisher budget recovery.
 - Paper target for the new Cournot slice: 95.2% marginal-cost recovery and 0.0000 average exploitability on 500 duopoly games.
+- Cournot run: 100% recovery, 0.0000024 mean relative error, and 0.00000000026 average exploitability on 100 duopoly games.
+- Paper target for the new linear Fisher slice: 100% budget recovery and 0.0018 average exploitability on 500 markets.
 
 ## Remaining
 
-- Run the Cournot marginal-cost recovery job and inspect the expanded `scoring/scores.json`.
-- If Cournot also succeeds, promote to `core_claim_plus`; otherwise tune its learning rate or initialization while preserving the paper's inverse-regret min-max objective.
-- Potential further expansion: add linear Fisher budget recovery or Bertrand price-competition recovery.
+- Run the linear Fisher budget-recovery job and inspect the expanded `scoring/scores.json`.
+- If linear Fisher also succeeds, consider adding Bertrand price-competition recovery or increasing instance counts toward the paper's 500.
 
 ## Issues
 
 - The login-node Python environment lacks NumPy, so only structural validation was run locally. The container setup installs NumPy for compute jobs.
 - The paper does not report the Fisher adversary learning rate, initialization, or whether final, averaged, or best iterates are used. The first run used matched `eta_theta=eta_y=0.01` and averaged budget iterates; the tuned run uses the final budget iterate after exact adversary updates.
 - The first GDA run under-converged on the adversarial allocation variable, producing weak budget gradients. The next run uses the exact Cobb-Douglas adversarial best response inside the same min-max objective.
-- The Cournot implementation has not yet been executed in the compute container; it is queued as the next CPU test.
+- The linear Fisher implementation has not yet been executed in the compute container; it is queued as the next CPU test.
 
 ## Deviations from Paper
 
 - Scale: the paper uses 500 generated markets per utility class; the first submitted reproduction uses 100 Cobb-Douglas markets to keep the initial CPU job small. The game size, utility family, recovery task, objective, and optimization procedure are preserved.
 - Numerical domain: the paper samples budgets and types from `U[0,10]`, which can create singular zero values for logs and relative error. This reproduction samples from `[0.1, 10]` for numerical stability while preserving the same non-trivial continuous market setup.
 - Optimization detail: the tuned run uses the exact closed-form Cobb-Douglas adversarial allocation in the inverse-regret objective rather than relying on one projected ascent step per iteration. This keeps the paper's min-max inverse-planning computation but uses additional structure of the reproduced Fisher-market setting.
-- Cournot expansion scale: the next run uses 100 games instead of the paper's 500 while preserving duopoly linear-demand generation, the marginal-cost recovery target, and the inverse-regret objective.
+- Cournot expansion scale: this reproduction uses 100 games instead of the paper's 500 while preserving duopoly linear-demand generation, the marginal-cost recovery target, and the inverse-regret objective.
+- Linear Fisher expansion scale: the next run uses 100 markets instead of the paper's 500 while preserving the utility family, known-type budget recovery task, and inverse-regret objective.

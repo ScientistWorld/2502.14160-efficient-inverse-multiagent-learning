@@ -29,7 +29,10 @@ mkdir -p scoring
 
 if [ "$#" -eq 0 ]; then
   if [ -e artifacts/fisher_cd_budgets/predictions.jsonl ]; then
-    python -m eval.evaluate_fisher
+    python -m eval.evaluate_fisher --experiment-name fisher_cd_budget_recovery
+  fi
+  if [ -e artifacts/fisher_linear_budgets/predictions.jsonl ]; then
+    python -m eval.evaluate_fisher --predictions artifacts/fisher_linear_budgets/predictions.jsonl --instances data/fisher_linear_budget_instances.jsonl --experiment-name fisher_linear_budget_recovery
   fi
   if [ -e artifacts/cournot_costs/predictions.jsonl ]; then
     python -m eval.evaluate_cournot
@@ -40,7 +43,7 @@ elif [ "$1" = "--experiment" ]; then
   case "$experiment" in
     fisher)
       if [ "$#" -eq 0 ]; then
-        python -m eval.evaluate_fisher
+        python -m eval.evaluate_fisher --experiment-name fisher_cd_budget_recovery
       else
         python -m eval.evaluate_fisher --predictions "$@"
       fi

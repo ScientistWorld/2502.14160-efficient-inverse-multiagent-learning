@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: core_claim**
+**Current: core_claim_plus**
 
 <!-- Milestone levels (update "Current" above as you progress):
   none             — just started, no meaningful progress yet
@@ -30,5 +30,10 @@
 - Reproduced the paper's Cobb-Douglas Fisher budget-recovery claim on 100 markets: 100% recovery, mean relative L2 0.00077, and average exploitability 0.0000065.
 - Added a Cournot marginal-cost recovery experiment for the next expansion job.
 
+### [2026-06-05 00:45] - core_claim_plus
+- CPU job `6c98072b-9ae` completed without errors and reproduced a second paper setting.
+- Cournot marginal-cost recovery on 100 duopoly games reached 100% recovery, mean relative error 0.0000024, and average exploitability 0.00000000026.
+- Added the paper's linear Fisher budget-recovery setting for the next expansion job.
+
 ## Stop Justification
-- Not stopped; a CPU expansion job is being submitted to test Cournot marginal-cost recovery.
+- Not stopped; a CPU expansion job is being submitted to test linear Fisher budget recovery.

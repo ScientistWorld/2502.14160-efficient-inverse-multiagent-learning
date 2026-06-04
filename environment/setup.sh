@@ -16,4 +16,4 @@
 
 set -e
 
-uv pip install --system numpy
+uv pip install --system numpy scipy
