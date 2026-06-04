@@ -1,5 +1,3 @@
-action: submit
-gpus: 0
-test: true
-milestone: core_claim_plus
-notes: "Retry CPU expansion after adding the no-tie interval case to exact two-good linear Fisher generation; score all three implemented experiments."
+action: done
+milestone: secondary_claims
+notes: "Reproduced the core Cobb-Douglas Fisher claim plus linear Fisher and Cournot secondary static-market settings; validation passes for all implemented scores."
