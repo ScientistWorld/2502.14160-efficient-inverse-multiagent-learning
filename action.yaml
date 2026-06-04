@@ -1,5 +1,5 @@
 action: submit
 gpus: 0
 test: true
-milestone: none
-notes: "CPU smoke reproduction: generate 100 Cobb-Douglas Fisher markets, run baseline and Algorithm 1 inverse-planning method, then evaluate scores."
+milestone: method_runs
+notes: "CPU tuned reproduction: rerun Cobb-Douglas Fisher budget recovery with exact adversarial best responses in the paper's inverse-regret min-max objective, then evaluate method-only scores."
