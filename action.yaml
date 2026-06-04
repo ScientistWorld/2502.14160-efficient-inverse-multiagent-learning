@@ -1,3 +1,8 @@
-action: done
-milestone: secondary_claims
-notes: "Reproduced the core Cobb-Douglas Fisher claim plus linear Fisher and Cournot secondary static-market settings; validation passes for all implemented scores."
+# IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
+# Do NOT sleep, poll, or wait for jobs. The system reads this file
+# only after your turn ends. Sleeping blocks the entire pipeline.
+action: pending
+gpus: 1
+test: false
+milestone: core_claim_plus
+notes: ""
