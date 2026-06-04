@@ -51,6 +51,26 @@ def linear_equilibrium(types: np.ndarray, budgets: np.ndarray) -> tuple[np.ndarr
 
     ratios = types[:, 0] / np.maximum(types[:, 1], EPS)
     total_budget = float(np.sum(budgets))
+
+    order = np.argsort(-ratios)
+    sorted_ratios = ratios[order]
+    sorted_budgets = budgets[order]
+    cumulative = np.cumsum(sorted_budgets)
+    for split in range(1, num_buyers):
+        high_budget = float(cumulative[split - 1])
+        low_budget = total_budget - high_budget
+        if low_budget <= EPS:
+            continue
+        ratio = high_budget / low_budget
+        if sorted_ratios[split - 1] + 1e-10 >= ratio >= sorted_ratios[split] - 1e-10:
+            prices = np.asarray([high_budget, low_budget], dtype=float)
+            allocation = np.zeros((num_buyers, num_goods), dtype=float)
+            high_indices = order[:split]
+            low_indices = order[split:]
+            allocation[high_indices, 0] = budgets[high_indices] / np.maximum(prices[0], EPS)
+            allocation[low_indices, 1] = budgets[low_indices] / np.maximum(prices[1], EPS)
+            return prices, allocation
+
     for ratio in sorted(set(float(r) for r in ratios), reverse=True):
         high = ratios > ratio + 1e-10
         tied = np.abs(ratios - ratio) <= 1e-10
