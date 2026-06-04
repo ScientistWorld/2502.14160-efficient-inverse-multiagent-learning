@@ -1,5 +1,15 @@
 {
   "experiments": {
+    "bertrand_cost_recovery": {
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 202.5386996436498,
+          "mean_relative_error": 0.6084204887358667,
+          "num_instances": 100,
+          "parameter_recovery_rate": 0.27
+        }
+      }
+    },
     "cournot_cost_recovery": {
       "results": {
         "adversarial_inverse_planning": {
