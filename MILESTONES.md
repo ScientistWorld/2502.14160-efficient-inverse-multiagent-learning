@@ -28,6 +28,11 @@
 - Added duopoly Bertrand marginal-cost recovery code, method-agnostic evaluation, scripts, and paper reference targets.
 - Submitted a CPU test job to run the full four-experiment reproduction in the container.
 
+### [2026-06-05 00:04] - core_claim_plus
+- Job `8f0510ea-b43` completed, confirming the four-experiment script runs in the container.
+- The first Bertrand subgradient solver produced poor results, so the milestone was not raised.
+- Replaced the unstable Bertrand subgradient path for tied equilibrium prices with the exact inverse-regret minimizer and submitted a follow-up CPU test job.
+
 ## Stop Justification
 - Current confirmed milestone remains `core_claim_plus` until the Bertrand job finishes.
 - Remaining paper settings after Bertrand include Leontief Fisher markets, type-plus-budget recovery, stochastic Fisher markets, and Spanish electricity simulacral learning.

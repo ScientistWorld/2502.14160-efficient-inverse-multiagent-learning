@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: true
 milestone: core_claim_plus
-notes: "CPU container test: run the full reproduction with the newly added Bertrand duopoly marginal-cost recovery experiment, then evaluate and validate all four static inverse-game settings."
+notes: "CPU container test after fixing Bertrand: rerun the full four-experiment reproduction with the exact inverse-regret minimizer for tied-price Bertrand equilibria, then evaluate and validate."

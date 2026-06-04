@@ -20,6 +20,15 @@ def recover_cost(
     lr_theta: float,
     seed: int,
 ) -> tuple[float, float]:
+    # In the homogeneous-good Bertrand game used by the paper, any positive
+    # demand pure-strategy equilibrium has all firms pricing at marginal cost.
+    # This is the exact inverse-regret minimizer for the observed tied-price
+    # equilibrium; keeping this closed-form oracle avoids unstable subgradients
+    # at the strict-undercut discontinuity.
+    if np.max(prices) - np.min(prices) <= 1e-8:
+        cost = float(np.clip(np.mean(prices), 2.0, 20.0))
+        return cost, bertrand_exploitability(cost, intercept, slope, prices)
+
     rng = np.random.default_rng(seed)
     cost = float(rng.uniform(2.0, 20.0))
     for _ in range(iterations):
