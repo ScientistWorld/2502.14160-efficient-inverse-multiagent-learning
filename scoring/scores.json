@@ -1,5 +1,15 @@
 {
   "experiments": {
+    "cournot_cost_recovery": {
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 2.555104307994105e-10,
+          "mean_relative_error": 2.419227805569027e-06,
+          "num_instances": 100,
+          "parameter_recovery_rate": 1.0
+        }
+      }
+    },
     "fisher_cd_budget_recovery": {
       "results": {
         "adversarial_inverse_planning": {
