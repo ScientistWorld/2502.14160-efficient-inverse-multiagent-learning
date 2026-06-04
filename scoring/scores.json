@@ -19,6 +19,16 @@
           "parameter_recovery_rate": 1.0
         }
       }
+    },
+    "fisher_linear_budget_recovery": {
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 7.174064214677484e-06,
+          "mean_relative_l2": 0.0008098140277828122,
+          "num_instances": 100,
+          "parameter_recovery_rate": 1.0
+        }
+      }
     }
   }
 }
