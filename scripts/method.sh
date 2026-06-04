@@ -10,5 +10,11 @@ set -e
 
 cd /home/user
 
-python -m method.adversarial_inverse_fisher "$@"
-bash scripts/evaluate.sh artifacts/fisher_cd_budgets/predictions.jsonl
+if [ "$#" -eq 0 ]; then
+  python -m method.adversarial_inverse_fisher --iterations 5000 --lr-theta 0.01 --adversary-mode exact --return-iterate final
+  python -m method.adversarial_inverse_cournot --iterations 10000 --lr-theta 0.01
+  bash scripts/evaluate.sh
+else
+  python -m method.adversarial_inverse_fisher "$@"
+  bash scripts/evaluate.sh --experiment fisher artifacts/fisher_cd_budgets/predictions.jsonl
+fi

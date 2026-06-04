@@ -17,5 +17,6 @@ set -e
 
 cd /home/user
 
+# This diagnostic baseline validates that Fisher observations contain enough
+# information to recover budgets, but it is not a paper-reported comparison.
 python -m baseline.observed_expenditure "$@"
-bash scripts/evaluate.sh artifacts/baseline_observed_expenditure/predictions.jsonl

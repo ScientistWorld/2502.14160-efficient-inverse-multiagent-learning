@@ -19,6 +19,8 @@ set -e
 cd /home/user
 
 python -m data.fisher_markets --output data/fisher_cd_budget_instances.jsonl --count 100 --seed 2025
+python -m data.cournot_games --output data/cournot_instances.jsonl --count 100 --seed 3025
 python -m baseline.observed_expenditure
 python -m method.adversarial_inverse_fisher --iterations 5000 --lr-theta 0.01 --adversary-mode exact --return-iterate final
-bash scripts/evaluate.sh artifacts/fisher_cd_budgets/predictions.jsonl
+python -m method.adversarial_inverse_cournot --iterations 10000 --lr-theta 0.01
+bash scripts/evaluate.sh

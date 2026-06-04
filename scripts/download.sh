@@ -20,3 +20,4 @@ set -e
 cd /home/user
 
 python -m data.fisher_markets --output data/fisher_cd_budget_instances.jsonl --count 100 --seed 2025
+python -m data.cournot_games --output data/cournot_instances.jsonl --count 100 --seed 3025

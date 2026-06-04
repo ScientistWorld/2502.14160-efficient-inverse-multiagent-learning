@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: method_runs**
+**Current: core_claim**
 
 <!-- Milestone levels (update "Current" above as you progress):
   none             — just started, no meaningful progress yet
@@ -25,5 +25,10 @@
 - The first simultaneous GDA configuration reached only 28% recovery and average exploitability 0.5921, so it does not support the core claim yet.
 - Updated the solver to use the exact Cobb-Douglas adversarial best response for the same inverse-regret min-max objective and tightened evaluation to recompute metrics from predictions and benchmark data.
 
+### [2026-06-05 00:35] - core_claim
+- CPU job `4cb5b2c6-88f` completed without errors after the exact-adversary Fisher update.
+- Reproduced the paper's Cobb-Douglas Fisher budget-recovery claim on 100 markets: 100% recovery, mean relative L2 0.00077, and average exploitability 0.0000065.
+- Added a Cournot marginal-cost recovery experiment for the next expansion job.
+
 ## Stop Justification
-- Not stopped; tuned compute job is being submitted to test whether the core claim is supported.
+- Not stopped; a CPU expansion job is being submitted to test Cournot marginal-cost recovery.

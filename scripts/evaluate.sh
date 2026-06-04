@@ -15,8 +15,9 @@
 # This file is read by the system for automated comparison.
 #
 # Example usage:
-#   ./evaluate.sh <method_and_run_name>                             # evaluate with defaults
-#   ./evaluate.sh <method_and_run_name> checkpoints/epoch_10.pt     # evaluate a specific checkpoint
+#   ./evaluate.sh                                      # evaluate all available default artifacts
+#   ./evaluate.sh --experiment fisher <predictions>    # evaluate one Fisher-market artifact
+#   ./evaluate.sh --experiment cournot <predictions>   # evaluate one Cournot artifact
 #
 # Called from run.sh after training, or independently.
 
@@ -27,7 +28,35 @@ cd /home/user
 mkdir -p scoring
 
 if [ "$#" -eq 0 ]; then
-  python -m eval.evaluate_fisher
+  if [ -e artifacts/fisher_cd_budgets/predictions.jsonl ]; then
+    python -m eval.evaluate_fisher
+  fi
+  if [ -e artifacts/cournot_costs/predictions.jsonl ]; then
+    python -m eval.evaluate_cournot
+  fi
+elif [ "$1" = "--experiment" ]; then
+  experiment="$2"
+  shift 2
+  case "$experiment" in
+    fisher)
+      if [ "$#" -eq 0 ]; then
+        python -m eval.evaluate_fisher
+      else
+        python -m eval.evaluate_fisher --predictions "$@"
+      fi
+      ;;
+    cournot)
+      if [ "$#" -eq 0 ]; then
+        python -m eval.evaluate_cournot
+      else
+        python -m eval.evaluate_cournot --predictions "$@"
+      fi
+      ;;
+    *)
+      echo "Unknown experiment: $experiment" >&2
+      exit 2
+      ;;
+  esac
 else
   python -m eval.evaluate_fisher --predictions "$@"
 fi
