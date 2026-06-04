@@ -19,7 +19,7 @@ from pathlib import Path
 
 import numpy as np
 
-from data.fisher_markets import EPS, cd_regret, read_jsonl, relative_l2
+from data.fisher_markets import EPS, cd_best_response, cd_regret, read_jsonl, relative_l2
 
 
 def log_cd(allocation: np.ndarray, shares: np.ndarray) -> np.ndarray:
@@ -35,6 +35,8 @@ def run_algorithm_1(
     lr_theta: float,
     lr_y: float,
     seed: int,
+    adversary_mode: str,
+    return_iterate: str,
 ) -> tuple[np.ndarray, float]:
     rng = np.random.default_rng(seed)
     shares = types / np.maximum(types.sum(axis=1, keepdims=True), EPS)
@@ -43,16 +45,20 @@ def run_algorithm_1(
     avg_budgets = np.zeros_like(budgets)
 
     log_u_observed = log_cd(observed_allocation, shares)
-    for t in range(1, iterations + 1):
-        grad_y = budgets[:, None] * shares / np.maximum(y, EPS) - prices[None, :]
-        y = np.clip(y + lr_y * grad_y, EPS, 1_000.0)
+    for _ in range(1, iterations + 1):
+        if adversary_mode == "exact":
+            y = cd_best_response(budgets, shares, prices)
+        else:
+            grad_y = budgets[:, None] * shares / np.maximum(y, EPS) - prices[None, :]
+            y = np.clip(y + lr_y * grad_y, EPS, 1_000.0)
 
         grad_budgets = log_cd(y, shares) - log_u_observed
         budgets = np.clip(budgets - lr_theta * grad_budgets, 0.001, 10.0)
         avg_budgets += budgets
 
     averaged = avg_budgets / float(iterations)
-    return averaged, cd_regret(averaged, types, prices, observed_allocation)
+    estimated = averaged if return_iterate == "average" else budgets
+    return estimated, cd_regret(estimated, types, prices, observed_allocation)
 
 
 def main() -> None:
@@ -62,6 +68,8 @@ def main() -> None:
     parser.add_argument("--iterations", type=int, default=5000)
     parser.add_argument("--lr-theta", type=float, default=0.01)
     parser.add_argument("--lr-y", type=float, default=0.01)
+    parser.add_argument("--adversary-mode", choices=["exact", "gda"], default="exact")
+    parser.add_argument("--return-iterate", choices=["final", "average"], default="final")
     parser.add_argument("--seed", type=int, default=7)
     args = parser.parse_args()
 
@@ -80,6 +88,8 @@ def main() -> None:
             lr_theta=args.lr_theta,
             lr_y=args.lr_y,
             seed=args.seed + int(instance["instance_id"]),
+            adversary_mode=args.adversary_mode,
+            return_iterate=args.return_iterate,
         )
         rows.append(
             {
@@ -87,10 +97,10 @@ def main() -> None:
                 "method": "adversarial_inverse_planning",
                 "utility": instance["utility"],
                 "estimated_budgets": estimated.tolist(),
-                "true_budgets": true_budgets.tolist(),
-                "relative_l2": relative_l2(estimated, true_budgets),
-                "recovered": bool(relative_l2(estimated, true_budgets) <= 0.1),
-                "exploitability": exploitability,
+                "diagnostic_true_budgets": true_budgets.tolist(),
+                "diagnostic_relative_l2": relative_l2(estimated, true_budgets),
+                "diagnostic_recovered": bool(relative_l2(estimated, true_budgets) <= 0.1),
+                "diagnostic_exploitability": exploitability,
             }
         )
 

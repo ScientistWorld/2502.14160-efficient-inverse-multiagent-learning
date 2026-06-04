@@ -10,7 +10,7 @@ The paper characterizes inverse Nash equilibrium computation as a min-max optimi
 
 For an observed equilibrium profile `x^\u2020`, the method minimizes exploitability over game parameters by solving `min_theta max_y psi(x^\u2020, y; theta)`, where `y` is an adversarial deviation profile and `psi` is cumulative regret. Algorithm 1 alternates projected gradient descent on `theta` and projected gradient ascent on `y`, using exact first-order gradients in the static planning case.
 
-This reproduction specializes Algorithm 1 to the paper's static Fisher-market experiment. The market equilibrium is represented by the Eisenberg-Gale saddle objective. For Cobb-Douglas utilities with known types, the unknown parameters are buyer budgets; the adversarial variable is the buyers' allocation deviation. The seller price-deviation component is included analytically but cancels for generated equilibria because the unit-supply market clears exactly.
+This reproduction specializes the inverse-planning min-max objective to the paper's static Fisher-market experiment. The market equilibrium is represented by the Eisenberg-Gale saddle objective. For Cobb-Douglas utilities with known types, the unknown parameters are buyer budgets; the adversarial variable is the buyers' allocation deviation. The seller price-deviation component is included analytically but cancels for generated equilibria because the unit-supply market clears exactly. The default solver uses the closed-form Cobb-Douglas best response for the adversary and then descends on budgets; a one-step GDA adversary mode is also retained for comparison.
 
 ## Main Claims
 

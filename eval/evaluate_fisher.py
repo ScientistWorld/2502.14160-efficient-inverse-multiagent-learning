@@ -6,20 +6,40 @@ import argparse
 import json
 from pathlib import Path
 
+import numpy as np
+
+from data.fisher_markets import cd_regret, read_jsonl, relative_l2
+
 
 def read_predictions(path: Path) -> list[dict]:
     with path.open("r", encoding="utf-8") as handle:
         return [json.loads(line) for line in handle if line.strip()]
 
 
-def summarize(rows: list[dict]) -> dict:
+def summarize(rows: list[dict], instances: dict[int, dict]) -> dict:
     if not rows:
         raise ValueError("No prediction rows found")
+    evaluated = []
+    for row in rows:
+        instance = instances[int(row["instance_id"])]
+        estimated = np.asarray(row["estimated_budgets"], dtype=float)
+        true_budgets = np.asarray(instance["budgets"], dtype=float)
+        types = np.asarray(instance["types"], dtype=float)
+        prices = np.asarray(instance["prices"], dtype=float)
+        allocation = np.asarray(instance["allocation"], dtype=float)
+        rel = relative_l2(estimated, true_budgets)
+        evaluated.append(
+            {
+                "relative_l2": rel,
+                "recovered": rel <= 0.1,
+                "exploitability": cd_regret(estimated, types, prices, allocation),
+            }
+        )
     n = len(rows)
     return {
-        "parameter_recovery_rate": sum(1.0 for row in rows if row["recovered"]) / n,
-        "average_exploitability": sum(float(row["exploitability"]) for row in rows) / n,
-        "mean_relative_l2": sum(float(row["relative_l2"]) for row in rows) / n,
+        "parameter_recovery_rate": sum(1.0 for row in evaluated if row["recovered"]) / n,
+        "average_exploitability": sum(float(row["exploitability"]) for row in evaluated) / n,
+        "mean_relative_l2": sum(float(row["relative_l2"]) for row in evaluated) / n,
         "num_instances": n,
     }
 
@@ -32,14 +52,16 @@ def main() -> None:
         nargs="+",
         default=[Path("artifacts/fisher_cd_budgets/predictions.jsonl")],
     )
+    parser.add_argument("--instances", type=Path, default=Path("data/fisher_cd_budget_instances.jsonl"))
     parser.add_argument("--output", type=Path, default=Path("scoring/scores.json"))
     args = parser.parse_args()
 
+    instances = {int(row["instance_id"]): row for row in read_jsonl(args.instances)}
     results = {}
     for prediction_path in args.predictions:
         rows = read_predictions(prediction_path)
         method_name = rows[0].get("method", prediction_path.parent.name)
-        results[method_name] = summarize(rows)
+        results[method_name] = summarize(rows, instances)
 
     scores = {
         "experiments": {
