@@ -11,6 +11,7 @@
 - Added a second paper setting: duopoly Cournot marginal-cost recovery from observed equilibrium quantities.
 - CPU job `6c98072b-9ae` reproduced Cournot marginal-cost recovery on 100 games, reaching `core_claim_plus`.
 - Added a third paper setting: linear Fisher budget recovery with known utility types.
+- CPU job `21307677-f64` reproduced linear Fisher budget recovery on 100 markets and all three implemented experiments validate.
 
 ## Results
 
@@ -21,11 +22,12 @@
 - Paper target for the new Cournot slice: 95.2% marginal-cost recovery and 0.0000 average exploitability on 500 duopoly games.
 - Cournot run: 100% recovery, 0.0000024 mean relative error, and 0.00000000026 average exploitability on 100 duopoly games.
 - Paper target for the new linear Fisher slice: 100% budget recovery and 0.0018 average exploitability on 500 markets.
+- Linear Fisher run: 100% recovery, 0.00081 mean relative L2, and 0.0000072 average exploitability on 100 markets.
 
 ## Remaining
 
-- Run the linear Fisher budget-recovery job and inspect the expanded `scoring/scores.json`.
-- If linear Fisher also succeeds, consider adding Bertrand price-competition recovery or increasing instance counts toward the paper's 500.
+- Higher milestones would require adding remaining reported settings: Leontief Fisher, type-plus-budget recovery, Bertrand competition, stochastic Fisher markets, or Spanish electricity simulacral learning.
+- The current environment is usable as a research gym for three static inverse-game experiments with shared data, method outputs, and method-agnostic evaluation.
 
 ## Issues
 
@@ -40,4 +42,4 @@
 - Numerical domain: the paper samples budgets and types from `U[0,10]`, which can create singular zero values for logs and relative error. This reproduction samples from `[0.1, 10]` for numerical stability while preserving the same non-trivial continuous market setup.
 - Optimization detail: the tuned run uses the exact closed-form Cobb-Douglas adversarial allocation in the inverse-regret objective rather than relying on one projected ascent step per iteration. This keeps the paper's min-max inverse-planning computation but uses additional structure of the reproduced Fisher-market setting.
 - Cournot expansion scale: this reproduction uses 100 games instead of the paper's 500 while preserving duopoly linear-demand generation, the marginal-cost recovery target, and the inverse-regret objective.
-- Linear Fisher expansion scale: the next run uses 100 markets instead of the paper's 500 while preserving the utility family, known-type budget recovery task, and inverse-regret objective.
+- Linear Fisher expansion scale: this reproduction uses 100 markets instead of the paper's 500 while preserving the utility family, known-type budget recovery task, and inverse-regret objective.

@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: core_claim_plus**
+**Current: secondary_claims**
 
 <!-- Milestone levels (update "Current" above as you progress):
   none             — just started, no meaningful progress yet
@@ -35,5 +35,10 @@
 - Cournot marginal-cost recovery on 100 duopoly games reached 100% recovery, mean relative error 0.0000024, and average exploitability 0.00000000026.
 - Added the paper's linear Fisher budget-recovery setting for the next expansion job.
 
+### [2026-06-05 00:55] - secondary_claims
+- CPU job `21307677-f64` completed without errors and reproduced the linear Fisher budget-recovery setting.
+- Linear Fisher recovery on 100 markets reached 100% recovery, mean relative L2 0.00081, and average exploitability 0.0000072.
+- `python validate.py --compare` passes with Cobb-Douglas Fisher, linear Fisher, and Cournot scores.
+
 ## Stop Justification
-- Not stopped; a CPU expansion job is being submitted to test linear Fisher budget recovery.
+- Stopped after reproducing the core claim plus two secondary static-market settings. Remaining paper results include Leontief/type-recovery Fisher variants, Bertrand competition, stochastic Fisher markets, and Spanish electricity simulacral learning.
