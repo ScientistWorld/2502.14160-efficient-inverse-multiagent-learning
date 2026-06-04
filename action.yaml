@@ -1,5 +1,5 @@
 action: submit
 gpus: 0
 test: true
-milestone: core_claim
-notes: "CPU expansion: rerun verified Fisher core claim and test Cournot marginal-cost recovery with the same inverse-regret min-max method."
+milestone: core_claim_plus
+notes: "CPU expansion: rerun Fisher CD and Cournot, then test the added linear Fisher budget-recovery setting with the same inverse-regret method."
