@@ -1,5 +1,5 @@
 action: submit
 gpus: 0
 test: true
-milestone: method_runs
-notes: "CPU tuned reproduction: rerun Cobb-Douglas Fisher budget recovery with exact adversarial best responses in the paper's inverse-regret min-max objective, then evaluate method-only scores."
+milestone: core_claim
+notes: "CPU expansion: rerun verified Fisher core claim and test Cournot marginal-cost recovery with the same inverse-regret min-max method."
