@@ -41,4 +41,4 @@
 - `python validate.py --compare` passes with Cobb-Douglas Fisher, linear Fisher, and Cournot scores.
 
 ## Stop Justification
-- Stopped after reproducing the core claim plus two secondary static-market settings. Remaining paper results include Leontief/type-recovery Fisher variants, Bertrand competition, stochastic Fisher markets, and Spanish electricity simulacral learning.
+- Completed at milestone `secondary_claims`.
