@@ -32,7 +32,7 @@
 - The login-node Python environment lacks NumPy, so only structural validation was run locally. The container setup installs NumPy for compute jobs.
 - The paper does not report the Fisher adversary learning rate, initialization, or whether final, averaged, or best iterates are used. The first run used matched `eta_theta=eta_y=0.01` and averaged budget iterates; the tuned run uses the final budget iterate after exact adversary updates.
 - The first GDA run under-converged on the adversarial allocation variable, producing weak budget gradients. The next run uses the exact Cobb-Douglas adversarial best response inside the same min-max objective.
-- The linear Fisher implementation has not yet been executed in the compute container; it is queued as the next CPU test.
+- Job `b50c7bdb-c09` failed while generating linear Fisher data because SLSQP declared one random market's inequality constraints incompatible. The generator now uses an exact two-good linear Fisher equilibrium construction by sorting value ratios and splitting the marginal buyer group, removing the numerical optimizer dependency.
 
 ## Deviations from Paper
 

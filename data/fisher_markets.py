@@ -38,50 +38,42 @@ def cobb_douglas_equilibrium(types: np.ndarray, budgets: np.ndarray) -> tuple[np
 
 
 def linear_equilibrium(types: np.ndarray, budgets: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-    """Return prices and allocation for a linear-utility Fisher market."""
-    from scipy.optimize import minimize
+    """Return prices and allocation for a two-good linear-utility Fisher market.
 
+    With two goods, equilibrium prices are pinned down by a marginal buyer's
+    value ratio. Buyers with larger value ratios spend on good 0, buyers with
+    smaller ratios spend on good 1, and the marginal ratio group splits to clear
+    both unit supplies.
+    """
     num_buyers, num_goods = types.shape
-    x0 = np.full((num_buyers, num_goods), 1.0 / num_buyers, dtype=float).ravel()
+    if num_goods != 2:
+        raise ValueError("linear_equilibrium currently supports exactly two goods")
 
-    def objective(flat: np.ndarray) -> float:
-        allocation = flat.reshape(num_buyers, num_goods)
-        utilities = np.sum(types * allocation, axis=1)
-        return float(-np.sum(budgets * np.log(np.maximum(utilities, EPS))))
+    ratios = types[:, 0] / np.maximum(types[:, 1], EPS)
+    total_budget = float(np.sum(budgets))
+    for ratio in sorted(set(float(r) for r in ratios), reverse=True):
+        high = ratios > ratio + 1e-10
+        tied = np.abs(ratios - ratio) <= 1e-10
+        high_budget = float(np.sum(budgets[high]))
+        tied_budget = float(np.sum(budgets[tied]))
+        price0 = total_budget * ratio / (1.0 + ratio)
+        if high_budget - 1e-8 <= price0 <= high_budget + tied_budget + 1e-8:
+            prices = np.asarray([price0, total_budget - price0], dtype=float)
+            allocation = np.zeros((num_buyers, num_goods), dtype=float)
+            allocation[high, 0] = budgets[high] / np.maximum(prices[0], EPS)
+            low = ratios < ratio - 1e-10
+            allocation[low, 1] = budgets[low] / np.maximum(prices[1], EPS)
 
-    constraints = [
-        {
-            "type": "ineq",
-            "fun": lambda flat, good=good: 1.0 - np.sum(flat.reshape(num_buyers, num_goods)[:, good]),
-        }
-        for good in range(num_goods)
-    ]
-    result = minimize(
-        objective,
-        x0,
-        method="SLSQP",
-        bounds=[(0.0, None)] * x0.size,
-        constraints=constraints,
-        options={"ftol": 1e-12, "maxiter": 1000},
-    )
-    if not result.success:
-        raise RuntimeError(f"Linear Fisher equilibrium solve failed: {result.message}")
+            needed_tied_spend0 = min(max(price0 - high_budget, 0.0), tied_budget)
+            tied_indices = np.where(tied)[0]
+            for buyer in tied_indices:
+                spend0 = needed_tied_spend0 * budgets[buyer] / max(tied_budget, EPS)
+                spend1 = budgets[buyer] - spend0
+                allocation[buyer, 0] = spend0 / np.maximum(prices[0], EPS)
+                allocation[buyer, 1] = spend1 / np.maximum(prices[1], EPS)
+            return prices, allocation
 
-    allocation = np.maximum(result.x.reshape(num_buyers, num_goods), 0.0)
-    for good in range(num_goods):
-        total = float(np.sum(allocation[:, good]))
-        if total > 1.0:
-            allocation[:, good] /= total
-
-    utilities = np.maximum(np.sum(types * allocation, axis=1), EPS)
-    prices = np.zeros(num_goods, dtype=float)
-    for good in range(num_goods):
-        active = allocation[:, good] > 1e-7
-        if np.any(active):
-            prices[good] = float(np.mean(budgets[active] * types[active, good] / utilities[active]))
-        else:
-            prices[good] = float(np.max(budgets * types[:, good] / utilities))
-    return prices, allocation
+    raise RuntimeError("Could not construct two-good linear Fisher equilibrium")
 
 
 def log_cd_utility(allocation: np.ndarray, types: np.ndarray) -> np.ndarray:
