@@ -167,7 +167,7 @@ Run a method to write JSONL predictions with one row per benchmark instance, inc
 
 # Reproduction Milestones
 
-**Current: secondary_claims**
+**Current: core_claim_plus**
 
 ## Stop Justification
-- Completed at milestone `secondary_claims`.
+- Completed at milestone `core_claim_plus`.
