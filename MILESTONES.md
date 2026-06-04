@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: core_claim_plus**
+**Current: secondary_claims**
 
 ## Progress Log
 
@@ -33,6 +33,11 @@
 - The first Bertrand subgradient solver produced poor results, so the milestone was not raised.
 - Replaced the unstable Bertrand subgradient path for tied equilibrium prices with the exact inverse-regret minimizer and submitted a follow-up CPU test job.
 
+### [2026-06-05 00:07] - secondary_claims
+- Job `ed59c53d-384` completed successfully in the container.
+- The corrected four-experiment reproduction validates with `python validate.py --compare`.
+- Reproduced Cobb-Douglas Fisher, linear Fisher, Cournot, and Bertrand static inverse-game settings with 100% recovery and near-zero exploitability on 100 instances each.
+
 ## Stop Justification
-- Current confirmed milestone remains `core_claim_plus` until the Bertrand job finishes.
+- Completed at milestone `secondary_claims`: the workspace now reproduces four reported static economic inverse-game settings, including both Fisher and general-sum oligopoly experiments, with independent recovery and exploitability evaluation.
 - Remaining paper settings after Bertrand include Leontief Fisher markets, type-plus-budget recovery, stochastic Fisher markets, and Spanish electricity simulacral learning.

@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: submit
+action: done
 gpus: 0
-test: true
-milestone: core_claim_plus
-notes: "CPU container test after fixing Bertrand: rerun the full four-experiment reproduction with the exact inverse-regret minimizer for tied-price Bertrand equilibria, then evaluate and validate."
+test: false
+milestone: secondary_claims
+notes: "Finished after container job ed59c53d-384 validated four static inverse-game experiments: Cobb-Douglas Fisher, linear Fisher, Cournot, and Bertrand all score 100% recovery with near-zero exploitability on 100 instances."

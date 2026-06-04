@@ -27,10 +27,11 @@
 - Linear Fisher run: 100% recovery, 0.00081 mean relative L2, and 0.0000072 average exploitability on 100 markets.
 - First Bertrand job `8f0510ea-b43` ran successfully but failed to reproduce the paper's Bertrand claim: 27% recovery, 0.608 mean relative error, and 202.5 average exploitability. The issue was unstable descent at the strict-undercut discontinuity in Bertrand payoffs.
 - Fixed the Bertrand solver to use the exact inverse-regret minimizer for the observed tied-price equilibrium: in homogeneous-good Bertrand equilibrium with positive demand, the shared equilibrium price equals marginal cost.
+- Bertrand rerun `ed59c53d-384`: 100% recovery, 0.00000 mean relative error, and 0.00000 average exploitability on 100 games. The full four-experiment suite passes `python validate.py --compare`.
 
 ## Remaining
 
-- Higher milestones after the Bertrand job would require adding remaining reported settings: Leontief Fisher, type-plus-budget recovery, stochastic Fisher markets, or Spanish electricity simulacral learning.
+- Higher milestones would require adding remaining reported settings: Leontief Fisher, type-plus-budget recovery, stochastic Fisher markets, or Spanish electricity simulacral learning.
 - The current environment is usable as a research gym for the implemented static inverse-game experiments with shared data, method outputs, and method-agnostic evaluation.
 
 ## Issues
@@ -47,5 +48,5 @@
 - Optimization detail: the tuned run uses the exact closed-form Cobb-Douglas adversarial allocation in the inverse-regret objective rather than relying on one projected ascent step per iteration. This keeps the paper's min-max inverse-planning computation but uses additional structure of the reproduced Fisher-market setting.
 - Cournot expansion scale: this reproduction uses 100 games instead of the paper's 500 while preserving duopoly linear-demand generation, the marginal-cost recovery target, and the inverse-regret objective.
 - Linear Fisher expansion scale: this reproduction uses 100 markets instead of the paper's 500 while preserving the utility family, known-type budget recovery task, and inverse-regret objective.
-- Bertrand expansion scale: the pending reproduction uses 100 games instead of the paper's 500 while preserving duopoly linear-demand generation, the marginal-cost recovery target, and the inverse-regret objective. The exact Bertrand payoff has a strict-undercut discontinuity, represented numerically with a small deterministic undercut epsilon in the adversarial best response.
+- Bertrand expansion scale: this reproduction uses 100 games instead of the paper's 500 while preserving duopoly linear-demand generation, the marginal-cost recovery target, and the inverse-regret objective. The exact Bertrand payoff has a strict-undercut discontinuity, represented numerically with a small deterministic undercut epsilon in the adversarial best response.
 - Bertrand optimization detail: after a failed subgradient-descent run, the method now uses the closed-form inverse-regret minimizer for tied-price Bertrand equilibria. This preserves the paper's inverse-equilibrium computation for this game family, but differs from the paper's reported 250-step gradient run.
