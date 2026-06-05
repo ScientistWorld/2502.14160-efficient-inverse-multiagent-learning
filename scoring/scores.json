@@ -30,16 +30,6 @@
         }
       }
     },
-    "fisher_leontief_budget_recovery": {
-      "results": {
-        "adversarial_inverse_planning": {
-          "average_exploitability": 2.6691346838257273e-09,
-          "mean_relative_l2": 7.443861315472095e-06,
-          "num_instances": 100,
-          "parameter_recovery_rate": 1.0
-        }
-      }
-    },
     "fisher_linear_budget_recovery": {
       "results": {
         "adversarial_inverse_planning": {

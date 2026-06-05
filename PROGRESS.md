@@ -14,8 +14,8 @@
 - CPU job `21307677-f64` reproduced linear Fisher budget recovery on 100 markets and all three implemented experiments validate.
 - Continuing audit on 2026-06-04 confirmed the existing method is a real specialization of Algorithm 1 rather than a surrogate: it optimizes the paper's inverse-regret min-max objective and evaluation reads method artifacts independently.
 - Added and verified a fourth reported static setting: duopoly Bertrand marginal-cost recovery from observed equilibrium prices.
-- CPU job `8ce2a605-85d` verified the fifth reported static setting: Leontief Fisher budget recovery from observed competitive equilibria.
-- The full five-experiment static suite validates with `python validate.py --compare`, reaching the `majority` milestone for the paper's reported static results.
+- CPU job `8ce2a605-85d` ran the Leontief Fisher budget-recovery implementation, but external validation rejected the result as inconsistent with the paper-reported Leontief recovery rate.
+- The accepted default suite remains the four verified static settings: Cobb-Douglas Fisher, linear Fisher, Cournot, and Bertrand.
 
 ## Results
 
@@ -30,13 +30,13 @@
 - First Bertrand job `8f0510ea-b43` ran successfully but failed to reproduce the paper's Bertrand claim: 27% recovery, 0.608 mean relative error, and 202.5 average exploitability. The issue was unstable descent at the strict-undercut discontinuity in Bertrand payoffs.
 - Fixed the Bertrand solver to use the exact inverse-regret minimizer for the observed tied-price equilibrium: in homogeneous-good Bertrand equilibrium with positive demand, the shared equilibrium price equals marginal cost.
 - Bertrand rerun `ed59c53d-384`: 100% recovery, 0.00000 mean relative error, and 0.00000 average exploitability on 100 games. The full four-experiment suite passes `python validate.py --compare`.
-- Leontief Fisher job `8ce2a605-85d`: 100% recovery, 0.0000074 mean relative L2, and 0.0000000027 average exploitability on 100 markets.
+- Rejected Leontief Fisher job `8ce2a605-85d`: 100% recovery, 0.0000074 mean relative L2, and 0.0000000027 average exploitability on 100 markets.
 - Paper target for the Leontief Fisher slice: 36.8% budget recovery and 0.2238 average exploitability on 500 markets.
-- Continuing audit on 2026-06-05 restored `secondary_claims` for the verified four-experiment static subset, then job `8ce2a605-85d` generated the missing Leontief artifacts and scores.
+- Because the reproduced Leontief instances are materially easier than the paper setting, Leontief is excluded from `scoring/scores.json`, `scripts/evaluate.sh`, and the default run scripts.
 
 ## Remaining
 
-- Higher milestones would require adding remaining reported settings: type-plus-budget Fisher recovery, stochastic Fisher markets, or Spanish electricity simulacral learning.
+- Higher milestones would require adding remaining reported settings: a paper-consistent Leontief budget-recovery generator, type-plus-budget Fisher recovery, stochastic Fisher markets, or Spanish electricity simulacral learning.
 - The current environment is usable as a research gym for the implemented static inverse-game experiments with shared data, method outputs, and method-agnostic evaluation.
 
 ## Issues
@@ -45,6 +45,7 @@
 - The paper does not report the Fisher adversary learning rate, initialization, or whether final, averaged, or best iterates are used. The first run used matched `eta_theta=eta_y=0.01` and averaged budget iterates; the tuned run uses the final budget iterate after exact adversary updates.
 - The first GDA run under-converged on the adversarial allocation variable, producing weak budget gradients. The next run uses the exact Cobb-Douglas adversarial best response inside the same min-max objective.
 - Job `b50c7bdb-c09` failed while generating linear Fisher data because SLSQP declared one random market's inequality constraints incompatible. Job `134e6e64-0a8` exposed a second generator edge case: some markets clear with a price ratio between two buyer value ratios and no tied marginal buyer. The generator now handles both no-tie split intervals and tied marginal-buyer groups, removing the numerical optimizer dependency.
+- The Leontief generator constructs equilibrium instances from sampled utility targets and prices rather than sampling independent budgets and types as in the paper. External validation correctly identified that the resulting 100% recovery is too far from the paper's 36.8% result, so Leontief is no longer a scored default experiment.
 
 ## Deviations from Paper
 
@@ -55,4 +56,4 @@
 - Linear Fisher expansion scale: this reproduction uses 100 markets instead of the paper's 500 while preserving the utility family, known-type budget recovery task, and inverse-regret objective.
 - Bertrand expansion scale: this reproduction uses 100 games instead of the paper's 500 while preserving duopoly linear-demand generation, the marginal-cost recovery target, and the inverse-regret objective. The exact Bertrand payoff has a strict-undercut discontinuity, represented numerically with a small deterministic undercut epsilon in the adversarial best response.
 - Bertrand optimization detail: after a failed subgradient-descent run, the method now uses the closed-form inverse-regret minimizer for tied-price Bertrand equilibria. This preserves the paper's inverse-equilibrium computation for this game family, but differs from the paper's reported 250-step gradient run.
-- Leontief generator detail: the paper samples Leontief types and budgets independently from `U[0,10]`; this reproduction constructs two-good Leontief equilibria by sampling positive utility targets and prices, scaling type columns to clear unit supplies, and deriving budgets from equilibrium bundle costs. The recovery task, known-type budget target, inverse-regret objective, and exploitability metric are preserved.
+- Leontief generator detail: the paper samples Leontief types and budgets independently from `U[0,10]`; this reproduction constructs two-good Leontief equilibria by sampling positive utility targets and prices, scaling type columns to clear unit supplies, and deriving budgets from equilibrium bundle costs. That replacement made the benchmark too easy, so Leontief is retained only as exploratory code and is not included in the accepted scores.

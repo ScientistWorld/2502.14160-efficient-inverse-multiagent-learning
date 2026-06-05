@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: majority**
+**Current: secondary_claims**
 
 ## Progress Log
 
@@ -17,7 +17,12 @@
 ### [2026-06-05 00:16] - majority
 - CPU job `8ce2a605-85d` completed successfully and regenerated the full static suite.
 - `scoring/scores.json` now includes five reproduced reported settings: Cobb-Douglas, linear, and Leontief Fisher budget recovery plus Cournot and Bertrand cost recovery.
-- `python validate.py --compare` passes with method-agnostic evaluation, exploitability constraints, and no `eval/` imports from `method/`.
+- This claim was later rejected by stricter paper-consistency validation because the Leontief result was too far from the paper report.
+
+### [2026-06-05 00:32] - secondary_claims
+- External validation rejected the Leontief score because this reproduction's constructed Leontief instances produced 100% recovery while the paper reports 36.8%, a gap too large to accept as the same result.
+- Removed Leontief from the default scored suite and restored the milestone to the verified four-experiment static subset.
+- `scoring/scores.json` now reports Cobb-Douglas Fisher, linear Fisher, Cournot, and Bertrand results only.
 
 ## Stop Justification
-- The packaged environment reaches `majority`: five reported static inverse-game settings are reproduced and validated. Remaining unreproduced paper results are the harder type-plus-budget Fisher variants and Spanish electricity simulacral-learning study.
+- The packaged environment reaches `secondary_claims`: four reported static inverse-game settings are reproduced and validated. Remaining unreproduced paper results include the rejected Leontief Fisher budget setting, harder type-plus-budget Fisher variants, and the Spanish electricity simulacral-learning study.

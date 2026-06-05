@@ -21,6 +21,5 @@ cd /home/user
 
 python -m data.fisher_markets --output data/fisher_cd_budget_instances.jsonl --count 100 --seed 2025
 python -m data.fisher_markets --utility linear --output data/fisher_linear_budget_instances.jsonl --count 100 --seed 2125
-python -m data.fisher_markets --utility leontief --output data/fisher_leontief_budget_instances.jsonl --count 100 --seed 2225
 python -m data.cournot_games --output data/cournot_instances.jsonl --count 100 --seed 3025
 python -m data.bertrand_games --output data/bertrand_instances.jsonl --count 100 --seed 4025
