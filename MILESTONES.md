@@ -44,4 +44,4 @@
 - Confirmed the current milestone remains `secondary_claims`.
 
 ## Stop Justification
-- Final verification found the workspace usable as a research gym for the four accepted static inverse-game experiments. Higher milestones require validated scores for additional paper settings.
+- Completed at milestone `secondary_claims`.
