@@ -29,5 +29,10 @@
 - The generator now samples Leontief types and budgets independently and solves the forward two-good competitive equilibrium.
 - The method now runs projected GDA for Leontief adversarial allocations, preserving the paper's nonsmooth Algorithm 1 procedure instead of using the earlier exact best-response shortcut.
 
+### [2026-06-05 01:05] - secondary_claims
+- CPU job `26d5d29b-8c7` completed successfully and refreshed `scoring/scores.json` for five static experiments.
+- The corrected Leontief slice is no longer artificially easy: it scored 21% recovery and 0.9574 average exploitability, below the paper's 36.8% and 0.2240.
+- Final verification kept the milestone at `secondary_claims`: four static settings reproduce strongly, and Leontief is retained as a difficult scored setting rather than used to claim a higher milestone.
+
 ## Stop Justification
-- Not stopping; submitting a CPU verification job for the corrected Leontief experiment.
+- Final verification completed. The workspace is ready as a research gym at `secondary_claims`; higher milestones require a stronger Leontief result or additional reported experiments.

@@ -1,6 +1,6 @@
 # The system reads this file after the turn ends.
-action: submit
+action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Run full static reproduction with corrected paper-consistent Leontief Fisher budget recovery and refreshed scoring metrics."
+notes: "Final verification passed; five static experiments are scored, with Leontief retained as a difficult weaker reproduction."

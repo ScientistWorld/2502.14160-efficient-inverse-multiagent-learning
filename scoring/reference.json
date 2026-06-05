@@ -18,7 +18,7 @@
         "mean_relative_l2": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "Mean relative L2 error between recovered and generating budgets."
+          "description": "Mean relative L2 error between recovered and generating budgets. The paper reports thresholded recovery and exploitability, so the paper-reference value uses the recovery threshold epsilon=0.1 rather than a reported mean."
         },
         "p90_relative_l2": {
           "higher_is_better": false,
@@ -64,7 +64,7 @@
         "mean_relative_l2": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "Mean relative L2 error between recovered and generating budgets."
+          "description": "Mean relative L2 error between recovered and generating budgets. The paper reports thresholded recovery and exploitability, so the paper-reference value uses the recovery threshold epsilon=0.1 rather than a reported mean."
         },
         "p90_relative_l2": {
           "higher_is_better": false,
@@ -110,7 +110,7 @@
         "mean_relative_l2": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "Mean relative L2 error between recovered and generating budgets."
+          "description": "Mean relative L2 error between recovered and generating budgets. The paper reports thresholded recovery and exploitability, so the paper-reference value uses the recovery threshold epsilon=0.1 rather than a reported mean."
         },
         "p90_relative_l2": {
           "higher_is_better": false,
@@ -156,7 +156,7 @@
         "mean_relative_error": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "Mean relative error between recovered and generating marginal costs."
+          "description": "Mean relative error between recovered and generating marginal costs. The paper reports thresholded recovery and exploitability, so the paper-reference value uses the recovery threshold epsilon=0.1 rather than a reported mean."
         },
         "p90_relative_error": {
           "higher_is_better": false,
@@ -202,7 +202,7 @@
         "mean_relative_error": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "Mean relative error between recovered and generating marginal costs."
+          "description": "Mean relative error between recovered and generating marginal costs. The paper reports thresholded recovery and exploitability, so the paper-reference value uses the recovery threshold epsilon=0.1 rather than a reported mean."
         },
         "p90_relative_error": {
           "higher_is_better": false,

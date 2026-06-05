@@ -1,10 +1,8 @@
 # Evaluation
 
-How success is measured. Describe only the metrics, targets, and evaluation procedure — do NOT describe the paper's method or how they achieved these results. Think of this as a general evaluation protocal for other scientists trying to solve the same problem, where they should not see this paper's solution.
-
 ## Metrics
 
-The benchmark reports `parameter_recovery_rate`, the fraction of instances whose relative parameter error is at most 0.1; a mean relative-error metric (`mean_relative_l2` for vector budgets and `mean_relative_error` for scalar costs); and `average_exploitability`, the average maximum unilateral-deviation regret of the observed equilibrium under recovered parameters. Higher recovery rate is better. Lower relative error and exploitability are better.
+The benchmark reports `parameter_recovery_rate`, the fraction of instances whose relative parameter error is at most 0.1; a mean relative-error metric (`mean_relative_l2` for vector budgets and `mean_relative_error` for scalar costs); tail-error metrics (`p90_relative_l2` or `p90_relative_error`); `average_exploitability`; and `max_exploitability`. Higher recovery rate is better. Lower relative error and exploitability are better.
 
 ## Baselines and Targets
 
@@ -12,4 +10,4 @@ For static Cobb-Douglas Fisher markets with known utility types and unknown budg
 
 ## Evaluation Protocol
 
-Run a method to write JSONL predictions with one row per benchmark instance, including estimated parameters. Then run `scripts/evaluate.sh`, or pass `--experiment fisher`, `--experiment cournot`, or `--experiment bertrand` with a prediction path. The evaluator aggregates metrics and writes `scoring/scores.json`. It imports only `eval/` and `data/` code and reads method artifacts, so future methods can be scored by matching the same output formats.
+Run a method to write JSONL predictions with one row per benchmark instance, including estimated parameters. Then run `scripts/evaluate.sh`, or pass an explicit experiment selector (`fisher_cd`, `fisher_linear`, `fisher_leontief`, `cournot`, or `bertrand`) with a prediction path. The evaluator aggregates metrics and writes `scoring/scores.json`. It imports only `eval/` and `data/` code and reads method artifacts, so future methods can be scored by matching the same output formats.
