@@ -23,10 +23,11 @@ from data.fisher_markets import (
     EPS,
     cd_best_response,
     fisher_regret,
+    leontief_best_response,
+    log_leontief_utility,
     linear_best_response,
     log_linear_utility,
     read_jsonl,
-    relative_l2,
 )
 
 
@@ -94,6 +95,31 @@ def run_linear_algorithm_1(
     return estimated, fisher_regret("linear", estimated, types, prices, observed_allocation)
 
 
+def run_leontief_algorithm_1(
+    types: np.ndarray,
+    observed_allocation: np.ndarray,
+    prices: np.ndarray,
+    *,
+    iterations: int,
+    lr_theta: float,
+    seed: int,
+    return_iterate: str,
+) -> tuple[np.ndarray, float]:
+    rng = np.random.default_rng(seed)
+    budgets = rng.uniform(0.1, 10.0, size=types.shape[0])
+    avg_budgets = np.zeros_like(budgets)
+    log_u_observed = log_leontief_utility(observed_allocation, types)
+    for _ in range(1, iterations + 1):
+        y = leontief_best_response(budgets, types, prices)
+        grad_budgets = log_leontief_utility(y, types) - log_u_observed
+        budgets = np.clip(budgets - lr_theta * grad_budgets, 0.001, 10.0)
+        avg_budgets += budgets
+
+    averaged = avg_budgets / float(iterations)
+    estimated = averaged if return_iterate == "average" else budgets
+    return estimated, fisher_regret("leontief", estimated, types, prices, observed_allocation)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--instances", type=Path, default=Path("data/fisher_cd_budget_instances.jsonl"))
@@ -112,9 +138,18 @@ def main() -> None:
         types = np.asarray(instance["types"], dtype=float)
         observed_allocation = np.asarray(instance["allocation"], dtype=float)
         prices = np.asarray(instance["prices"], dtype=float)
-        true_budgets = np.asarray(instance["budgets"], dtype=float)
         if instance["utility"] == "linear":
             estimated, exploitability = run_linear_algorithm_1(
+                types,
+                observed_allocation,
+                prices,
+                iterations=args.iterations,
+                lr_theta=args.lr_theta,
+                seed=args.seed + int(instance["instance_id"]),
+                return_iterate=args.return_iterate,
+            )
+        elif instance["utility"] == "leontief":
+            estimated, exploitability = run_leontief_algorithm_1(
                 types,
                 observed_allocation,
                 prices,
@@ -141,9 +176,6 @@ def main() -> None:
                 "method": "adversarial_inverse_planning",
                 "utility": instance["utility"],
                 "estimated_budgets": estimated.tolist(),
-                "diagnostic_true_budgets": true_budgets.tolist(),
-                "diagnostic_relative_l2": relative_l2(estimated, true_budgets),
-                "diagnostic_recovered": bool(relative_l2(estimated, true_budgets) <= 0.1),
                 "diagnostic_exploitability": exploitability,
             }
         )

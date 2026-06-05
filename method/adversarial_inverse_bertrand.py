@@ -8,7 +8,7 @@ from pathlib import Path
 
 import numpy as np
 
-from data.bertrand_games import bertrand_exploitability, best_response_price, read_jsonl, relative_abs
+from data.bertrand_games import bertrand_exploitability, best_response_price, read_jsonl
 
 
 def recover_cost(
@@ -67,17 +67,12 @@ def main() -> None:
                 lr_theta=args.lr_theta,
                 seed=args.seed + int(instance["instance_id"]),
             )
-            true_cost = float(instance["marginal_cost"])
-            rel = relative_abs(estimated, true_cost)
             handle.write(
                 json.dumps(
                     {
                         "instance_id": instance["instance_id"],
                         "method": "adversarial_inverse_planning",
                         "estimated_marginal_cost": estimated,
-                        "diagnostic_true_marginal_cost": true_cost,
-                        "diagnostic_relative_error": rel,
-                        "diagnostic_recovered": rel <= 0.1,
                         "diagnostic_exploitability": exploitability,
                     },
                     sort_keys=True,

@@ -8,7 +8,7 @@ The benchmark reports `parameter_recovery_rate`, the fraction of instances whose
 
 ## Baselines and Targets
 
-For static Cobb-Douglas Fisher markets with known utility types and unknown budgets, the paper reports 100% parameter recovery and average exploitability 0.0004 over 500 markets. For static linear Fisher markets with known utility types and unknown budgets, it reports 100% recovery and average exploitability 0.0018. For Cournot duopoly games with unknown marginal cost, the paper reports 95.2% parameter recovery and average exploitability 0.0000 over 500 games. For Bertrand duopoly games with unknown marginal cost, it reports 78% recovery and average exploitability 0.0011 over 500 games. This reproduction uses the same game structures and smaller generated sets for runnable benchmark jobs.
+For static Cobb-Douglas Fisher markets with known utility types and unknown budgets, the paper reports 100% parameter recovery and average exploitability 0.0004 over 500 markets. For static linear Fisher markets with known utility types and unknown budgets, it reports 100% recovery and average exploitability 0.0018. For static Leontief Fisher markets with known utility types and unknown budgets, it reports 36.8% recovery and average exploitability 0.2240. For Cournot duopoly games with unknown marginal cost, the paper reports 95.2% parameter recovery and average exploitability 0.0000 over 500 games. For Bertrand duopoly games with unknown marginal cost, it reports 78% recovery and average exploitability 0.0011 over 500 games. This reproduction uses the same game structures and smaller generated sets for runnable benchmark jobs.
 
 ## Evaluation Protocol
 

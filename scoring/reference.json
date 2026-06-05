@@ -2,7 +2,7 @@
   "experiments": {
     "fisher_cd_budget_recovery": {
       "description": "Static Cobb-Douglas Fisher markets, known utility types, recover buyer budgets from observed competitive equilibrium (Table 2 budget-only CD column).",
-      "weight": 0.3,
+      "weight": 0.2,
       "primary_metric": "parameter_recovery_rate",
       "metrics": {
         "parameter_recovery_rate": {
@@ -34,7 +34,7 @@
     },
     "fisher_linear_budget_recovery": {
       "description": "Static linear Fisher markets, known utility types, recover buyer budgets from observed competitive equilibrium (Table 2 budget-only Linear column).",
-      "weight": 0.25,
+      "weight": 0.2,
       "primary_metric": "parameter_recovery_rate",
       "metrics": {
         "parameter_recovery_rate": {
@@ -64,9 +64,41 @@
         }
       }
     },
+    "fisher_leontief_budget_recovery": {
+      "description": "Static Leontief Fisher markets, known utility types, recover buyer budgets from observed competitive equilibrium (Table 2 budget-only Leontief column).",
+      "weight": 0.2,
+      "primary_metric": "parameter_recovery_rate",
+      "metrics": {
+        "parameter_recovery_rate": {
+          "higher_is_better": true,
+          "coefficient": 1.0
+        },
+        "average_exploitability": {
+          "higher_is_better": false,
+          "coefficient": -0.8
+        },
+        "mean_relative_l2": {
+          "higher_is_better": false,
+          "coefficient": -0.5
+        },
+        "num_instances": {
+          "higher_is_better": true,
+          "coefficient": 0.0
+        }
+      },
+      "results": {
+        "adversarial_inverse_planning": {
+          "type": "proposed",
+          "parameter_recovery_rate": 0.368,
+          "average_exploitability": 0.224,
+          "mean_relative_l2": 0.1,
+          "num_instances": 500
+        }
+      }
+    },
     "cournot_cost_recovery": {
       "description": "Duopoly Cournot competition, recover marginal cost from observed equilibrium quantities (Table 3 Cournot column).",
-      "weight": 0.25,
+      "weight": 0.2,
       "primary_metric": "parameter_recovery_rate",
       "metrics": {
         "parameter_recovery_rate": {

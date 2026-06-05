@@ -96,6 +96,20 @@ def linear_equilibrium(types: np.ndarray, budgets: np.ndarray) -> tuple[np.ndarr
     raise RuntimeError("Could not construct two-good linear Fisher equilibrium")
 
 
+def leontief_equilibrium(types: np.ndarray, utilities: np.ndarray, prices: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """Construct a two-good Leontief equilibrium from target utilities.
+
+    For Leontief utility u_i(x_i)=min_j x_ij/a_ij, an equilibrium allocation
+    has x_ij = u_i a_ij.  The generator scales columns of ``types`` so the
+    chosen positive utility vector clears both unit supplies, then sets budgets
+    equal to the cost of the equilibrium bundles at the sampled prices.
+    """
+    scaled_types = types / np.maximum(np.sum(types * utilities[:, None], axis=0, keepdims=True), EPS)
+    allocation = utilities[:, None] * scaled_types
+    budgets = utilities * np.sum(prices[None, :] * scaled_types, axis=1)
+    return budgets, prices, allocation
+
+
 def log_cd_utility(allocation: np.ndarray, types: np.ndarray) -> np.ndarray:
     shares = types / np.maximum(types.sum(axis=1, keepdims=True), EPS)
     return np.sum(shares * np.log(np.maximum(allocation, EPS)), axis=1)
@@ -144,6 +158,28 @@ def linear_regret(
     return float(max(np.sum(value_gap) + price_gap, 0.0))
 
 
+def log_leontief_utility(allocation: np.ndarray, types: np.ndarray) -> np.ndarray:
+    return np.log(np.maximum(np.min(allocation / np.maximum(types, EPS), axis=1), EPS))
+
+
+def leontief_best_response(budgets: np.ndarray, types: np.ndarray, prices: np.ndarray) -> np.ndarray:
+    bundle_costs = np.sum(prices[None, :] * types, axis=1)
+    utilities = budgets / np.maximum(bundle_costs, EPS)
+    return utilities[:, None] * types
+
+
+def leontief_regret(
+    budgets: np.ndarray,
+    types: np.ndarray,
+    prices: np.ndarray,
+    observed_allocation: np.ndarray,
+) -> float:
+    best = leontief_best_response(budgets, types, prices)
+    value_gap = budgets * (log_leontief_utility(best, types) - log_leontief_utility(observed_allocation, types))
+    price_gap = np.sum(prices * (observed_allocation.sum(axis=0) - best.sum(axis=0)))
+    return float(max(np.sum(value_gap) + price_gap, 0.0))
+
+
 def fisher_regret(
     utility: str,
     budgets: np.ndarray,
@@ -155,6 +191,8 @@ def fisher_regret(
         return cd_regret(budgets, types, prices, observed_allocation)
     if utility == "linear":
         return linear_regret(budgets, types, prices, observed_allocation)
+    if utility == "leontief":
+        return leontief_regret(budgets, types, prices, observed_allocation)
     raise ValueError(f"Unsupported utility: {utility}")
 
 
@@ -203,6 +241,27 @@ def generate_linear_instances(count: int, seed: int) -> list[FisherInstance]:
     return instances
 
 
+def generate_leontief_instances(count: int, seed: int) -> list[FisherInstance]:
+    rng = np.random.default_rng(seed)
+    instances: list[FisherInstance] = []
+    for idx in range(count):
+        raw_types = rng.uniform(0.1, 10.0, size=(3, 2))
+        utilities = rng.uniform(0.2, 2.0, size=3)
+        prices = rng.uniform(0.5, 5.0, size=2)
+        budgets, equilibrium_prices, allocation = leontief_equilibrium(raw_types, utilities, prices)
+        instances.append(
+            FisherInstance(
+                instance_id=idx,
+                utility="leontief",
+                types=(allocation / utilities[:, None]).tolist(),
+                budgets=budgets.tolist(),
+                prices=equilibrium_prices.tolist(),
+                allocation=allocation.tolist(),
+            )
+        )
+    return instances
+
+
 def write_jsonl(instances: list[FisherInstance], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
@@ -225,12 +284,14 @@ def main() -> None:
     parser.add_argument("--output", type=Path, default=Path("data/fisher_cd_budget_instances.jsonl"))
     parser.add_argument("--count", type=int, default=100)
     parser.add_argument("--seed", type=int, default=2025)
-    parser.add_argument("--utility", choices=["cobb_douglas", "linear"], default="cobb_douglas")
+    parser.add_argument("--utility", choices=["cobb_douglas", "linear", "leontief"], default="cobb_douglas")
     args = parser.parse_args()
     if args.utility == "cobb_douglas":
         instances = generate_cd_instances(args.count, args.seed)
-    else:
+    elif args.utility == "linear":
         instances = generate_linear_instances(args.count, args.seed)
+    else:
+        instances = generate_leontief_instances(args.count, args.seed)
     write_jsonl(instances, args.output)
 
 

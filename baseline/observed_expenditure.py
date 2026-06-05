@@ -13,7 +13,7 @@ from pathlib import Path
 
 import numpy as np
 
-from data.fisher_markets import cd_regret, read_jsonl, relative_l2
+from data.fisher_markets import cd_regret, read_jsonl
 
 
 def main() -> None:
@@ -28,7 +28,6 @@ def main() -> None:
             types = np.asarray(instance["types"], dtype=float)
             allocation = np.asarray(instance["allocation"], dtype=float)
             prices = np.asarray(instance["prices"], dtype=float)
-            true_budgets = np.asarray(instance["budgets"], dtype=float)
             estimated = allocation @ prices
             handle.write(
                 json.dumps(
@@ -37,9 +36,6 @@ def main() -> None:
                         "method": "observed_expenditure",
                         "utility": instance["utility"],
                         "estimated_budgets": estimated.tolist(),
-                        "diagnostic_true_budgets": true_budgets.tolist(),
-                        "diagnostic_relative_l2": relative_l2(estimated, true_budgets),
-                        "diagnostic_recovered": bool(relative_l2(estimated, true_budgets) <= 0.1),
                         "diagnostic_exploitability": cd_regret(estimated, types, prices, allocation),
                     },
                     sort_keys=True,

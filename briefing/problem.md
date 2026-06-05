@@ -6,7 +6,7 @@ Do NOT describe the paper's method or solution here — only the problem itself.
 
 ## Research Question
 
-Given observations of strategic behavior that are assumed to be an equilibrium of an unknown parametric game, recover game parameters for which the observed behavior is rational. In the static market benchmarks, the tasks are to recover buyer budgets in synthetic Cobb-Douglas or linear Fisher markets from observed competitive-equilibrium allocations and prices, and to recover marginal production costs in synthetic Cournot duopoly games from observed equilibrium quantities.
+Given observations of strategic behavior that are assumed to be an equilibrium of an unknown parametric game, recover game parameters for which the observed behavior is rational. In the static market benchmarks, the tasks are to recover buyer budgets in synthetic Cobb-Douglas, linear, or Leontief Fisher markets from observed competitive-equilibrium allocations and prices, and to recover marginal production costs in synthetic Cournot and Bertrand duopoly games from observed equilibrium quantities or prices.
 
 ## Why It Matters
 
