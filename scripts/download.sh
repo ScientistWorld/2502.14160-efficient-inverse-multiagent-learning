@@ -10,16 +10,23 @@
 # Update the storage estimate below as you add downloads.
 #
 # Estimated total download size: 0 GB
-# Estimated disk usage after extraction: <1 MB
+# Estimated disk usage after extraction: 0 GB
 #
-# No external downloads are required. This script deterministically regenerates
-# the small synthetic benchmark file used by the reproduction.
+# No external downloads are required. The synthetic benchmark instances are
+# first-party, small, and tracked directly under data/.
 
 set -e
 
 cd /home/user
 
-python -m data.fisher_markets --output data/fisher_cd_budget_instances.jsonl --count 100 --seed 2025
-python -m data.fisher_markets --utility linear --output data/fisher_linear_budget_instances.jsonl --count 100 --seed 2125
-python -m data.cournot_games --output data/cournot_instances.jsonl --count 100 --seed 3025
-python -m data.bertrand_games --output data/bertrand_instances.jsonl --count 100 --seed 4025
+mkdir -p data/downloads
+
+for required_file in \
+  data/fisher_cd_budget_instances.jsonl \
+  data/fisher_linear_budget_instances.jsonl \
+  data/fisher_leontief_budget_instances.jsonl \
+  data/cournot_instances.jsonl \
+  data/bertrand_instances.jsonl
+do
+  test -f "$required_file"
+done
