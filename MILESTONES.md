@@ -25,4 +25,4 @@
 - `scoring/scores.json` now reports Cobb-Douglas Fisher, linear Fisher, Cournot, and Bertrand results only.
 
 ## Stop Justification
-- Completed at milestone `majority`.
+- Completed at milestone `secondary_claims`.
