@@ -12,6 +12,7 @@ The paper studies how to infer unknown game parameters from observed equilibrium
 ## Key Results
 
 - Static Cobb-Douglas Fisher budget recovery: 100% parameters recovered, average exploitability 0.0004.
+- Static Cobb-Douglas Fisher type-and-budget recovery: 99.6% parameters recovered, average exploitability 0.0004.
 - Static linear Fisher budget recovery: 100% parameters recovered, average exploitability 0.0018.
 - Static Leontief Fisher budget recovery: 36.8% parameters recovered, average exploitability 0.2240.
 - Cournot marginal-cost recovery: 95.2% parameters recovered, average exploitability 0.0000.

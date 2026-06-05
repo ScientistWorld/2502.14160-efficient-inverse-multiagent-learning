@@ -34,5 +34,9 @@
 - The corrected Leontief slice is no longer artificially easy: it scored 21% recovery and 0.9574 average exploitability, below the paper's 36.8% and 0.2240.
 - Final verification kept the milestone at `secondary_claims`: four static settings reproduce strongly, and Leontief is retained as a difficult scored setting rather than used to claim a higher milestone.
 
+### [2026-06-05 01:30] - secondary_claims
+- Added a Cobb-Douglas Fisher type-and-budget recovery implementation and evaluator wiring for a new reported Table 2 setting.
+- Did not raise the milestone before running the compute job; the next submission regenerates scores including this setting.
+
 ## Stop Justification
-- Completed at milestone `secondary_claims`.
+- Work is continuing toward a stronger static-suite reproduction.

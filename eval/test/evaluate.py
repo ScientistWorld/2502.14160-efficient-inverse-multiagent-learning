@@ -30,6 +30,7 @@ class ExperimentSpec:
     kind: str
     artifact_dir: Path
     instances: Path
+    recover_types: bool = False
 
 
 EXPERIMENTS: tuple[ExperimentSpec, ...] = (
@@ -46,10 +47,23 @@ EXPERIMENTS: tuple[ExperimentSpec, ...] = (
         Path("data/fisher_linear_budget_instances.jsonl"),
     ),
     ExperimentSpec(
+        "fisher_cd_type_budget_recovery",
+        "fisher",
+        Path("artifacts/fisher_cd_type_budgets"),
+        Path("data/fisher_cd_type_budget_instances.jsonl"),
+        True,
+    ),
+    ExperimentSpec(
         "cournot_cost_recovery",
         "cournot",
         Path("artifacts/cournot_costs"),
         Path("data/cournot_instances.jsonl"),
+    ),
+    ExperimentSpec(
+        "bertrand_cost_recovery",
+        "bertrand",
+        Path("artifacts/bertrand_costs"),
+        Path("data/bertrand_instances.jsonl"),
     ),
 )
 
@@ -106,7 +120,7 @@ def expected_methods_by_experiment(train_scores_path: Path) -> dict[str, set[str
     return expected
 
 
-def summarize_fisher(rows: list[dict], instances: dict[int, dict]) -> dict:
+def summarize_fisher(rows: list[dict], instances: dict[int, dict], *, recover_types: bool = False) -> dict:
     if not rows:
         raise ValueError(f"No {SLICE} prediction rows found")
     evaluated = []
@@ -114,15 +128,21 @@ def summarize_fisher(rows: list[dict], instances: dict[int, dict]) -> dict:
         instance = instances[int(row["instance_id"])]
         estimated = np.asarray(row["estimated_budgets"], dtype=float)
         true_budgets = np.asarray(instance["budgets"], dtype=float)
-        types = np.asarray(instance["types"], dtype=float)
+        true_types = np.asarray(instance["types"], dtype=float)
+        eval_types = np.asarray(row["estimated_types"], dtype=float) if recover_types else true_types
         prices = np.asarray(instance["prices"], dtype=float)
         allocation = np.asarray(instance["allocation"], dtype=float)
-        rel = relative_l2(estimated, true_budgets)
+        if recover_types:
+            estimated_params = np.concatenate([estimated.ravel(), eval_types.ravel()])
+            true_params = np.concatenate([true_budgets.ravel(), true_types.ravel()])
+            rel = relative_l2(estimated_params, true_params)
+        else:
+            rel = relative_l2(estimated, true_budgets)
         evaluated.append(
             {
                 "relative_l2": rel,
                 "recovered": rel <= 0.1,
-                "exploitability": fisher_regret(instance["utility"], estimated, types, prices, allocation),
+                "exploitability": fisher_regret(instance["utility"], estimated, eval_types, prices, allocation),
             }
         )
     n = len(evaluated)
@@ -206,7 +226,7 @@ def summarize_bertrand(rows: list[dict], instances: dict[int, dict]) -> dict:
 
 def summarize(spec: ExperimentSpec, rows: list[dict], instances: dict[int, dict]) -> dict:
     if spec.kind == "fisher":
-        return summarize_fisher(rows, instances)
+        return summarize_fisher(rows, instances, recover_types=spec.recover_types)
     if spec.kind == "cournot":
         return summarize_cournot(rows, instances)
     if spec.kind == "bertrand":

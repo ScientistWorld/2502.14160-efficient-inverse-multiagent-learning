@@ -18,6 +18,7 @@
 - Prepared a paper-consistent Leontief retry: instances now sample budgets and types independently and solve the forward Leontief Fisher market; the method uses projected GDA on the nonsmooth adversarial allocation rather than the previous exact best-response shortcut.
 - CPU job `26d5d29b-8c7` completed a refreshed static suite including a corrected Leontief attempt.
 - The accepted milestone remains `secondary_claims`: Cobb-Douglas Fisher, linear Fisher, Cournot, and Bertrand strongly reproduce reported static claims. Leontief remains in `reference.json` as an unreproduced paper target, but it is not included in `scores.json` because the corrected result is too far from the paper report.
+- Added an in-progress Cobb-Douglas type-and-budget recovery implementation that optimizes Algorithm 1's inverse-regret objective over both budgets and type shares. It is wired into method, evaluation, train/test scoring, and reference metadata, but is not counted toward a higher milestone until a compute job returns scores.
 
 ## Results
 
@@ -36,10 +37,12 @@
 - Paper target for the Leontief Fisher slice: 36.8% budget recovery and 0.2238 average exploitability on 500 markets.
 - Corrected Leontief Fisher job `26d5d29b-8c7`: 21% recovery, 0.4195 mean relative L2, and 0.9574 average exploitability on 100 markets. This confirms the corrected nonsmooth setting is nontrivial, but it does not match the paper well enough to raise the milestone.
 - Current scored default suite: Cobb-Douglas Fisher 100% recovery / 0.0000065 exploitability; linear Fisher 100% / 0.0000072; Cournot 100% / 2.6e-10; Bertrand 100% / 0.0.
+- Pending target for the next job: Cobb-Douglas type-and-budget recovery, where the paper reports 99.6% recovery and 0.0004 average exploitability.
 
 ## Remaining
 
 - Higher milestones would require improving the Leontief reproduction toward the paper's 36.8% recovery and 0.224 exploitability, or adding remaining reported settings such as type-plus-budget Fisher recovery, stochastic Fisher markets, or Spanish electricity simulacral learning.
+- Higher milestones would require the pending type-and-budget job to validate, improving the Leontief reproduction toward the paper's 36.8% recovery and 0.224 exploitability, or adding remaining reported settings such as stochastic Fisher markets or Spanish electricity simulacral learning.
 - The current environment is usable as a research gym for the implemented static inverse-game experiments with shared data, method outputs, and method-agnostic evaluation.
 
 ## Issues
@@ -62,3 +65,4 @@
 - Bertrand expansion scale: this reproduction uses 100 games instead of the paper's 500 while preserving duopoly linear-demand generation, the marginal-cost recovery target, and the inverse-regret objective. The exact Bertrand payoff has a strict-undercut discontinuity, represented numerically with a small deterministic undercut epsilon in the adversarial best response.
 - Bertrand optimization detail: after a failed subgradient-descent run, the method now uses the closed-form inverse-regret minimizer for tied-price Bertrand equilibria. This preserves the paper's inverse-equilibrium computation for this game family, but differs from the paper's reported 250-step gradient run.
 - Leontief generator detail: the generator now follows the paper's independent type/budget sampling up to the same numerical-stability floor `[0.1, 10]` used elsewhere, and computes the observed equilibrium by solving the two-good Leontief clearing equations. The resulting reproduction is weaker than the paper's Leontief result and is therefore not included in `scores.json`.
+- Cobb-Douglas type scale: the paper text says raw CD exponents are sampled from `U[0,10]`, but Fisher equilibria identify only normalized CD shares. This reproduction scores recovered normalized shares, using the same identifiable representation already used by the budget-only CD generator.

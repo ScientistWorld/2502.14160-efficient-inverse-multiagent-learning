@@ -16,7 +16,7 @@ def read_predictions(path: Path) -> list[dict]:
         return [json.loads(line) for line in handle if line.strip()]
 
 
-def summarize(rows: list[dict], instances: dict[int, dict]) -> dict:
+def summarize(rows: list[dict], instances: dict[int, dict], *, recover_types: bool = False) -> dict:
     if not rows:
         raise ValueError("No prediction rows found")
     evaluated = []
@@ -24,15 +24,21 @@ def summarize(rows: list[dict], instances: dict[int, dict]) -> dict:
         instance = instances[int(row["instance_id"])]
         estimated = np.asarray(row["estimated_budgets"], dtype=float)
         true_budgets = np.asarray(instance["budgets"], dtype=float)
-        types = np.asarray(instance["types"], dtype=float)
+        true_types = np.asarray(instance["types"], dtype=float)
+        eval_types = np.asarray(row["estimated_types"], dtype=float) if recover_types else true_types
         prices = np.asarray(instance["prices"], dtype=float)
         allocation = np.asarray(instance["allocation"], dtype=float)
-        rel = relative_l2(estimated, true_budgets)
+        if recover_types:
+            estimated_params = np.concatenate([estimated.ravel(), eval_types.ravel()])
+            true_params = np.concatenate([true_budgets.ravel(), true_types.ravel()])
+            rel = relative_l2(estimated_params, true_params)
+        else:
+            rel = relative_l2(estimated, true_budgets)
         evaluated.append(
             {
                 "relative_l2": rel,
                 "recovered": rel <= 0.1,
-                "exploitability": fisher_regret(instance["utility"], estimated, types, prices, allocation),
+                "exploitability": fisher_regret(instance["utility"], estimated, eval_types, prices, allocation),
             }
         )
     n = len(rows)
@@ -57,6 +63,7 @@ def main() -> None:
     parser.add_argument("--instances", type=Path, default=Path("data/fisher_cd_budget_instances.jsonl"))
     parser.add_argument("--output", type=Path, default=Path("scoring/scores.json"))
     parser.add_argument("--experiment-name", default="fisher_cd_budget_recovery")
+    parser.add_argument("--recover-types", action="store_true")
     args = parser.parse_args()
 
     instances = {int(row["instance_id"]): row for row in read_jsonl(args.instances)}
@@ -64,7 +71,7 @@ def main() -> None:
     for prediction_path in args.predictions:
         rows = read_predictions(prediction_path)
         method_name = rows[0].get("method", prediction_path.parent.name)
-        results[method_name] = summarize(rows, instances)
+        results[method_name] = summarize(rows, instances, recover_types=args.recover_types)
 
     scores = json.loads(args.output.read_text(encoding="utf-8")) if args.output.exists() else {"experiments": {}}
     scores.setdefault("experiments", {})[args.experiment_name] = {"results": results}

@@ -35,6 +35,9 @@ if [ "$#" -eq 0 ]; then
   if [ -e artifacts/fisher_linear_budgets/predictions.jsonl ]; then
     python -m eval.evaluate_fisher --predictions artifacts/fisher_linear_budgets/predictions.jsonl --instances data/fisher_linear_budget_instances.jsonl --experiment-name fisher_linear_budget_recovery
   fi
+  if [ -e artifacts/fisher_cd_type_budgets/predictions.jsonl ]; then
+    python -m eval.evaluate_fisher --predictions artifacts/fisher_cd_type_budgets/predictions.jsonl --instances data/fisher_cd_type_budget_instances.jsonl --experiment-name fisher_cd_type_budget_recovery --recover-types
+  fi
   if [ -e artifacts/cournot_costs/predictions.jsonl ]; then
     python -m eval.evaluate_cournot
   fi
@@ -71,6 +74,13 @@ elif [ "$1" = "--experiment" ]; then
         python -m eval.evaluate_fisher --predictions artifacts/fisher_leontief_budgets/predictions.jsonl --instances data/fisher_leontief_budget_instances.jsonl --experiment-name fisher_leontief_budget_recovery
       else
         python -m eval.evaluate_fisher --predictions "$@" --instances data/fisher_leontief_budget_instances.jsonl --experiment-name fisher_leontief_budget_recovery
+      fi
+      ;;
+    fisher_cd_type_budget)
+      if [ "$#" -eq 0 ]; then
+        python -m eval.evaluate_fisher --predictions artifacts/fisher_cd_type_budgets/predictions.jsonl --instances data/fisher_cd_type_budget_instances.jsonl --experiment-name fisher_cd_type_budget_recovery --recover-types
+      else
+        python -m eval.evaluate_fisher --predictions "$@" --instances data/fisher_cd_type_budget_instances.jsonl --experiment-name fisher_cd_type_budget_recovery --recover-types
       fi
       ;;
     *)

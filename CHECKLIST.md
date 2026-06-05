@@ -39,7 +39,7 @@ Check off items as you complete them. Order doesn't matter — work however make
 - [x] `method_runs` — executes end-to-end without errors
 - [x] `core_claim` — minimum experiment supports central claim
 - [x] `core_claim_plus` — additional settings
-- [x] `secondary_claims` — four reported static settings reproduced
+- [x] `secondary_claims` — multiple reported static settings reproduced
 - [ ] `majority` — requires adding a paper-consistent Leontief or other remaining reported setting
 - [ ] `near_complete`
 - [ ] `full`
