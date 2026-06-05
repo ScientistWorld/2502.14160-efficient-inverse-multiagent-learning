@@ -2,8 +2,8 @@
 # Once you set action to 'done', STOP immediately.
 # Do NOT sleep, poll, or wait. The system reads this file
 # only after your turn ends.
-action: pending
+action: done
 gpus: 0
 test: false
 milestone: majority
-notes: ""
+notes: "Fixed instance-id parity split over accepted static inverse-equilibrium artifacts; 4 train experiments, 4 test experiments; scripts written, scores produced later."
