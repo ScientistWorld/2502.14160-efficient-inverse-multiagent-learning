@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: secondary_claims**
+**Current: majority**
 
 ## Progress Log
 
@@ -14,5 +14,10 @@
 - Found one incomplete deliverable from the prior turn: `fisher_leontief_budget_recovery` is in `reference.json` and targets but not yet in `scores.json`.
 - Prepared to resubmit the CPU verification job to generate fresh scores including Leontief.
 
+### [2026-06-05 00:16] - majority
+- CPU job `8ce2a605-85d` completed successfully and regenerated the full static suite.
+- `scoring/scores.json` now includes five reproduced reported settings: Cobb-Douglas, linear, and Leontief Fisher budget recovery plus Cournot and Bertrand cost recovery.
+- `python validate.py --compare` passes with method-agnostic evaluation, exploitability constraints, and no `eval/` imports from `method/`.
+
 ## Stop Justification
-- Completed static inverse-planning subset currently reaches `secondary_claims`; Leontief expansion is pending compute-job verification.
+- The packaged environment reaches `majority`: five reported static inverse-game settings are reproduced and validated. Remaining unreproduced paper results are the harder type-plus-budget Fisher variants and Spanish electricity simulacral-learning study.

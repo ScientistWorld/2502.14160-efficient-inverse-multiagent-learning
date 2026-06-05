@@ -40,6 +40,6 @@ Check off items as you complete them. Order doesn't matter — work however make
 - [x] `core_claim` — minimum experiment supports central claim
 - [x] `core_claim_plus` — additional settings
 - [x] `secondary_claims` — four reported static settings reproduced
-- [ ] `majority` — pending Leontief job to expand static coverage
+- [x] `majority` — five reported static settings reproduced, including Leontief Fisher budget recovery
 - [ ] `near_complete`
 - [ ] `full`
