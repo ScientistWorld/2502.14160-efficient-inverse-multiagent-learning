@@ -1,9 +1,8 @@
 #!/bin/bash
-# Score the visible train and held-out test evaluation slices.
+# Run the paper method on the static inverse-equilibrium reproduction suite.
 
 set -e
 
 cd /home/user
 
-bash scripts/evaluate_train.sh
-bash scripts/evaluate_test.sh
+bash scripts/reproduce.sh

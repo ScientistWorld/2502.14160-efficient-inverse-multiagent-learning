@@ -1,5 +1,6 @@
 # The system reads this file after the turn ends.
-action: done
+action: submit
 gpus: 0
 test: false
-notes: "Parity train/test split over 4 nondegenerate experiments; 24 train metrics and 24 test metrics from real runs; primary train/test ratios: CD 1.00, Linear 1.14, Leontief 4.53, Cournot 1.96; Bertrand excluded from split because observations reveal cost exactly and all recovery metrics are identically zero."
+milestone: secondary_claims
+notes: "Run full CPU static reproduction suite to refresh scores.json for verified core/secondary claims."
