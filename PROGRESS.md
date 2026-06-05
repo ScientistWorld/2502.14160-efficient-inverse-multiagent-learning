@@ -29,6 +29,7 @@
 - Fixed the Bertrand solver to use the exact inverse-regret minimizer for the observed tied-price equilibrium: in homogeneous-good Bertrand equilibrium with positive demand, the shared equilibrium price equals marginal cost.
 - Bertrand rerun `ed59c53d-384`: 100% recovery, 0.00000 mean relative error, and 0.00000 average exploitability on 100 games. The full four-experiment suite passes `python validate.py --compare`.
 - Added the paper's Leontief Fisher budget-only setting to the data generator, method runner, evaluator wiring, and reference scoring contract. This is pending a CPU job before it counts as a reproduced result.
+- Continuing audit on 2026-06-05 restored `secondary_claims` for the verified four-experiment static subset and identified the missing Leontief score as the remaining target-contract issue to fix by job submission.
 
 ## Remaining
 
