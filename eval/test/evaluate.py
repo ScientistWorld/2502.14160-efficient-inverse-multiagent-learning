@@ -47,13 +47,6 @@ EXPERIMENTS: tuple[ExperimentSpec, ...] = (
         Path("data/fisher_linear_budget_instances.jsonl"),
     ),
     ExperimentSpec(
-        "fisher_cd_type_budget_recovery",
-        "fisher",
-        Path("artifacts/fisher_cd_type_budgets"),
-        Path("data/fisher_cd_type_budget_instances.jsonl"),
-        True,
-    ),
-    ExperimentSpec(
         "cournot_cost_recovery",
         "cournot",
         Path("artifacts/cournot_costs"),

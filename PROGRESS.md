@@ -18,7 +18,7 @@
 - Prepared a paper-consistent Leontief retry: instances now sample budgets and types independently and solve the forward Leontief Fisher market; the method uses projected GDA on the nonsmooth adversarial allocation rather than the previous exact best-response shortcut.
 - CPU job `26d5d29b-8c7` completed a refreshed static suite including a corrected Leontief attempt.
 - The accepted milestone remains `secondary_claims`: Cobb-Douglas Fisher, linear Fisher, Cournot, and Bertrand strongly reproduce reported static claims. Leontief remains in `reference.json` as an unreproduced paper target, but it is not included in `scores.json` because the corrected result is too far from the paper report.
-- Added an in-progress Cobb-Douglas type-and-budget recovery implementation that optimizes Algorithm 1's inverse-regret objective over both budgets and type shares. It is wired into method, evaluation, train/test scoring, and reference metadata, but is not counted toward a higher milestone until a compute job returns scores.
+- Added an in-progress Cobb-Douglas type-and-budget recovery implementation that optimizes Algorithm 1's inverse-regret objective over both budgets and type shares. Final verification left it as an unscored extension because no completed job produced accepted scores for that setting.
 
 ## Results
 
@@ -37,12 +37,11 @@
 - Paper target for the Leontief Fisher slice: 36.8% budget recovery and 0.2238 average exploitability on 500 markets.
 - Corrected Leontief Fisher job `26d5d29b-8c7`: 21% recovery, 0.4195 mean relative L2, and 0.9574 average exploitability on 100 markets. This confirms the corrected nonsmooth setting is nontrivial, but it does not match the paper well enough to raise the milestone.
 - Current scored default suite: Cobb-Douglas Fisher 100% recovery / 0.0000065 exploitability; linear Fisher 100% / 0.0000072; Cournot 100% / 2.6e-10; Bertrand 100% / 0.0.
-- Pending target for the next job: Cobb-Douglas type-and-budget recovery, where the paper reports 99.6% recovery and 0.0004 average exploitability.
+- Unscored extension target: Cobb-Douglas type-and-budget recovery, where the paper reports 99.6% recovery and 0.0004 average exploitability.
 
 ## Remaining
 
-- Higher milestones would require improving the Leontief reproduction toward the paper's 36.8% recovery and 0.224 exploitability, or adding remaining reported settings such as type-plus-budget Fisher recovery, stochastic Fisher markets, or Spanish electricity simulacral learning.
-- Higher milestones would require the pending type-and-budget job to validate, improving the Leontief reproduction toward the paper's 36.8% recovery and 0.224 exploitability, or adding remaining reported settings such as stochastic Fisher markets or Spanish electricity simulacral learning.
+- Higher milestones would require improving the Leontief reproduction toward the paper's 36.8% recovery and 0.224 exploitability, validating the type-plus-budget Fisher recovery implementation, or adding remaining reported settings such as stochastic Fisher markets or Spanish electricity simulacral learning.
 - The current environment is usable as a research gym for the implemented static inverse-game experiments with shared data, method outputs, and method-agnostic evaluation.
 
 ## Issues

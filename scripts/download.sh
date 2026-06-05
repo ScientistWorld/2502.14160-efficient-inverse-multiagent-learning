@@ -31,4 +31,4 @@ do
   test -f "$required_file"
 done
 
-echo "No downloads required. scripts/reproduce.sh generates the CD type-and-budget instances."
+echo "No downloads required."

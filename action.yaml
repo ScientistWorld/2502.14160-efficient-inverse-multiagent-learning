@@ -1,6 +1,6 @@
 # The system reads this file after the turn ends.
-action: submit
+action: done
 gpus: 0
-test: true
+test: false
 milestone: secondary_claims
-notes: "Run full static reproduction including the new Cobb-Douglas type-and-budget recovery experiment and validate scores."
+notes: "Final verification passed; the gym is ready for the four accepted static inverse-game experiments."

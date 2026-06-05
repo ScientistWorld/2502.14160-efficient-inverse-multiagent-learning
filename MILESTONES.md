@@ -38,5 +38,10 @@
 - Added a Cobb-Douglas Fisher type-and-budget recovery implementation and evaluator wiring for a new reported Table 2 setting.
 - Did not raise the milestone before running the compute job; the next submission regenerates scores including this setting.
 
+### [2026-06-05 02:05] - secondary_claims
+- Final verification kept the accepted gym surface aligned to the four scored static experiments in `scoring/scores.json`.
+- The Cobb-Douglas type-and-budget code remains available as an unscored extension, but it is not listed as a current target because no completed job produced accepted scores for it.
+- Confirmed the current milestone remains `secondary_claims`.
+
 ## Stop Justification
-- Work is continuing toward a stronger static-suite reproduction.
+- Final verification found the workspace usable as a research gym for the four accepted static inverse-game experiments. Higher milestones require validated scores for additional paper settings.

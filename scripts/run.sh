@@ -1,6 +1,5 @@
 #!/bin/bash
-# Run the paper method on the static inverse-equilibrium reproduction suite,
-# including the pending Cobb-Douglas type-and-budget setting.
+# Run the accepted static inverse-equilibrium reproduction suite.
 
 set -e
 
