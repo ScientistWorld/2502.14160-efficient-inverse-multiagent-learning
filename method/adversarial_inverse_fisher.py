@@ -102,15 +102,25 @@ def run_leontief_algorithm_1(
     *,
     iterations: int,
     lr_theta: float,
+    lr_y: float,
     seed: int,
+    adversary_mode: str,
     return_iterate: str,
 ) -> tuple[np.ndarray, float]:
     rng = np.random.default_rng(seed)
     budgets = rng.uniform(0.1, 10.0, size=types.shape[0])
+    y = np.maximum(observed_allocation * rng.lognormal(mean=0.0, sigma=0.2, size=observed_allocation.shape), EPS)
     avg_budgets = np.zeros_like(budgets)
     log_u_observed = log_leontief_utility(observed_allocation, types)
     for _ in range(1, iterations + 1):
-        y = leontief_best_response(budgets, types, prices)
+        if adversary_mode == "exact":
+            y = leontief_best_response(budgets, types, prices)
+        else:
+            grad_y = -prices[None, :] * np.ones_like(y)
+            bottleneck_goods = np.argmin(y / np.maximum(types, EPS), axis=1)
+            for buyer, good in enumerate(bottleneck_goods):
+                grad_y[buyer, good] += budgets[buyer] / np.maximum(y[buyer, good], EPS)
+            y = np.clip(y + lr_y * grad_y, EPS, 1_000.0)
         grad_budgets = log_leontief_utility(y, types) - log_u_observed
         budgets = np.clip(budgets - lr_theta * grad_budgets, 0.001, 10.0)
         avg_budgets += budgets
@@ -155,7 +165,9 @@ def main() -> None:
                 prices,
                 iterations=args.iterations,
                 lr_theta=args.lr_theta,
+                lr_y=args.lr_y,
                 seed=args.seed + int(instance["instance_id"]),
+                adversary_mode=args.adversary_mode,
                 return_iterate=args.return_iterate,
             )
         else:

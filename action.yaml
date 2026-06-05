@@ -1,6 +1,6 @@
 # The system reads this file after the turn ends.
-action: done
+action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Fixed download.sh to be fresh-clone safe without host-side NumPy generation."
+notes: "Run full static reproduction with corrected paper-consistent Leontief Fisher budget recovery and refreshed scoring metrics."

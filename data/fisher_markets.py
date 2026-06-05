@@ -96,18 +96,70 @@ def linear_equilibrium(types: np.ndarray, budgets: np.ndarray) -> tuple[np.ndarr
     raise RuntimeError("Could not construct two-good linear Fisher equilibrium")
 
 
-def leontief_equilibrium(types: np.ndarray, utilities: np.ndarray, prices: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """Construct a two-good Leontief equilibrium from target utilities.
+def leontief_equilibrium(types: np.ndarray, budgets: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Return prices and allocation for a two-good Leontief Fisher market.
 
-    For Leontief utility u_i(x_i)=min_j x_ij/a_ij, an equilibrium allocation
-    has x_ij = u_i a_ij.  The generator scales columns of ``types`` so the
-    chosen positive utility vector clears both unit supplies, then sets budgets
-    equal to the cost of the equilibrium bundles at the sampled prices.
+    For u_i(x_i)=min_j x_ij/t_ij, buyer i demands the fixed-proportion bundle
+    z_i t_i where z_i=b_i/(p dot t_i).  With unit supplies and positive prices,
+    prices sum to total budget, so a two-good market reduces to finding p_0 in
+    [0, sum_i b_i] such that aggregate good-0 demand equals one.
     """
-    scaled_types = types / np.maximum(np.sum(types * utilities[:, None], axis=0, keepdims=True), EPS)
-    allocation = utilities[:, None] * scaled_types
-    budgets = utilities * np.sum(prices[None, :] * scaled_types, axis=1)
-    return budgets, prices, allocation
+    if types.shape[1] != 2:
+        raise ValueError("leontief_equilibrium currently supports exactly two goods")
+
+    total_budget = float(np.sum(budgets))
+    if np.sum(budgets * types[:, 1] / np.maximum(total_budget * types[:, 0], EPS)) <= 1.0 + 1e-10:
+        prices = np.asarray([total_budget, 0.0], dtype=float)
+        utilities = budgets / np.maximum(types @ prices, EPS)
+        return prices, utilities[:, None] * types
+    if np.sum(budgets * types[:, 0] / np.maximum(total_budget * types[:, 1], EPS)) <= 1.0 + 1e-10:
+        prices = np.asarray([0.0, total_budget], dtype=float)
+        utilities = budgets / np.maximum(types @ prices, EPS)
+        return prices, utilities[:, None] * types
+
+    lo = 1e-10 * total_budget
+    hi = (1.0 - 1e-10) * total_budget
+
+    def excess(price0: float) -> float:
+        prices = np.asarray([price0, total_budget - price0], dtype=float)
+        denom = np.maximum(types @ prices, EPS)
+        demand0 = np.sum(budgets * types[:, 0] / denom)
+        return float(demand0 - 1.0)
+
+    # The excess function is continuous but not guaranteed monotone for mixed
+    # type ratios, so locate all sign-changing intervals and refine the best.
+    grid = np.linspace(lo, hi, 2049)
+    values = np.asarray([excess(float(x)) for x in grid])
+    best_price0 = float(grid[int(np.argmin(np.abs(values)))])
+    best_abs = float(np.min(np.abs(values)))
+
+    for left, right, f_left, f_right in zip(grid[:-1], grid[1:], values[:-1], values[1:]):
+        if abs(float(f_left)) < best_abs:
+            best_price0 = float(left)
+            best_abs = abs(float(f_left))
+        if f_left == 0.0:
+            continue
+        if f_left * f_right > 0.0:
+            continue
+        a = float(left)
+        b = float(right)
+        fa = float(f_left)
+        for _ in range(80):
+            mid = 0.5 * (a + b)
+            fm = excess(mid)
+            if abs(fm) < best_abs:
+                best_price0 = mid
+                best_abs = abs(fm)
+            if fa * fm <= 0.0:
+                b = mid
+            else:
+                a = mid
+                fa = fm
+
+    prices = np.asarray([best_price0, total_budget - best_price0], dtype=float)
+    utilities = budgets / np.maximum(types @ prices, EPS)
+    allocation = utilities[:, None] * types
+    return prices, allocation
 
 
 def log_cd_utility(allocation: np.ndarray, types: np.ndarray) -> np.ndarray:
@@ -245,17 +297,16 @@ def generate_leontief_instances(count: int, seed: int) -> list[FisherInstance]:
     rng = np.random.default_rng(seed)
     instances: list[FisherInstance] = []
     for idx in range(count):
-        raw_types = rng.uniform(0.1, 10.0, size=(3, 2))
-        utilities = rng.uniform(0.2, 2.0, size=3)
-        prices = rng.uniform(0.5, 5.0, size=2)
-        budgets, equilibrium_prices, allocation = leontief_equilibrium(raw_types, utilities, prices)
+        types = rng.uniform(0.1, 10.0, size=(3, 2))
+        budgets = rng.uniform(0.1, 10.0, size=3)
+        prices, allocation = leontief_equilibrium(types, budgets)
         instances.append(
             FisherInstance(
                 instance_id=idx,
                 utility="leontief",
-                types=(allocation / utilities[:, None]).tolist(),
+                types=types.tolist(),
                 budgets=budgets.tolist(),
-                prices=equilibrium_prices.tolist(),
+                prices=prices.tolist(),
                 allocation=allocation.tolist(),
             )
         )

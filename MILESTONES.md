@@ -24,5 +24,10 @@
 - Removed Leontief from the default scored suite and restored the milestone to the verified four-experiment static subset.
 - `scoring/scores.json` now reports Cobb-Douglas Fisher, linear Fisher, Cournot, and Bertrand results only.
 
+### [2026-06-05 00:45] - secondary_claims
+- Reworked the Leontief Fisher budget-recovery path for a new verification job.
+- The generator now samples Leontief types and budgets independently and solves the forward two-good competitive equilibrium.
+- The method now runs projected GDA for Leontief adversarial allocations, preserving the paper's nonsmooth Algorithm 1 procedure instead of using the earlier exact best-response shortcut.
+
 ## Stop Justification
-- Completed at milestone `secondary_claims`.
+- Not stopping; submitting a CPU verification job for the corrected Leontief experiment.

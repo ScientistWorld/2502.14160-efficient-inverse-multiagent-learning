@@ -16,6 +16,7 @@
 - Added and verified a fourth reported static setting: duopoly Bertrand marginal-cost recovery from observed equilibrium prices.
 - CPU job `8ce2a605-85d` ran the Leontief Fisher budget-recovery implementation, but external validation rejected the result as inconsistent with the paper-reported Leontief recovery rate.
 - The accepted default suite remains the four verified static settings: Cobb-Douglas Fisher, linear Fisher, Cournot, and Bertrand.
+- Prepared a paper-consistent Leontief retry: instances now sample budgets and types independently and solve the forward Leontief Fisher market; the method uses projected GDA on the nonsmooth adversarial allocation rather than the previous exact best-response shortcut.
 
 ## Results
 
@@ -32,7 +33,7 @@
 - Bertrand rerun `ed59c53d-384`: 100% recovery, 0.00000 mean relative error, and 0.00000 average exploitability on 100 games. The full four-experiment suite passes `python validate.py --compare`.
 - Rejected Leontief Fisher job `8ce2a605-85d`: 100% recovery, 0.0000074 mean relative L2, and 0.0000000027 average exploitability on 100 markets.
 - Paper target for the Leontief Fisher slice: 36.8% budget recovery and 0.2238 average exploitability on 500 markets.
-- Because the reproduced Leontief instances are materially easier than the paper setting, Leontief is excluded from `scoring/scores.json`, `scripts/evaluate.sh`, and the default run scripts.
+- Because the earlier reproduced Leontief instances were materially easier than the paper setting, that result was rejected. The corrected Leontief retry is now back in the default run scripts, but it is not counted toward a higher milestone until the submitted job verifies the new scores.
 
 ## Remaining
 
@@ -46,6 +47,7 @@
 - The first GDA run under-converged on the adversarial allocation variable, producing weak budget gradients. The next run uses the exact Cobb-Douglas adversarial best response inside the same min-max objective.
 - Job `b50c7bdb-c09` failed while generating linear Fisher data because SLSQP declared one random market's inequality constraints incompatible. Job `134e6e64-0a8` exposed a second generator edge case: some markets clear with a price ratio between two buyer value ratios and no tied marginal buyer. The generator now handles both no-tie split intervals and tied marginal-buyer groups, removing the numerical optimizer dependency.
 - The Leontief generator constructs equilibrium instances from sampled utility targets and prices rather than sampling independent budgets and types as in the paper. External validation correctly identified that the resulting 100% recovery is too far from the paper's 36.8% result, so Leontief is no longer a scored default experiment.
+- The next CPU job tests the corrected Leontief setup. Until that result is available, the accepted milestone remains `secondary_claims`.
 
 ## Deviations from Paper
 
@@ -57,3 +59,4 @@
 - Bertrand expansion scale: this reproduction uses 100 games instead of the paper's 500 while preserving duopoly linear-demand generation, the marginal-cost recovery target, and the inverse-regret objective. The exact Bertrand payoff has a strict-undercut discontinuity, represented numerically with a small deterministic undercut epsilon in the adversarial best response.
 - Bertrand optimization detail: after a failed subgradient-descent run, the method now uses the closed-form inverse-regret minimizer for tied-price Bertrand equilibria. This preserves the paper's inverse-equilibrium computation for this game family, but differs from the paper's reported 250-step gradient run.
 - Leontief generator detail: the paper samples Leontief types and budgets independently from `U[0,10]`; this reproduction constructs two-good Leontief equilibria by sampling positive utility targets and prices, scaling type columns to clear unit supplies, and deriving budgets from equilibrium bundle costs. That replacement made the benchmark too easy, so Leontief is retained only as exploratory code and is not included in the accepted scores.
+- Pending Leontief correction: the generator now follows the paper's independent type/budget sampling up to the same numerical-stability floor `[0.1, 10]` used elsewhere, and computes the observed equilibrium by solving the two-good Leontief clearing equations. The submitted run will determine whether this setting can be restored to the scored suite.

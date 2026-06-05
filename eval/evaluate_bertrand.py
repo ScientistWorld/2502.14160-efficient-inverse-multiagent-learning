@@ -42,6 +42,8 @@ def summarize(rows: list[dict], instances: dict[int, dict]) -> dict:
         "parameter_recovery_rate": sum(1.0 for row in evaluated if row["recovered"]) / n,
         "average_exploitability": sum(float(row["exploitability"]) for row in evaluated) / n,
         "mean_relative_error": sum(float(row["relative_error"]) for row in evaluated) / n,
+        "p90_relative_error": float(np.percentile([row["relative_error"] for row in evaluated], 90)),
+        "max_exploitability": max(float(row["exploitability"]) for row in evaluated),
         "num_instances": n,
     }
 
