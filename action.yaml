@@ -1,6 +1,6 @@
 # The system reads this file after the turn ends.
-action: done
+action: submit
 gpus: 0
-test: false
+test: true
 milestone: secondary_claims
-notes: "Validation passes after removing the inconsistent Leontief run from the scored suite; four static experiments remain scored at secondary_claims."
+notes: "Run full static reproduction including the new Cobb-Douglas type-and-budget recovery experiment and validate scores."
