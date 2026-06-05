@@ -25,4 +25,4 @@
 - `scoring/scores.json` now reports Cobb-Douglas Fisher, linear Fisher, Cournot, and Bertrand results only.
 
 ## Stop Justification
-- The packaged environment reaches `secondary_claims`: four reported static inverse-game settings are reproduced and validated. Remaining unreproduced paper results include the rejected Leontief Fisher budget setting, harder type-plus-budget Fisher variants, and the Spanish electricity simulacral-learning study.
+- Completed at milestone `majority`.

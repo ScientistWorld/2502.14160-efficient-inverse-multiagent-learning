@@ -13,7 +13,9 @@ The paper studies how to infer unknown game parameters from observed equilibrium
 
 - Static Cobb-Douglas Fisher budget recovery: 100% parameters recovered, average exploitability 0.0004.
 - Static linear Fisher budget recovery: 100% parameters recovered, average exploitability 0.0018.
+- Static Leontief Fisher budget recovery: 36.8% parameters recovered, average exploitability 0.2240.
 - Cournot marginal-cost recovery: 95.2% parameters recovered, average exploitability 0.0000.
+- Bertrand marginal-cost recovery: 78% parameters recovered, average exploitability 0.0011.
 
 ---
 
@@ -25,7 +27,7 @@ Do NOT describe the paper's method or solution here — only the problem itself.
 
 ## Research Question
 
-Given observations of strategic behavior that are assumed to be an equilibrium of an unknown parametric game, recover game parameters for which the observed behavior is rational. In the static market benchmarks, the tasks are to recover buyer budgets in synthetic Cobb-Douglas or linear Fisher markets from observed competitive-equilibrium allocations and prices, and to recover marginal production costs in synthetic Cournot duopoly games from observed equilibrium quantities.
+Given observations of strategic behavior that are assumed to be an equilibrium of an unknown parametric game, recover game parameters for which the observed behavior is rational. In the static market benchmarks, the tasks are to recover buyer budgets in synthetic Cobb-Douglas, linear, or Leontief Fisher markets from observed competitive-equilibrium allocations and prices, and to recover marginal production costs in synthetic Cournot and Bertrand duopoly games from observed equilibrium quantities or prices.
 
 ## Why It Matters
 
@@ -49,7 +51,7 @@ The paper characterizes inverse Nash equilibrium computation as a min-max optimi
 
 For an observed equilibrium profile `x^\u2020`, the method minimizes exploitability over game parameters by solving `min_theta max_y psi(x^\u2020, y; theta)`, where `y` is an adversarial deviation profile and `psi` is cumulative regret. Algorithm 1 alternates projected gradient descent on `theta` and projected gradient ascent on `y`, using exact first-order gradients in the static planning case.
 
-This reproduction specializes the inverse-planning min-max objective to static experiments from the paper. In Fisher markets, the market equilibrium is represented by the Eisenberg-Gale saddle objective. For Cobb-Douglas and linear utilities with known types, the unknown parameters are buyer budgets; the adversarial variable is the buyers' allocation deviation. The seller price-deviation component is included analytically but cancels for generated equilibria because the unit-supply market clears exactly. The default solver uses closed-form buyer best responses for the adversary and then descends on budgets; a one-step GDA adversary mode is also retained for Cobb-Douglas comparison.
+This reproduction specializes the inverse-planning min-max objective to static experiments from the paper. In Fisher markets, the market equilibrium is represented by the Eisenberg-Gale saddle objective. For Cobb-Douglas, linear, and Leontief utilities with known types, the unknown parameters are buyer budgets; the adversarial variable is the buyers' allocation deviation. The seller price-deviation component is included analytically but cancels for generated equilibria because the unit-supply market clears exactly. The default solver uses closed-form buyer best responses for the adversary and then descends on budgets; a one-step GDA adversary mode is also retained for Cobb-Douglas comparison.
 
 For Cournot duopoly games, the observed strategy is each firm's equilibrium quantity and the unknown parameter is marginal cost. The same inverse-regret objective minimizes the maximum unilateral profit improvement under the recovered cost. Linear inverse demand gives a closed-form adversarial best response for each firm, which is used inside projected descent on the cost.
 
@@ -73,7 +75,7 @@ The benchmark reports `parameter_recovery_rate`, the fraction of instances whose
 
 ## Baselines and Targets
 
-For static Cobb-Douglas Fisher markets with known utility types and unknown budgets, the paper reports 100% parameter recovery and average exploitability 0.0004 over 500 markets. For static linear Fisher markets with known utility types and unknown budgets, it reports 100% recovery and average exploitability 0.0018. For Cournot duopoly games with unknown marginal cost, the paper reports 95.2% parameter recovery and average exploitability 0.0000 over 500 games. For Bertrand duopoly games with unknown marginal cost, it reports 78% recovery and average exploitability 0.0011 over 500 games. This reproduction uses the same game structures and smaller generated sets for runnable benchmark jobs.
+For static Cobb-Douglas Fisher markets with known utility types and unknown budgets, the paper reports 100% parameter recovery and average exploitability 0.0004 over 500 markets. For static linear Fisher markets with known utility types and unknown budgets, it reports 100% recovery and average exploitability 0.0018. For static Leontief Fisher markets with known utility types and unknown budgets, it reports 36.8% recovery and average exploitability 0.2240. For Cournot duopoly games with unknown marginal cost, the paper reports 95.2% parameter recovery and average exploitability 0.0000 over 500 games. For Bertrand duopoly games with unknown marginal cost, it reports 78% recovery and average exploitability 0.0011 over 500 games. This reproduction uses the same game structures and smaller generated sets for runnable benchmark jobs.
 
 ## Evaluation Protocol
 
@@ -162,12 +164,37 @@ Run a method to write JSONL predictions with one row per benchmark instance, inc
 
 </details>
 
+### Iteration 3: gpt-5.5
+- **Milestone**: `majority` | **Status**: done
+- **Working time**: 9m | **GPU**: 0.0h
+- **Jobs**: 9 total (7 completed, 2 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-06-05 00:03] - secondary_claims
+- Verified prior completed jobs reproduce four reported static inverse-game settings: Cobb-Douglas Fisher budget recovery, linear Fisher budget recovery, Cournot cost recovery, and Bertrand cost recovery.
+- Validation passes with method-agnostic evaluation and exploitability constraints.
+- Added Leontief Fisher budget recovery code and scoring for the next CPU job, but did not count it toward the milestone before job results.
+
+### [2026-06-05 00:12] - secondary_claims
+- Continuing audit restored `secondary_claims` after checking that the implemented static methods are real Algorithm 1 inverse-regret specializations, not surrogates.
+- Found one incomplete deliverable from the prior turn: `fisher_leontief_budget_recovery` is in `reference.json` and targets but not yet in `scores.json`.
+- Prepared to resubmit the CPU verification job to generate fresh scores including Leontief.
+
+### [2026-06-05 00:16] - majority
+- CPU job `8ce2a605-85d` completed successfully and regenerated the full static suite.
+- `scoring/scores.json` now includes five reproduced reported settings: Cobb-Douglas, linear, and Leontief Fisher budget recovery plus Cournot and Bertrand cost recovery.
+- `python validate.py --compare` passes with method-agnostic evaluation, exploitability constraints, and no `eval/` imports from `method/`.
+
+</details>
+
 
 ---
 
 # Reproduction Milestones
 
-**Current: core_claim_plus**
+**Current: secondary_claims**
 
 ## Stop Justification
-- Completed at milestone `core_claim_plus`.
+- Completed at milestone `majority`.
