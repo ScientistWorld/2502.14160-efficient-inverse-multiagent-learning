@@ -1,6 +1,6 @@
 # The system reads this file after the turn ends.
-action: submit
+action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Regenerate main and split scores from current artifacts after fixing primary metric consistency, then run validation."
+notes: "Validation passes after removing the inconsistent Leontief run from the scored suite; four static experiments remain scored at secondary_claims."

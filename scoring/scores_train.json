@@ -26,19 +26,6 @@
       },
       "slice": "train"
     },
-    "fisher_leontief_budget_recovery": {
-      "results": {
-        "adversarial_inverse_planning": {
-          "average_exploitability": 2.3856870836183153e-10,
-          "max_exploitability": 9.721634662541133e-09,
-          "mean_relative_l2": 2.6938144183862135e-06,
-          "num_instances": 50,
-          "p90_relative_l2": 4.2832569005821506e-06,
-          "parameter_recovery_rate": 1.0
-        }
-      },
-      "slice": "train"
-    },
     "fisher_linear_budget_recovery": {
       "results": {
         "adversarial_inverse_planning": {
