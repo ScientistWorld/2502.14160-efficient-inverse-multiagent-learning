@@ -35,4 +35,4 @@
 - Final verification kept the milestone at `secondary_claims`: four static settings reproduce strongly, and Leontief is retained as a difficult scored setting rather than used to claim a higher milestone.
 
 ## Stop Justification
-- Final verification completed. The workspace is ready as a research gym at `secondary_claims` with four validated scored experiments; Leontief remains an unreproduced reference target for future work.
+- Completed at milestone `secondary_claims`.
