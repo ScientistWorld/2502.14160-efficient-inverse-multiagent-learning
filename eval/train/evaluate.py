@@ -56,12 +56,6 @@ EXPERIMENTS: tuple[ExperimentSpec, ...] = (
         Path("artifacts/cournot_costs"),
         Path("data/cournot_instances.jsonl"),
     ),
-    ExperimentSpec(
-        "bertrand_cost_recovery",
-        "bertrand",
-        Path("artifacts/bertrand_costs"),
-        Path("data/bertrand_instances.jsonl"),
-    ),
 )
 
 

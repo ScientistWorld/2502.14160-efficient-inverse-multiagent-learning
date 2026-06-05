@@ -2,4 +2,4 @@
 action: submit
 gpus: 0
 test: false
-notes: "Run CPU train/test split scoring over existing final prediction artifacts; populate scoring/scores_{train,test}.json."
+notes: "Re-run CPU split scoring after excluding degenerate Bertrand split and reweighting primary metrics toward continuous recovery errors."
