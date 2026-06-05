@@ -1,6 +1,6 @@
 # The system reads this file after the turn ends.
-action: submit
+action: done
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Run full CPU static reproduction suite to refresh scores.json for verified core/secondary claims."
+notes: "Fixed download.sh to be fresh-clone safe without host-side NumPy generation."
