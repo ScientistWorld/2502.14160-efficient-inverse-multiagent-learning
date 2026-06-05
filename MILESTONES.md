@@ -35,4 +35,4 @@
 - Final verification kept the milestone at `secondary_claims`: four static settings reproduce strongly, and Leontief is retained as a difficult scored setting rather than used to claim a higher milestone.
 
 ## Stop Justification
-- Final verification completed. The workspace is ready as a research gym at `secondary_claims`; higher milestones require a stronger Leontief result or additional reported experiments.
+- Not stopping; submitting a CPU validation job to regenerate stale score files after fixing the primary-metric consistency issue.

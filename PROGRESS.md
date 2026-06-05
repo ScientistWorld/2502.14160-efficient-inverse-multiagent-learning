@@ -44,6 +44,7 @@
 
 ## Issues
 
+- Validation attempt 1 after final verification failed because `scores.json` contained a stale corrected-Leontief mean relative L2 value while the primary metric pointed at a threshold-derived relative-error reference. The fix restores relative error as the primary metric, regenerates all score files from artifacts inside the container, and runs validation in the job environment where NumPy is installed.
 - The login-node Python environment lacks NumPy, so local method smoke tests are limited. The compute container setup installs NumPy and successfully ran the full reproduction job.
 - The paper does not report the Fisher adversary learning rate, initialization, or whether final, averaged, or best iterates are used. The first run used matched `eta_theta=eta_y=0.01` and averaged budget iterates; the tuned run uses the final budget iterate after exact adversary updates.
 - The first GDA run under-converged on the adversarial allocation variable, producing weak budget gradients. The next run uses the exact Cobb-Douglas adversarial best response inside the same min-max objective.

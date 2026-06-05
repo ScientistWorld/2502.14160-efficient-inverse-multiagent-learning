@@ -1,6 +1,6 @@
 # The system reads this file after the turn ends.
-action: done
+action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Final verification passed; five static experiments are scored, with Leontief retained as a difficult weaker reproduction."
+notes: "Regenerate main and split scores from current artifacts after fixing primary metric consistency, then run validation."

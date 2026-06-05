@@ -17,7 +17,7 @@ The workspace entered final verification at `secondary_claims`. The claimed mile
 - Updated constraints to cover the scored Cobb-Douglas, linear, and Leontief Fisher benchmarks.
 - Clarified the relevant metric descriptions in `reference.json` to explain threshold-derived relative-error reference values.
 - Updated progress and milestone logs with the completed job results.
-- Ran validation after edits; `python validate.py --compare` passes.
+- Initial validation after edits passed locally, but the external validation attempt caught stale score files. The next CPU job regenerates all main and split score files from method artifacts and reruns `python validate.py --compare` in the container.
 
 ## Final Judgment
 

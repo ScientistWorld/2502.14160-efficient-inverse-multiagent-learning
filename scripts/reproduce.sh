@@ -30,3 +30,5 @@ python -m method.adversarial_inverse_fisher --instances data/fisher_leontief_bud
 python -m method.adversarial_inverse_cournot --iterations 10000 --lr-theta 0.01
 python -m method.adversarial_inverse_bertrand --iterations 250 --lr-theta 0.3
 bash scripts/evaluate.sh
+bash scripts/evaluate_train.sh
+bash scripts/evaluate_test.sh
