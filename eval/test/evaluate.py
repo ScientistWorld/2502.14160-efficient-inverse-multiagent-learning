@@ -46,6 +46,12 @@ EXPERIMENTS: tuple[ExperimentSpec, ...] = (
         Path("data/fisher_linear_budget_instances.jsonl"),
     ),
     ExperimentSpec(
+        "fisher_leontief_budget_recovery",
+        "fisher",
+        Path("artifacts/fisher_leontief_budgets"),
+        Path("data/fisher_leontief_budget_instances.jsonl"),
+    ),
+    ExperimentSpec(
         "cournot_cost_recovery",
         "cournot",
         Path("artifacts/cournot_costs"),
@@ -136,6 +142,8 @@ def summarize_fisher(rows: list[dict], instances: dict[int, dict]) -> dict:
         "parameter_recovery_rate": sum(1.0 for row in evaluated if row["recovered"]) / n,
         "average_exploitability": sum(float(row["exploitability"]) for row in evaluated) / n,
         "mean_relative_l2": sum(float(row["relative_l2"]) for row in evaluated) / n,
+        "p90_relative_l2": float(np.quantile([row["relative_l2"] for row in evaluated], 0.9)),
+        "max_exploitability": max(float(row["exploitability"]) for row in evaluated),
         "num_instances": n,
     }
 
@@ -170,6 +178,8 @@ def summarize_cournot(rows: list[dict], instances: dict[int, dict]) -> dict:
         "parameter_recovery_rate": sum(1.0 for row in evaluated if row["recovered"]) / n,
         "average_exploitability": sum(float(row["exploitability"]) for row in evaluated) / n,
         "mean_relative_error": sum(float(row["relative_error"]) for row in evaluated) / n,
+        "p90_relative_error": float(np.quantile([row["relative_error"] for row in evaluated], 0.9)),
+        "max_exploitability": max(float(row["exploitability"]) for row in evaluated),
         "num_instances": n,
     }
 
@@ -200,6 +210,8 @@ def summarize_bertrand(rows: list[dict], instances: dict[int, dict]) -> dict:
         "parameter_recovery_rate": sum(1.0 for row in evaluated if row["recovered"]) / n,
         "average_exploitability": sum(float(row["exploitability"]) for row in evaluated) / n,
         "mean_relative_error": sum(float(row["relative_error"]) for row in evaluated) / n,
+        "p90_relative_error": float(np.quantile([row["relative_error"] for row in evaluated], 0.9)),
+        "max_exploitability": max(float(row["exploitability"]) for row in evaluated),
         "num_instances": n,
     }
 
@@ -239,7 +251,7 @@ def evaluate_spec(
 
 def experiment_specs_for(alias: str) -> list[ExperimentSpec]:
     if alias == "fisher":
-        return [EXPERIMENTS[0]]
+        return [spec for spec in EXPERIMENTS if spec.kind == "fisher"]
     if alias == "cournot":
         return [spec for spec in EXPERIMENTS if spec.kind == "cournot"]
     if alias == "bertrand":
@@ -272,7 +284,7 @@ def main() -> None:
             continue
         results = evaluate_spec(spec, prediction_paths, expected_methods)
         if results:
-            scores["experiments"][spec.name] = {"results": results}
+            scores["experiments"][spec.name] = {"slice": SLICE, "results": results}
 
     if not scores["experiments"]:
         raise SystemExit("No prediction artifacts found to score")
