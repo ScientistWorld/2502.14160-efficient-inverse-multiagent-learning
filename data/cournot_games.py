@@ -84,7 +84,7 @@ def read_jsonl(path: Path) -> list[dict]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, default=Path("data/cournot_instances.jsonl"))
+    parser.add_argument("--output", type=Path, default=Path("data/cournot_cost_train.jsonl"))
     parser.add_argument("--count", type=int, default=100)
     parser.add_argument("--seed", type=int, default=3025)
     args = parser.parse_args()

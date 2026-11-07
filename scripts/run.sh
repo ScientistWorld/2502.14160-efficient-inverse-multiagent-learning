@@ -1,9 +1,10 @@
 #!/bin/bash
-# Run the accepted static inverse-equilibrium reproduction suite.
+# Hardening job: build the hidden test split, reproduce the reference, run the
+# better/weaker variants, baselines and shortcuts through scripts/evaluate_test.sh,
+# and regenerate the shipped scores from the reference alone.
 
-set -e
+set -euo pipefail
 
 cd /home/user
 
-bash scripts/reproduce.sh
-python validate.py --compare
+python -m redteam.hardening.runner

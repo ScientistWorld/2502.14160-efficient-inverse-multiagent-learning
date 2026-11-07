@@ -9,6 +9,11 @@ maximizes over adversarial allocations:
               + p* dot (sum_i X*_i - sum_i Y_i).
 
 The gradients are exact first-order oracle evaluations for this game.
+
+For instances observed through several noisy allocation samples
+(``allocation_samples``), the same min-max problem is solved on the
+sample-average regret, the inverse multiagent learning objective of the
+paper's Corollary 1 (see ``run_sampled_algorithm_1``).
 """
 
 from __future__ import annotations
@@ -74,6 +79,49 @@ def run_algorithm_1(
     averaged = avg_budgets / float(iterations)
     estimated = averaged if return_iterate == "average" else budgets
     return estimated, fisher_regret("cobb_douglas", estimated, types, prices, observed_allocation)
+
+
+def run_sampled_algorithm_1(
+    types: np.ndarray,
+    allocation_samples: np.ndarray,
+    prices: np.ndarray,
+    *,
+    iterations: int,
+    lr_theta: float,
+    seed: int,
+    return_iterate: str,
+) -> tuple[np.ndarray, float]:
+    """Inverse multiagent learning from sampled observations (Corollary 1).
+
+    The observed behaviour is a set of sampled allocation profiles at the
+    posted prices rather than a single exact equilibrium.  Following
+    Corollary 1, the stabilizer minimizes the *expected* cumulative regret
+    over the observed samples while a single destabilizer deviation is
+    chosen against that expectation:
+
+        min_b max_Y  E_k[ psi(x_k, Y; b) ],
+
+    i.e. Algorithm 1 run on the empirical (sample-average) inverse game.
+    The destabilizer uses the exact Cobb-Douglas best-response oracle and
+    the budget gradient is the envelope-theorem gradient of that objective.
+    """
+    rng = np.random.default_rng(seed)
+    shares = types / np.maximum(types.sum(axis=1, keepdims=True), EPS)
+    budgets = rng.uniform(0.1, 10.0, size=types.shape[0])
+    avg_budgets = np.zeros_like(budgets)
+    mean_log_u_observed = np.mean([log_cd(sample, shares) for sample in allocation_samples], axis=0)
+    for _ in range(1, iterations + 1):
+        y = cd_best_response(budgets, shares, prices)
+        grad_budgets = log_cd(y, shares) - mean_log_u_observed
+        budgets = np.clip(budgets - lr_theta * grad_budgets, 0.001, 10.0)
+        avg_budgets += budgets
+
+    averaged = avg_budgets / float(iterations)
+    estimated = averaged if return_iterate == "average" else budgets
+    sample_regret = float(
+        np.mean([fisher_regret("cobb_douglas", estimated, types, prices, sample) for sample in allocation_samples])
+    )
+    return estimated, sample_regret
 
 
 def run_cd_type_budget_algorithm_1(
@@ -197,7 +245,12 @@ def run_leontief_algorithm_1(
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--instances", type=Path, default=Path("data/fisher_cd_budget_instances.jsonl"))
+    parser.add_argument(
+        "--instances",
+        type=Path,
+        nargs="+",
+        default=[Path("data/fisher_cd_budget_train.jsonl"), Path("data/fisher_cd_budget_test_inputs.jsonl")],
+    )
     parser.add_argument("--output", type=Path, default=Path("artifacts/fisher_cd_budgets/predictions.jsonl"))
     parser.add_argument("--iterations", type=int, default=5000)
     parser.add_argument("--lr-theta", type=float, default=0.01)
@@ -211,11 +264,34 @@ def main() -> None:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     rows = []
-    for instance in read_jsonl(args.instances):
+    instances = [instance for path in args.instances for instance in read_jsonl(path)]
+    for instance in instances:
         types = np.asarray(instance["types"], dtype=float)
-        observed_allocation = np.asarray(instance["allocation"], dtype=float)
         prices = np.asarray(instance["prices"], dtype=float)
         estimated_types = None
+        if "allocation_samples" in instance:
+            if instance["utility"] != "cobb_douglas":
+                raise ValueError("sampled-observation recovery is implemented for Cobb-Douglas Fisher markets")
+            estimated, exploitability = run_sampled_algorithm_1(
+                types,
+                np.asarray(instance["allocation_samples"], dtype=float),
+                prices,
+                iterations=args.iterations,
+                lr_theta=args.lr_theta,
+                seed=args.seed + int(instance["instance_id"]),
+                return_iterate=args.return_iterate,
+            )
+            rows.append(
+                {
+                    "instance_id": instance["instance_id"],
+                    "method": "adversarial_inverse_planning",
+                    "utility": instance["utility"],
+                    "estimated_budgets": estimated.tolist(),
+                    "diagnostic_exploitability": exploitability,
+                }
+            )
+            continue
+        observed_allocation = np.asarray(instance["allocation"], dtype=float)
         if args.recover_types:
             if instance["utility"] != "cobb_douglas":
                 raise ValueError("--recover-types is currently implemented for Cobb-Douglas Fisher markets")

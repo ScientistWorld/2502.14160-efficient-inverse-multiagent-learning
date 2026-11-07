@@ -1,295 +1,415 @@
-"""Held-out test-slice scorer for inverse-equilibrium prediction artifacts.
+"""Held-out test scorer for inverse-equilibrium parameter recovery.
 
-This evaluator deliberately scores only pre-generated method outputs.  It
-splits each experiment's fixed evaluation instances by ``instance_id`` parity:
-odd IDs are held out test examples, while even IDs are visible in
-``eval/train``.
+Everything on the scoring side of the comparison is fixed by this directory:
+the experiment roster, the canonical held-out instances (observations and
+ground truth, in ``instances/``), the recovery threshold, the metric code and
+the caps used for failed runs.  The only thing read from outside is the raw
+prediction rows a method leaves under ``artifacts/``; no number, flag or
+verdict written by a method is trusted, and nothing is imported from
+``data/`` or ``method/``.
+
+Every method found on disk is scored on every experiment.  A method whose
+predictions for an experiment are missing, malformed, non-finite, outside
+the parameter domain, duplicated, or that do not cover every held-out
+instance exactly once is scored as *failed* on that experiment: recovery 0
+and every error/exploitability metric at its cap, which is no better than
+the worst value any valid prediction can receive.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import math
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
 
-from data.bertrand_games import bertrand_exploitability
-from data.cournot_games import cournot_exploitability
-from data.fisher_markets import fisher_regret, relative_l2
 
-
+HERE = Path(__file__).resolve().parent
+INSTANCE_DIR = HERE / "instances"
 SLICE = "test"
-PARITY = 1
+EPS = 1e-9
+RECOVERY_THRESHOLD = 0.1
+RELATIVE_ERROR_CAP = 1.0
+EXPLOITABILITY_CAP = 100.0
 
 
 @dataclass(frozen=True)
-class ExperimentSpec:
+class Spec:
     name: str
     kind: str
-    artifact_dir: Path
-    instances: Path
-    recover_types: bool = False
+    artifact_dir: str
+    instance_file: str
+    expected_count: int
+    error_metric: str
+    p90_metric: str
 
 
-EXPERIMENTS: tuple[ExperimentSpec, ...] = (
-    ExperimentSpec(
+EXPERIMENTS: tuple[Spec, ...] = (
+    Spec(
         "fisher_cd_budget_recovery",
         "fisher",
-        Path("artifacts/fisher_cd_budgets"),
-        Path("data/fisher_cd_budget_instances.jsonl"),
+        "artifacts/fisher_cd_budgets",
+        "fisher_cd_budget_test.jsonl",
+        100,
+        "mean_relative_l2",
+        "p90_relative_l2",
     ),
-    ExperimentSpec(
+    Spec(
         "fisher_linear_budget_recovery",
         "fisher",
-        Path("artifacts/fisher_linear_budgets"),
-        Path("data/fisher_linear_budget_instances.jsonl"),
+        "artifacts/fisher_linear_budgets",
+        "fisher_linear_budget_test.jsonl",
+        100,
+        "mean_relative_l2",
+        "p90_relative_l2",
     ),
-    ExperimentSpec(
+    Spec(
+        "fisher_cd_noisy_budget_recovery",
+        "fisher",
+        "artifacts/fisher_cd_noisy_budgets",
+        "fisher_cd_noisy_budget_test.jsonl",
+        200,
+        "mean_relative_l2",
+        "p90_relative_l2",
+    ),
+    Spec(
         "cournot_cost_recovery",
         "cournot",
-        Path("artifacts/cournot_costs"),
-        Path("data/cournot_instances.jsonl"),
-    ),
-    ExperimentSpec(
-        "bertrand_cost_recovery",
-        "bertrand",
-        Path("artifacts/bertrand_costs"),
-        Path("data/bertrand_instances.jsonl"),
+        "artifacts/cournot_costs",
+        "cournot_cost_test.jsonl",
+        100,
+        "mean_relative_error",
+        "p90_relative_error",
     ),
 )
 
 
-def read_jsonl(path: Path) -> list[dict]:
-    with path.open("r", encoding="utf-8") as handle:
-        return [json.loads(line) for line in handle if line.strip()]
+class InvalidPredictions(Exception):
+    """Raised when a method's predictions for an experiment cannot be scored."""
 
 
-def write_scores(path: Path, scores: dict) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(scores, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+# --------------------------------------------------------------------------
+# Game-side metric code (self-contained copy; deliberately not imported).
+# --------------------------------------------------------------------------
 
 
-def method_name_for(rows: list[dict], prediction_path: Path) -> str:
-    return str(rows[0].get("method") or prediction_path.parent.name)
+def _log_cd(allocation: np.ndarray, shares: np.ndarray) -> np.ndarray:
+    return np.sum(shares * np.log(np.maximum(allocation, EPS)), axis=1)
 
 
-def slice_rows(rows: list[dict]) -> list[dict]:
-    return [row for row in rows if int(row["instance_id"]) % 2 == PARITY]
+def cd_regret(budgets: np.ndarray, types: np.ndarray, prices: np.ndarray, allocation: np.ndarray) -> float:
+    """Cumulative buyer regret of ``allocation`` at ``prices`` in the Eisenberg-Gale game."""
+    shares = types / np.maximum(types.sum(axis=1, keepdims=True), EPS)
+    best = budgets[:, None] * shares / np.maximum(prices[None, :], EPS)
+    value_gap = budgets * (_log_cd(best, shares) - _log_cd(allocation, shares))
+    price_gap = np.sum(prices * (allocation.sum(axis=0) - best.sum(axis=0)))
+    return float(np.sum(value_gap) + price_gap)
 
 
-def discover_prediction_paths(spec: ExperimentSpec) -> list[Path]:
-    candidates: list[Path] = []
-    direct = spec.artifact_dir / "predictions.jsonl"
-    if direct.is_file():
-        candidates.append(direct)
-    if spec.artifact_dir.is_dir():
-        candidates.extend(sorted(spec.artifact_dir.glob("*/predictions.jsonl")))
-    seen: set[Path] = set()
-    unique: list[Path] = []
-    for path in candidates:
-        resolved = path.resolve()
-        if resolved in seen:
-            continue
-        seen.add(resolved)
-        unique.append(path)
-    return unique
+def linear_regret(budgets: np.ndarray, types: np.ndarray, prices: np.ndarray, allocation: np.ndarray) -> float:
+    bang_per_buck = types / np.maximum(prices[None, :], EPS)
+    chosen = np.argmax(bang_per_buck, axis=1)
+    best = np.zeros_like(types, dtype=float)
+    for buyer, good in enumerate(chosen):
+        best[buyer, good] = budgets[buyer] / max(float(prices[good]), EPS)
+
+    def log_linear(alloc: np.ndarray) -> np.ndarray:
+        return np.log(np.maximum(np.sum(types * alloc, axis=1), EPS))
+
+    value_gap = budgets * (log_linear(best) - log_linear(allocation))
+    price_gap = np.sum(prices * (allocation.sum(axis=0) - best.sum(axis=0)))
+    return float(max(np.sum(value_gap) + price_gap, 0.0))
 
 
-def expected_methods_by_experiment(train_scores_path: Path) -> dict[str, set[str]]:
-    if not train_scores_path.is_file():
-        return {}
-    scores = json.loads(train_scores_path.read_text(encoding="utf-8"))
-    experiments = scores.get("experiments", scores)
-    expected: dict[str, set[str]] = {}
-    for exp_name, exp_data in experiments.items():
-        if exp_name.startswith("_") or not isinstance(exp_data, dict):
-            continue
-        results = exp_data.get("results", exp_data)
-        if not isinstance(results, dict):
-            continue
-        expected[exp_name] = {name for name in results if not name.startswith("_")}
-    return expected
+def fisher_regret(utility: str, budgets, types, prices, allocation) -> float:
+    if utility == "cobb_douglas":
+        return cd_regret(budgets, types, prices, allocation)
+    if utility == "linear":
+        return linear_regret(budgets, types, prices, allocation)
+    raise ValueError(f"Unsupported utility in canonical instances: {utility}")
 
 
-def summarize_fisher(rows: list[dict], instances: dict[int, dict], *, recover_types: bool = False) -> dict:
-    if not rows:
-        raise ValueError(f"No {SLICE} prediction rows found")
-    evaluated = []
-    for row in rows:
-        instance = instances[int(row["instance_id"])]
-        estimated = np.asarray(row["estimated_budgets"], dtype=float)
-        true_budgets = np.asarray(instance["budgets"], dtype=float)
-        true_types = np.asarray(instance["types"], dtype=float)
-        eval_types = np.asarray(row["estimated_types"], dtype=float) if recover_types else true_types
-        prices = np.asarray(instance["prices"], dtype=float)
-        allocation = np.asarray(instance["allocation"], dtype=float)
-        if recover_types:
-            estimated_params = np.concatenate([estimated.ravel(), eval_types.ravel()])
-            true_params = np.concatenate([true_budgets.ravel(), true_types.ravel()])
-            rel = relative_l2(estimated_params, true_params)
-        else:
-            rel = relative_l2(estimated, true_budgets)
-        evaluated.append(
-            {
-                "relative_l2": rel,
-                "recovered": rel <= 0.1,
-                "exploitability": fisher_regret(instance["utility"], estimated, eval_types, prices, allocation),
-            }
-        )
-    n = len(evaluated)
-    return {
-        "parameter_recovery_rate": sum(1.0 for row in evaluated if row["recovered"]) / n,
-        "average_exploitability": sum(float(row["exploitability"]) for row in evaluated) / n,
-        "mean_relative_l2": sum(float(row["relative_l2"]) for row in evaluated) / n,
-        "p90_relative_l2": float(np.quantile([row["relative_l2"] for row in evaluated], 0.9)),
-        "max_exploitability": max(float(row["exploitability"]) for row in evaluated),
-        "num_instances": n,
-    }
+def cournot_best_response(opponent_total: float, intercept: float, slope: float, cost: float) -> float:
+    return float(max((cost - intercept - slope * opponent_total) / (2.0 * slope), 0.0))
+
+
+def cournot_exploitability(cost: float, intercept: float, slope: float, quantities: np.ndarray) -> float:
+    total_quantity = float(np.sum(quantities))
+    total = 0.0
+    for observed_q in quantities:
+        opponent_total = total_quantity - float(observed_q)
+        deviation = cournot_best_response(opponent_total, intercept, slope, cost)
+        observed_profit = float(observed_q) * (intercept + slope * total_quantity - cost)
+        deviation_profit = deviation * (intercept + slope * (deviation + opponent_total) - cost)
+        total += deviation_profit - observed_profit
+    return float(max(total, 0.0))
+
+
+def relative_l2(estimated: np.ndarray, true: np.ndarray) -> float:
+    return float(np.linalg.norm((estimated - true) / np.maximum(np.abs(true), EPS)))
 
 
 def relative_abs(estimated: float, true: float) -> float:
-    return float(abs(estimated - true) / max(abs(true), 1e-9))
+    return float(abs(estimated - true) / max(abs(true), EPS))
 
 
-def summarize_cournot(rows: list[dict], instances: dict[int, dict]) -> dict:
-    if not rows:
-        raise ValueError(f"No {SLICE} prediction rows found")
-    evaluated = []
-    for row in rows:
-        instance = instances[int(row["instance_id"])]
-        estimated = float(row["estimated_marginal_cost"])
-        true_cost = float(instance["marginal_cost"])
-        rel = relative_abs(estimated, true_cost)
-        evaluated.append(
-            {
-                "relative_error": rel,
-                "recovered": rel <= 0.1,
-                "exploitability": cournot_exploitability(
-                    estimated,
-                    float(instance["intercept"]),
-                    float(instance["slope"]),
-                    np.asarray(instance["quantities"], dtype=float),
-                ),
-            }
-        )
-    n = len(evaluated)
-    return {
-        "parameter_recovery_rate": sum(1.0 for row in evaluated if row["recovered"]) / n,
-        "average_exploitability": sum(float(row["exploitability"]) for row in evaluated) / n,
-        "mean_relative_error": sum(float(row["relative_error"]) for row in evaluated) / n,
-        "p90_relative_error": float(np.quantile([row["relative_error"] for row in evaluated], 0.9)),
-        "max_exploitability": max(float(row["exploitability"]) for row in evaluated),
-        "num_instances": n,
-    }
+def bounded(value: float, cap: float) -> float:
+    """Clip a per-instance error/exploitability into [0, cap]; non-finite -> cap."""
+    if not math.isfinite(value):
+        return cap
+    return float(min(max(value, 0.0), cap))
 
 
-def summarize_bertrand(rows: list[dict], instances: dict[int, dict]) -> dict:
-    if not rows:
-        raise ValueError(f"No {SLICE} prediction rows found")
-    evaluated = []
-    for row in rows:
-        instance = instances[int(row["instance_id"])]
-        estimated = float(row["estimated_marginal_cost"])
-        true_cost = float(instance["marginal_cost"])
-        rel = relative_abs(estimated, true_cost)
-        evaluated.append(
-            {
-                "relative_error": rel,
-                "recovered": rel <= 0.1,
-                "exploitability": bertrand_exploitability(
-                    estimated,
-                    float(instance["demand_intercept"]),
-                    float(instance["demand_slope"]),
-                    np.asarray(instance["prices"], dtype=float),
-                ),
-            }
-        )
-    n = len(evaluated)
-    return {
-        "parameter_recovery_rate": sum(1.0 for row in evaluated if row["recovered"]) / n,
-        "average_exploitability": sum(float(row["exploitability"]) for row in evaluated) / n,
-        "mean_relative_error": sum(float(row["relative_error"]) for row in evaluated) / n,
-        "p90_relative_error": float(np.quantile([row["relative_error"] for row in evaluated], 0.9)),
-        "max_exploitability": max(float(row["exploitability"]) for row in evaluated),
-        "num_instances": n,
-    }
+# --------------------------------------------------------------------------
+# Prediction loading and validation.
+# --------------------------------------------------------------------------
 
 
-def summarize(spec: ExperimentSpec, rows: list[dict], instances: dict[int, dict]) -> dict:
-    if spec.kind == "fisher":
-        return summarize_fisher(rows, instances, recover_types=spec.recover_types)
-    if spec.kind == "cournot":
-        return summarize_cournot(rows, instances)
-    if spec.kind == "bertrand":
-        return summarize_bertrand(rows, instances)
-    raise ValueError(f"Unsupported experiment kind: {spec.kind}")
+def _reject_constant(token: str):
+    raise ValueError(f"non-standard JSON constant {token}")
 
 
-def evaluate_spec(
-    spec: ExperimentSpec,
-    prediction_paths: list[Path],
-    expected_methods: set[str] | None = None,
-) -> dict:
-    instances = {int(row["instance_id"]): row for row in read_jsonl(spec.instances)}
-    results: dict[str, dict] = {}
-    for prediction_path in prediction_paths:
-        rows = read_jsonl(prediction_path)
-        if not rows:
-            raise ValueError(f"No prediction rows found in {prediction_path}")
-        method_name = method_name_for(rows, prediction_path)
-        if expected_methods is not None and method_name not in expected_methods:
+def finite_number(value, what: str) -> float:
+    if isinstance(value, bool) or not isinstance(value, (int, float)):
+        raise InvalidPredictions(f"{what} must be a JSON number")
+    try:
+        number = float(value)
+    except (OverflowError, ValueError):
+        raise InvalidPredictions(f"{what} is not representable as a float") from None
+    if not math.isfinite(number):
+        raise InvalidPredictions(f"{what} is not finite")
+    return number
+
+
+def budget_vector(value, length: int, instance_id: int) -> np.ndarray:
+    if not isinstance(value, list) or len(value) != length:
+        raise InvalidPredictions(f"instance {instance_id}: estimated_budgets must be a list of {length} numbers")
+    vector = np.asarray([finite_number(v, f"instance {instance_id}: budget") for v in value], dtype=float)
+    if np.any(vector <= 0.0):
+        raise InvalidPredictions(f"instance {instance_id}: budgets must be strictly positive")
+    return vector
+
+
+def load_prediction_file(path: Path, fallback_name: str) -> tuple[str, list[dict], str | None]:
+    """Return ``(method_name, rows, error)`` for one predictions.jsonl file."""
+    try:
+        text = path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError) as exc:
+        return fallback_name, [], f"unreadable prediction file: {exc}"
+    rows: list[dict] = []
+    for lineno, line in enumerate(text.splitlines(), start=1):
+        if not line.strip():
             continue
-        sliced = slice_rows(rows)
-        results[method_name] = summarize(spec, sliced, instances)
-    if expected_methods is not None:
-        missing = sorted(expected_methods - set(results))
-        if missing:
-            raise ValueError(f"{spec.name}: missing prediction artifacts for train-scored methods {missing}")
-    return results
+        try:
+            row = json.loads(line, parse_constant=_reject_constant)
+        except (ValueError, RecursionError) as exc:
+            return fallback_name, [], f"line {lineno}: invalid JSON ({exc})"
+        if not isinstance(row, dict):
+            return fallback_name, [], f"line {lineno}: each row must be a JSON object"
+        rows.append(row)
+    if not rows:
+        return fallback_name, [], "prediction file has no rows"
+    if any(row.get("method") is not None and not isinstance(row.get("method"), str) for row in rows):
+        return fallback_name, [], "invalid 'method' field"
+    names = {row.get("method") for row in rows}
+    if len(names) != 1:
+        return fallback_name, [], "rows disagree on the 'method' field"
+    name = names.pop()
+    if name is None:
+        name = fallback_name
+    if not isinstance(name, str) or not name.strip() or name.startswith("_"):
+        return fallback_name, [], "invalid 'method' field"
+    return name, rows, None
 
 
-def experiment_specs_for(alias: str) -> list[ExperimentSpec]:
-    if alias == "fisher":
-        return [spec for spec in EXPERIMENTS if spec.kind == "fisher"]
-    if alias == "cournot":
-        return [spec for spec in EXPERIMENTS if spec.kind == "cournot"]
-    if alias == "bertrand":
-        return [spec for spec in EXPERIMENTS if spec.kind == "bertrand"]
-    for spec in EXPERIMENTS:
-        if spec.name == alias:
-            return [spec]
-    raise ValueError(f"Unknown experiment: {alias}")
+def discover_prediction_files(root: Path, spec: Spec) -> list[tuple[Path, str]]:
+    base = root / spec.artifact_dir
+    found: list[tuple[Path, str]] = []
+    direct = base / "predictions.jsonl"
+    if direct.is_file():
+        found.append((direct, base.name))
+    if base.is_dir():
+        for path in sorted(base.glob("*/predictions.jsonl")):
+            if path.is_file():
+                found.append((path, path.parent.name))
+    return found
+
+
+def index_rows(rows: list[dict], instance_ids: list[int]) -> dict[int, dict]:
+    by_id: dict[int, dict] = {}
+    for row in rows:
+        instance_id = row.get("instance_id")
+        if isinstance(instance_id, bool) or not isinstance(instance_id, int):
+            raise InvalidPredictions("every row needs an integer instance_id")
+        if instance_id in by_id:
+            raise InvalidPredictions(f"duplicate predictions for instance {instance_id}")
+        by_id[instance_id] = row
+    missing = [instance_id for instance_id in instance_ids if instance_id not in by_id]
+    if missing:
+        raise InvalidPredictions(
+            f"missing predictions for {len(missing)} of {len(instance_ids)} held-out instances (e.g. {missing[0]})"
+        )
+    return by_id
+
+
+# --------------------------------------------------------------------------
+# Scoring.
+# --------------------------------------------------------------------------
+
+
+def summarize(spec: Spec, recovered: list[bool], errors: list[float], exploitabilities: list[float]) -> dict:
+    n = len(errors)
+    return {
+        "parameter_recovery_rate": float(sum(1.0 for flag in recovered if flag) / n),
+        "average_exploitability": float(sum(exploitabilities) / n),
+        spec.error_metric: float(sum(errors) / n),
+        spec.p90_metric: float(np.quantile(np.asarray(errors, dtype=float), 0.9)),
+        "max_exploitability": float(max(exploitabilities)),
+        "num_instances": n,
+    }
+
+
+def failed_metrics(spec: Spec) -> dict:
+    return {
+        "parameter_recovery_rate": 0.0,
+        "average_exploitability": EXPLOITABILITY_CAP,
+        spec.error_metric: RELATIVE_ERROR_CAP,
+        spec.p90_metric: RELATIVE_ERROR_CAP,
+        "max_exploitability": EXPLOITABILITY_CAP,
+        "num_instances": 0,
+    }
+
+
+def score_fisher(spec: Spec, instances: list[dict], by_id: dict[int, dict]) -> dict:
+    parsed = []
+    for instance in instances:
+        instance_id = int(instance["instance_id"])
+        true_budgets = np.asarray(instance["budgets"], dtype=float)
+        estimate = budget_vector(by_id[instance_id].get("estimated_budgets"), true_budgets.size, instance_id)
+        parsed.append((instance, true_budgets, estimate))
+    recovered, errors, exploitabilities = [], [], []
+    with np.errstate(all="ignore"):
+        for instance, true_budgets, estimate in parsed:
+            rel = relative_l2(estimate, true_budgets)
+            recovered.append(bool(rel <= RECOVERY_THRESHOLD))
+            errors.append(bounded(rel, RELATIVE_ERROR_CAP))
+            regret = fisher_regret(
+                instance["utility"],
+                estimate,
+                np.asarray(instance["types"], dtype=float),
+                np.asarray(instance["prices"], dtype=float),
+                np.asarray(instance["allocation"], dtype=float),
+            )
+            exploitabilities.append(bounded(regret, EXPLOITABILITY_CAP))
+    return summarize(spec, recovered, errors, exploitabilities)
+
+
+def score_cournot(spec: Spec, instances: list[dict], by_id: dict[int, dict]) -> dict:
+    parsed = []
+    for instance in instances:
+        instance_id = int(instance["instance_id"])
+        estimate = finite_number(
+            by_id[instance_id].get("estimated_marginal_cost"), f"instance {instance_id}: estimated_marginal_cost"
+        )
+        if estimate < 0.0:
+            raise InvalidPredictions(f"instance {instance_id}: marginal cost must be non-negative")
+        parsed.append((instance, estimate))
+    recovered, errors, exploitabilities = [], [], []
+    with np.errstate(all="ignore"):
+        for instance, estimate in parsed:
+            rel = relative_abs(estimate, float(instance["marginal_cost"]))
+            recovered.append(bool(rel <= RECOVERY_THRESHOLD))
+            errors.append(bounded(rel, RELATIVE_ERROR_CAP))
+            regret = cournot_exploitability(
+                estimate,
+                float(instance["intercept"]),
+                float(instance["slope"]),
+                np.asarray(instance["quantities"], dtype=float),
+            )
+            exploitabilities.append(bounded(regret, EXPLOITABILITY_CAP))
+    return summarize(spec, recovered, errors, exploitabilities)
+
+
+def score(spec: Spec, instances: list[dict], rows: list[dict]) -> dict:
+    by_id = index_rows(rows, [int(instance["instance_id"]) for instance in instances])
+    if spec.kind == "fisher":
+        return score_fisher(spec, instances, by_id)
+    if spec.kind == "cournot":
+        return score_cournot(spec, instances, by_id)
+    raise ValueError(f"Unknown experiment kind {spec.kind}")
+
+
+def load_canonical(spec: Spec) -> list[dict]:
+    path = INSTANCE_DIR / spec.instance_file
+    with path.open("r", encoding="utf-8") as handle:
+        instances = [json.loads(line) for line in handle if line.strip()]
+    if len(instances) != spec.expected_count:
+        raise SystemExit(f"{path}: expected {spec.expected_count} canonical instances, found {len(instances)}")
+    return instances
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--output", type=Path, default=Path("scoring/scores_test.json"))
-    parser.add_argument("--train-scores", type=Path, default=Path("scoring/scores_train.json"))
-    parser.add_argument("--experiment", choices=["fisher", "cournot", "bertrand"] + [s.name for s in EXPERIMENTS])
-    parser.add_argument("predictions", nargs="*", type=Path)
+    parser.add_argument("--root", type=Path, default=Path("."))
     args = parser.parse_args()
 
-    selected_specs = experiment_specs_for(args.experiment) if args.experiment else list(EXPERIMENTS)
-    expected_by_experiment = expected_methods_by_experiment(args.train_scores)
-    scores = {"experiments": {}}
-    for spec in selected_specs:
-        expected_methods = expected_by_experiment.get(spec.name)
-        if expected_by_experiment and expected_methods is None:
-            continue
-        prediction_paths = args.predictions if args.predictions else discover_prediction_paths(spec)
-        if not prediction_paths:
-            if expected_methods:
-                raise ValueError(f"{spec.name}: no prediction artifacts found for expected methods")
-            continue
-        results = evaluate_spec(spec, prediction_paths, expected_methods)
-        if results:
-            scores["experiments"][spec.name] = {"slice": SLICE, "results": results}
+    canonical = {spec.name: load_canonical(spec) for spec in EXPERIMENTS}
 
-    if not scores["experiments"]:
-        raise SystemExit("No prediction artifacts found to score")
-    write_scores(args.output, scores)
+    files: dict[str, dict[str, list[tuple[Path, list[dict], str | None]]]] = {}
+    for spec in EXPERIMENTS:
+        per_method: dict[str, list[tuple[Path, list[dict], str | None]]] = {}
+        for path, fallback in discover_prediction_files(args.root, spec):
+            name, rows, error = load_prediction_file(path, fallback)
+            per_method.setdefault(name, []).append((path, rows, error))
+        files[spec.name] = per_method
+
+    methods = sorted({name for per_method in files.values() for name in per_method})
+    if not methods:
+        print("No prediction artifacts found under artifacts/; nothing to score.", file=sys.stderr)
+        sys.exit(1)
+
+    scores: dict = {"experiments": {}}
+    for spec in EXPERIMENTS:
+        results: dict[str, dict] = {}
+        failures: dict[str, str] = {}
+        for method in methods:
+            entries = files[spec.name].get(method, [])
+            try:
+                if not entries:
+                    raise InvalidPredictions(f"no predictions under {spec.artifact_dir}/")
+                if len(entries) > 1:
+                    raise InvalidPredictions("several prediction files claim this method name")
+                _, rows, error = entries[0]
+                if error:
+                    raise InvalidPredictions(error)
+                results[method] = score(spec, canonical[spec.name], rows)
+            except InvalidPredictions as exc:
+                results[method] = failed_metrics(spec)
+                failures[method] = str(exc)
+            except Exception as exc:  # any other malformed input still fails only this method
+                results[method] = failed_metrics(spec)
+                failures[method] = f"unscorable predictions ({type(exc).__name__}: {exc})"
+        block: dict = {"slice": SLICE, "results": results}
+        if failures:
+            block["failures"] = failures
+        scores["experiments"][spec.name] = block
+
+    args.output.parent.mkdir(parents=True, exist_ok=True)
+    args.output.write_text(json.dumps(scores, indent=2, sort_keys=True, allow_nan=False) + "\n", encoding="utf-8")
+    for spec in EXPERIMENTS:
+        block = scores["experiments"][spec.name]
+        for method, metrics in block["results"].items():
+            status = "FAILED: " + block["failures"][method] if method in block.get("failures", {}) else "ok"
+            print(
+                f"[{SLICE}] {spec.name} {method}: recovery={metrics['parameter_recovery_rate']:.4f} "
+                f"{spec.error_metric}={metrics[spec.error_metric]:.6g} "
+                f"avg_exploitability={metrics['average_exploitability']:.6g} ({status})"
+            )
 
 
 if __name__ == "__main__":

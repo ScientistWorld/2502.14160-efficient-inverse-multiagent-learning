@@ -1,8 +1,8 @@
 {
   "experiments": {
     "fisher_cd_budget_recovery": {
-      "description": "Static Cobb-Douglas Fisher markets, known utility types, recover buyer budgets from observed competitive equilibrium (Table 2 budget-only CD column).",
-      "weight": 0.19,
+      "description": "Static Cobb-Douglas Fisher markets, known utility types, recover buyer budgets from observed competitive equilibrium (Table 2 budget-only CD column). Paper: 500 generated instances with parameters drawn from U[0,10] (costs U[2,20]). This gym: 100 public labeled training instances and 100 held-out test instances from a private seed, budgets/types drawn from U[0.1,10] for numerical stability.",
+      "weight": 0.2,
       "primary_metric": "mean_relative_l2",
       "metrics": {
         "parameter_recovery_rate": {
@@ -47,8 +47,8 @@
       }
     },
     "fisher_linear_budget_recovery": {
-      "description": "Static linear Fisher markets, known utility types, recover buyer budgets from observed competitive equilibrium (Table 2 budget-only Linear column).",
-      "weight": 0.19,
+      "description": "Static linear Fisher markets, known utility types, recover buyer budgets from observed competitive equilibrium (Table 2 budget-only Linear column). Paper: 500 generated instances with parameters drawn from U[0,10] (costs U[2,20]). This gym: 100 public labeled training instances and 100 held-out test instances from a private seed, budgets/types drawn from U[0.1,10] for numerical stability.",
+      "weight": 0.2,
       "primary_metric": "mean_relative_l2",
       "metrics": {
         "parameter_recovery_rate": {
@@ -92,101 +92,9 @@
         }
       }
     },
-    "fisher_leontief_budget_recovery": {
-      "description": "Static Leontief Fisher markets, known utility types, recover buyer budgets from observed competitive equilibrium (Table 2 budget-only Leontief column).",
-      "weight": 0.19,
-      "primary_metric": "mean_relative_l2",
-      "metrics": {
-        "parameter_recovery_rate": {
-          "higher_is_better": true,
-          "coefficient": 1.0,
-          "description": "Share of scored-slice markets whose recovered budgets are within relative L2 error 0.1 of the generating budgets."
-        },
-        "average_exploitability": {
-          "higher_is_better": false,
-          "coefficient": -0.8,
-          "description": "Mean regret of the observed allocation-price profile under the recovered budgets."
-        },
-        "mean_relative_l2": {
-          "higher_is_better": false,
-          "coefficient": -1.0,
-          "description": "Mean relative L2 error between recovered and generating budgets. The paper reports thresholded recovery and exploitability, so the paper-reference value uses the recovery threshold epsilon=0.1 rather than a reported mean."
-        },
-        "p90_relative_l2": {
-          "higher_is_better": false,
-          "coefficient": -0.35,
-          "description": "Ninetieth-percentile relative L2 error, included to expose methods that only optimize the average case."
-        },
-        "max_exploitability": {
-          "higher_is_better": false,
-          "coefficient": -0.25,
-          "description": "Worst observed exploitability on the slice, included to penalize isolated unstable recoveries."
-        },
-        "num_instances": {
-          "higher_is_better": true,
-          "coefficient": 0.0,
-          "description": "Number of scored slice instances; informational only."
-        }
-      },
-      "results": {
-        "adversarial_inverse_planning": {
-          "type": "proposed",
-          "parameter_recovery_rate": 0.368,
-          "average_exploitability": 0.224,
-          "mean_relative_l2": 0.1,
-          "num_instances": 500
-        }
-      }
-    },
-    "fisher_cd_type_budget_recovery": {
-      "description": "Static Cobb-Douglas Fisher markets, recover buyer budgets and Cobb-Douglas type shares from observed competitive equilibrium (Table 2 types+budgets CD column).",
-      "weight": 0.19,
-      "primary_metric": "mean_relative_l2",
-      "metrics": {
-        "parameter_recovery_rate": {
-          "higher_is_better": true,
-          "coefficient": 1.0,
-          "description": "Share of scored-slice markets whose recovered joint budget/type-share vector is within relative L2 error 0.1 of the generating parameters."
-        },
-        "average_exploitability": {
-          "higher_is_better": false,
-          "coefficient": -0.8,
-          "description": "Mean regret of the observed allocation-price profile under the recovered budgets and type shares."
-        },
-        "mean_relative_l2": {
-          "higher_is_better": false,
-          "coefficient": -1.0,
-          "description": "Mean relative L2 error between recovered and generating joint budget/type-share vectors. The paper reports thresholded recovery and exploitability, so the paper-reference value uses the recovery threshold epsilon=0.1 rather than a reported mean."
-        },
-        "p90_relative_l2": {
-          "higher_is_better": false,
-          "coefficient": -0.35,
-          "description": "Ninetieth-percentile relative L2 error, included to expose methods that only optimize the average case."
-        },
-        "max_exploitability": {
-          "higher_is_better": false,
-          "coefficient": -0.25,
-          "description": "Worst observed exploitability on the slice, included to penalize isolated unstable recoveries."
-        },
-        "num_instances": {
-          "higher_is_better": true,
-          "coefficient": 0.0,
-          "description": "Number of scored slice instances; informational only."
-        }
-      },
-      "results": {
-        "adversarial_inverse_planning": {
-          "type": "proposed",
-          "parameter_recovery_rate": 0.996,
-          "average_exploitability": 0.0004,
-          "mean_relative_l2": 0.1,
-          "num_instances": 500
-        }
-      }
-    },
     "cournot_cost_recovery": {
-      "description": "Duopoly Cournot competition, recover marginal cost from observed equilibrium quantities (Table 3 Cournot column).",
-      "weight": 0.19,
+      "description": "Duopoly Cournot competition, recover marginal cost from observed equilibrium quantities (Table 3 Cournot column). Paper: 500 generated instances with parameters drawn from U[0,10] (costs U[2,20]). This gym: 100 public labeled training instances and 100 held-out test instances from a private seed, budgets/types drawn from U[0.1,10] for numerical stability.",
+      "weight": 0.2,
       "primary_metric": "mean_relative_error",
       "metrics": {
         "parameter_recovery_rate": {
@@ -230,9 +138,148 @@
         }
       }
     },
+    "fisher_cd_noisy_budget_recovery": {
+      "description": "Static Cobb-Douglas Fisher markets (3 buyers, 2 goods, known types) observed through sampled behaviour: exact posted equilibrium prices and 16 independent noisy measurements of the equilibrium allocation (multiplicative log-normal noise, log-sd 0.3). Recover the buyer budgets. Tests the paper's inverse multiagent learning claim (parameters from sampled equilibrium behaviour, Corollary 1 / Section 4-5) where no exact identity pins the answer. Exploitability is measured on the true (noise-free) equilibrium under the recovered budgets. The paper reports no number for this setting: the 'results' entry is this gym's reference-method value on the held-out test split (200 instances; 200 public training instances).",
+      "weight": 0.4,
+      "primary_metric": "mean_relative_l2",
+      "metrics": {
+        "parameter_recovery_rate": {
+          "higher_is_better": true,
+          "coefficient": 1.0,
+          "description": "Share of held-out markets whose recovered budgets are within relative L2 error 0.1 of the generating budgets."
+        },
+        "average_exploitability": {
+          "higher_is_better": false,
+          "coefficient": -0.8,
+          "description": "Mean regret of the true (noise-free) equilibrium allocation-price profile under the recovered budgets."
+        },
+        "mean_relative_l2": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Mean relative L2 error between recovered and generating budgets (per-market error capped at 1)."
+        },
+        "p90_relative_l2": {
+          "higher_is_better": false,
+          "coefficient": -0.35,
+          "description": "Ninetieth-percentile relative L2 error, included to expose methods that only optimize the average case."
+        },
+        "max_exploitability": {
+          "higher_is_better": false,
+          "coefficient": -0.25,
+          "description": "Worst per-market regret of the true equilibrium under the recovered budgets."
+        },
+        "num_instances": {
+          "higher_is_better": true,
+          "coefficient": 0.0,
+          "description": "Number of scored slice instances; informational only."
+        }
+      },
+      "results": {
+        "adversarial_inverse_planning": {
+          "type": "proposed",
+          "parameter_recovery_rate": 0.6,
+          "average_exploitability": 0.03,
+          "mean_relative_l2": 0.09,
+          "num_instances": 200
+        }
+      }
+    }
+  },
+  "unscored_paper_results": {
+    "fisher_leontief_budget_recovery": {
+      "description": "Static Leontief Fisher markets, known utility types, recover buyer budgets from observed competitive equilibrium (Table 2 budget-only Leontief column).",
+      "primary_metric": "mean_relative_l2",
+      "metrics": {
+        "parameter_recovery_rate": {
+          "higher_is_better": true,
+          "coefficient": 1.0,
+          "description": "Share of scored-slice markets whose recovered budgets are within relative L2 error 0.1 of the generating budgets."
+        },
+        "average_exploitability": {
+          "higher_is_better": false,
+          "coefficient": -0.8,
+          "description": "Mean regret of the observed allocation-price profile under the recovered budgets."
+        },
+        "mean_relative_l2": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Mean relative L2 error between recovered and generating budgets. The paper reports thresholded recovery and exploitability, so the paper-reference value uses the recovery threshold epsilon=0.1 rather than a reported mean."
+        },
+        "p90_relative_l2": {
+          "higher_is_better": false,
+          "coefficient": -0.35,
+          "description": "Ninetieth-percentile relative L2 error, included to expose methods that only optimize the average case."
+        },
+        "max_exploitability": {
+          "higher_is_better": false,
+          "coefficient": -0.25,
+          "description": "Worst observed exploitability on the slice, included to penalize isolated unstable recoveries."
+        },
+        "num_instances": {
+          "higher_is_better": true,
+          "coefficient": 0.0,
+          "description": "Number of scored slice instances; informational only."
+        }
+      },
+      "results": {
+        "adversarial_inverse_planning": {
+          "type": "proposed",
+          "parameter_recovery_rate": 0.368,
+          "average_exploitability": 0.224,
+          "mean_relative_l2": 0.1,
+          "num_instances": 500
+        }
+      },
+      "note": "Not scored. With an exact observed equilibrium and known types, every buyer's budget equals its observed expenditure p.x_i, so this setting is solved exactly by a one-line identity while the reproduced nonsmooth Algorithm 1 reached only 21% recovery (paper 36.8%); a scored copy would reward the identity, not inverse-equilibrium research. Paper numbers kept verbatim."
+    },
+    "fisher_cd_type_budget_recovery": {
+      "description": "Static Cobb-Douglas Fisher markets, recover buyer budgets and Cobb-Douglas type shares from observed competitive equilibrium (Table 2 types+budgets CD column).",
+      "primary_metric": "mean_relative_l2",
+      "metrics": {
+        "parameter_recovery_rate": {
+          "higher_is_better": true,
+          "coefficient": 1.0,
+          "description": "Share of scored-slice markets whose recovered joint budget/type-share vector is within relative L2 error 0.1 of the generating parameters."
+        },
+        "average_exploitability": {
+          "higher_is_better": false,
+          "coefficient": -0.8,
+          "description": "Mean regret of the observed allocation-price profile under the recovered budgets and type shares."
+        },
+        "mean_relative_l2": {
+          "higher_is_better": false,
+          "coefficient": -1.0,
+          "description": "Mean relative L2 error between recovered and generating joint budget/type-share vectors. The paper reports thresholded recovery and exploitability, so the paper-reference value uses the recovery threshold epsilon=0.1 rather than a reported mean."
+        },
+        "p90_relative_l2": {
+          "higher_is_better": false,
+          "coefficient": -0.35,
+          "description": "Ninetieth-percentile relative L2 error, included to expose methods that only optimize the average case."
+        },
+        "max_exploitability": {
+          "higher_is_better": false,
+          "coefficient": -0.25,
+          "description": "Worst observed exploitability on the slice, included to penalize isolated unstable recoveries."
+        },
+        "num_instances": {
+          "higher_is_better": true,
+          "coefficient": 0.0,
+          "description": "Number of scored slice instances; informational only."
+        }
+      },
+      "results": {
+        "adversarial_inverse_planning": {
+          "type": "proposed",
+          "parameter_recovery_rate": 0.996,
+          "average_exploitability": 0.0004,
+          "mean_relative_l2": 0.1,
+          "num_instances": 500
+        }
+      },
+      "note": "Not scored. Budgets and Cobb-Douglas shares are exactly identified from one observed equilibrium (expenditure and spending shares), and no completed run of the reproduced implementation exists. Paper numbers kept verbatim."
+    },
     "bertrand_cost_recovery": {
       "description": "Duopoly Bertrand competition, recover marginal cost from observed equilibrium prices (Table 3 Bertrand column).",
-      "weight": 0.05,
       "primary_metric": "mean_relative_error",
       "metrics": {
         "parameter_recovery_rate": {
@@ -274,7 +321,9 @@
           "mean_relative_error": 0.1,
           "num_instances": 500
         }
-      }
+      },
+      "note": "Not scored. In the homogeneous-good Bertrand duopoly the observed equilibrium price equals the marginal cost, so the answer is part of the input; every metric of the reproduced method sits exactly at its bound on both splits and cannot rank methods. Paper numbers kept verbatim."
     }
-  }
+  },
+  "scoring_notes": "Rank = sum over experiments of weight * sum over metrics of coefficient * (candidate - reference). Per-instance relative errors are capped at 1.0 and per-instance exploitability at 100.0; a method whose predictions for an experiment are missing, duplicated, malformed, non-finite or outside the parameter domain is scored as failed on that experiment (recovery 0, every error/exploitability metric at its cap)."
 }

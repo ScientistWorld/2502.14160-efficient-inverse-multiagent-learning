@@ -44,7 +44,7 @@ def recover_cost(
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--instances", type=Path, default=Path("data/cournot_instances.jsonl"))
+    parser.add_argument("--instances", type=Path, nargs="+", default=[Path("data/cournot_cost_train.jsonl"), Path("data/cournot_cost_test_inputs.jsonl")])
     parser.add_argument("--output", type=Path, default=Path("artifacts/cournot_costs/predictions.jsonl"))
     parser.add_argument("--iterations", type=int, default=10000)
     parser.add_argument("--lr-theta", type=float, default=0.01)
@@ -53,7 +53,7 @@ def main() -> None:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8") as handle:
-        for instance in read_jsonl(args.instances):
+        for instance in [row for path in args.instances for row in read_jsonl(path)]:
             quantities = np.asarray(instance["quantities"], dtype=float)
             estimated, exploitability = recover_cost(
                 float(instance["intercept"]),

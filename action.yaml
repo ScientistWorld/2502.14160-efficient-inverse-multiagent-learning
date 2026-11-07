@@ -1,8 +1,6 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
-# Do NOT sleep, poll, or wait for jobs. The system reads this file
-# only after your turn ends.
-action: pending
+action: submit
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: ""
+notes: "Hardening job: build hidden test split + noisy-observation experiment, rerun reference (3 seeds), stronger/weaker variants, baselines, headroom demo and all shortcuts through evaluate_test.sh; regenerate shipped scores."

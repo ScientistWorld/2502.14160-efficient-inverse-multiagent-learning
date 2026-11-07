@@ -313,11 +313,53 @@ def generate_leontief_instances(count: int, seed: int) -> list[FisherInstance]:
     return instances
 
 
-def write_jsonl(instances: list[FisherInstance], path: Path) -> None:
+NOISY_NUM_SAMPLES = 16
+NOISY_LOG_SIGMA = 0.3
+
+
+def generate_cd_noisy_instances(
+    count: int,
+    seed: int,
+    num_samples: int = NOISY_NUM_SAMPLES,
+    log_sigma: float = NOISY_LOG_SIGMA,
+) -> list[dict]:
+    """Cobb-Douglas markets observed through noisy samples of equilibrium demand.
+
+    Each market is generated exactly like ``generate_cd_instances``.  The
+    observer sees the posted equilibrium prices exactly, but only
+    ``num_samples`` independent noisy measurements of the equilibrium
+    allocation: ``x_sample = x_eq * exp(log_sigma * N(0, 1))`` entrywise.
+    The exact equilibrium allocation and the budgets are ground truth.
+    """
+    rng = np.random.default_rng(seed)
+    instances: list[dict] = []
+    for idx in range(count):
+        raw_types = rng.uniform(0.1, 10.0, size=(3, 2))
+        types = raw_types / raw_types.sum(axis=1, keepdims=True)
+        budgets = rng.uniform(0.1, 10.0, size=3)
+        prices, allocation = cobb_douglas_equilibrium(types, budgets)
+        noise = rng.normal(0.0, log_sigma, size=(num_samples,) + allocation.shape)
+        samples = allocation[None, :, :] * np.exp(noise)
+        instances.append(
+            {
+                "instance_id": idx,
+                "utility": "cobb_douglas",
+                "types": types.tolist(),
+                "budgets": budgets.tolist(),
+                "prices": prices.tolist(),
+                "allocation": allocation.tolist(),
+                "allocation_samples": samples.tolist(),
+            }
+        )
+    return instances
+
+
+def write_jsonl(instances: list, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as handle:
         for instance in instances:
-            handle.write(json.dumps(asdict(instance), sort_keys=True) + "\n")
+            record = asdict(instance) if not isinstance(instance, dict) else instance
+            handle.write(json.dumps(record, sort_keys=True) + "\n")
 
 
 def read_jsonl(path: Path) -> list[dict]:
@@ -325,20 +367,21 @@ def read_jsonl(path: Path) -> list[dict]:
         return [json.loads(line) for line in handle if line.strip()]
 
 
-def ensure_dataset(path: Path, count: int = 100, seed: int = 2025) -> None:
-    if not path.exists():
-        write_jsonl(generate_cd_instances(count=count, seed=seed), path)
-
-
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, default=Path("data/fisher_cd_budget_instances.jsonl"))
+    parser.add_argument("--output", type=Path, default=Path("data/fisher_cd_budget_train.jsonl"))
     parser.add_argument("--count", type=int, default=100)
     parser.add_argument("--seed", type=int, default=2025)
-    parser.add_argument("--utility", choices=["cobb_douglas", "linear", "leontief"], default="cobb_douglas")
+    parser.add_argument(
+        "--utility",
+        choices=["cobb_douglas", "cobb_douglas_noisy", "linear", "leontief"],
+        default="cobb_douglas",
+    )
     args = parser.parse_args()
     if args.utility == "cobb_douglas":
         instances = generate_cd_instances(args.count, args.seed)
+    elif args.utility == "cobb_douglas_noisy":
+        instances = generate_cd_noisy_instances(args.count, args.seed)
     elif args.utility == "linear":
         instances = generate_linear_instances(args.count, args.seed)
     else:

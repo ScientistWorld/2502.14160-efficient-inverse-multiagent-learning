@@ -48,7 +48,7 @@ def recover_cost(
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--instances", type=Path, default=Path("data/bertrand_instances.jsonl"))
+    parser.add_argument("--instances", type=Path, nargs="+", default=[Path("data/bertrand_instances.jsonl")])
     parser.add_argument("--output", type=Path, default=Path("artifacts/bertrand_costs/predictions.jsonl"))
     parser.add_argument("--iterations", type=int, default=250)
     parser.add_argument("--lr-theta", type=float, default=0.3)
@@ -57,7 +57,7 @@ def main() -> None:
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
     with args.output.open("w", encoding="utf-8") as handle:
-        for instance in read_jsonl(args.instances):
+        for instance in [row for path in args.instances for row in read_jsonl(path)]:
             prices = np.asarray(instance["prices"], dtype=float)
             estimated, exploitability = recover_cost(
                 float(instance["demand_intercept"]),
