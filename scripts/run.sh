@@ -1,5 +1,9 @@
 #!/bin/bash
-# Temporary CPU audit entry point; restored after the audit job.
-set -euo pipefail
+# Run the accepted static inverse-equilibrium reproduction suite.
+
+set -e
+
 cd /home/user
-exec bash redteam/bundle.sh
+
+bash scripts/reproduce.sh
+python validate.py --compare

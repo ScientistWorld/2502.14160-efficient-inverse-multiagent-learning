@@ -1,6 +1,6 @@
 """Install one file-based attempt, then invoke the original hidden test.
 
-Attack construction uses only public data, the visible train evaluator and the
+Shortcut construction uses only public data, the visible train evaluator and the
 reference method available in improve mode. Hidden scoring always runs in a
 new Python process through `bash scripts/evaluate_test.sh`, with no arguments.
 There is no Python environment/process manipulation. All attempts are isolated
@@ -90,7 +90,9 @@ def install_reference():
     if not source.is_dir():
         raise RuntimeError('First run redteam/reference_seed7/run.sh')
     for _, artifact, _, _ in SPECS:
-        shutil.copyfile(source / f'{artifact}.jsonl', ROOT / 'artifacts' / artifact / 'predictions.jsonl')
+        destination = ROOT / 'artifacts' / artifact / 'predictions.jsonl'
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(source / f'{artifact}.jsonl', destination)
 
 
 def public_closed_form(folder):
@@ -277,12 +279,13 @@ def execute(case):
         elif case == 'weaker_training':
             train_reference(7, folder, weaker=True)
         else:
-            install_reference()
             if case == 'shortcut_closed_form':
                 public_closed_form(folder)
             elif case == 'shortcut_cherry_pick':
+                install_reference()
                 shortcut_cherry_pick(folder)
             elif case == 'shortcut_rewrite_labels':
+                install_reference()
                 shortcut_rewrite_labels()
             elif case == 'shortcut_replace_fixed_data':
                 shortcut_replace_fixed_data(folder)

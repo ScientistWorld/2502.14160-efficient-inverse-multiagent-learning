@@ -1,0 +1,36 @@
+{
+  "case_count": 19,
+  "job_exit_code": 0,
+  "job_id": "98d59944-ab3",
+  "maximum_gain_at_nonnegative_metric_bounds": 0.0006120210818613955,
+  "restored_sha256": {
+    "artifacts/.gitkeep": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "artifacts/baseline_observed_expenditure/predictions.jsonl": "e78aa6a84df4e1682f8410ee7563a1ea71de8f9fc40ade03ac8f51c4b08c1715",
+    "artifacts/bertrand_costs/predictions.jsonl": "a913dc735f0f9b6deb66a6ef8ba9d09a6d3f00732efb184593dc18392a656812",
+    "artifacts/cournot_costs/predictions.jsonl": "6b7f539cddc2b649d75087accc93832005e12d900ae7b735e754ec7d6b8c0f6b",
+    "artifacts/fisher_cd_budgets/predictions.jsonl": "a71bd51a2254f1d818d9b6422a1e846f2f8b86986dc70cc827a521a4116ff6d5",
+    "artifacts/fisher_leontief_budgets/predictions.jsonl": "95f96700c35cdbd373d78e0fba6b88c95d3a5de3bd94cd199398a1b82f18651c",
+    "artifacts/fisher_linear_budgets/predictions.jsonl": "5734e152977a851344fbd57baf4644c8cb79111052dd23397c64340771df935e",
+    "data/bertrand_instances.jsonl": "be803578d48fc5a27dea4d6cca8fc0f17d7ca8f5033106ea8b7fbba4add93114",
+    "data/cournot_instances.jsonl": "743916673a06be928f04f0a466384e11f19fe4bb8d0df430106dbbe903aa2880",
+    "data/fisher_cd_budget_instances.jsonl": "a2c1e5cfe6e52bfe3660559165ce40ff00e7e496b4bbf6d2dc78da558d75c5ad",
+    "data/fisher_leontief_budget_instances.jsonl": "4b34272ff64809f9090a9f3d3d5e3c2f88eef0c78a1d4ec314fb8f6e438e5f06",
+    "data/fisher_linear_budget_instances.jsonl": "4b15ca6f8df6d6d016edd872f2ff679cea77988dd2baa67dbb5143363ca43f07",
+    "scoring/scores.example.json": "93678268e7c429abd571b61b541c789f6c54addde42da1c3363f6c53f998b67a",
+    "scoring/scores.json": "50004e318212ed8c4ddfc8e174c6f26d8f6dedb54ede575a0fdb918c090f43ea",
+    "scoring/scores_test.json": "302c4512ab8d421b94c3d9e2c88ee2b35b57f97489ff7fdb74e8f0ae6c14e2dd",
+    "scoring/scores_train.json": "7fcf2ce3c8041d89850678ef876ec40fcacf4ec1db04e6fe0e4811bdc26f2899"
+  },
+  "seed_deltas": [
+    0.0,
+    2.6407606596668132e-05,
+    1.989058335143864e-05
+  ],
+  "seed_spread_max_minus_min": 2.6407606596668132e-05,
+  "simple_baseline_gain": 0.000612021081854839,
+  "simple_baseline_gain_above_stronger": 7.547957463042987e-11,
+  "single_missed_recovery_penalty": 0.0038,
+  "stronger_gain": 0.0006120210063752644,
+  "stronger_gain_above_best_seed": 0.0005856133997785962,
+  "stronger_gain_divided_by_seed_spread": 23.175936226363035
+}

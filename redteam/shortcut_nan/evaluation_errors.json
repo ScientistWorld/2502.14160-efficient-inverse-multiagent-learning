@@ -1,0 +1,19 @@
+{
+  "train": {
+    "exit_code": 1,
+    "last_lines": [
+      "    values = [profit(p, np.asarray([opponent_price]), intercept, slope, cost) for p in candidates]",
+      "             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/data/bertrand_games.py\", line 61, in <listcomp>",
+      "    values = [profit(p, np.asarray([opponent_price]), intercept, slope, cost) for p in candidates]",
+      "              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/data/bertrand_games.py\", line 39, in profit",
+      "    return individual_demand(price, opponent_prices, intercept, slope) * (price - cost)",
+      "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/data/bertrand_games.py\", line 35, in individual_demand",
+      "    return market_demand(min_price, intercept, slope) / tied",
+      "           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~",
+      "ZeroDivisionError: float division by zero"
+    ]
+  }
+}

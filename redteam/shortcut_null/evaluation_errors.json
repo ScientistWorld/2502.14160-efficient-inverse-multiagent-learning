@@ -1,0 +1,36 @@
+{
+  "train": {
+    "exit_code": 1,
+    "last_lines": [
+      "    \"exploitability\": fisher_regret(instance[\"utility\"], estimated, eval_types, prices, allocation),",
+      "                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/data/fisher_markets.py\", line 243, in fisher_regret",
+      "    return cd_regret(budgets, types, prices, observed_allocation)",
+      "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/data/fisher_markets.py\", line 182, in cd_regret",
+      "    best = cd_best_response(budgets, types, prices)",
+      "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/data/fisher_markets.py\", line 172, in cd_best_response",
+      "    return budgets[:, None] * shares / np.maximum(prices[None, :], EPS)",
+      "           ~~~~~~~^^^^^^^^^",
+      "IndexError: too many indices for array: array is 0-dimensional, but 1 were indexed"
+    ]
+  },
+  "test": {
+    "exit_code": 1,
+    "last_lines": [
+      "    \"exploitability\": fisher_regret(instance[\"utility\"], estimated, eval_types, prices, allocation),",
+      "                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/data/fisher_markets.py\", line 243, in fisher_regret",
+      "    return cd_regret(budgets, types, prices, observed_allocation)",
+      "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/data/fisher_markets.py\", line 182, in cd_regret",
+      "    best = cd_best_response(budgets, types, prices)",
+      "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/data/fisher_markets.py\", line 172, in cd_best_response",
+      "    return budgets[:, None] * shares / np.maximum(prices[None, :], EPS)",
+      "           ~~~~~~~^^^^^^^^^",
+      "IndexError: too many indices for array: array is 0-dimensional, but 1 were indexed"
+    ]
+  }
+}

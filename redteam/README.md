@@ -2,9 +2,10 @@
 
 Run `python3 redteam/capture_state.py` once before using these runners. Submit
 `bash redteam/bundle.sh` as a CPU job in the original gym container. Each case
-also has its own `run.sh`. Shortcut cases reuse the outputs of
-`redteam/reference_seed7/run.sh`, which is the original method with its default
-seed and training configuration. The initial reference's three scored
+also has its own `run.sh`. The cherry-pick and label-rewrite shortcuts reuse
+the outputs of `redteam/reference_seed7/run.sh`, which is the original method
+with its default seed and training configuration. Other shortcuts construct
+their predictions directly from the visible inputs. The initial reference's three scored
 experiments define the ranking comparison; the fourth experiment, Bertrand,
 is measured as an additional diagnostic when train evaluation enables it.
 
@@ -19,7 +20,8 @@ called successful rankings.
 
 `reference_values.json` and `reference_weights.json` preserve the original
 ranking anchor. `initial_state/` is a local, ignored restoration cache.
-`summary.json` records actual ranking deltas and coverage. Logs are ignored.
+`summary.json` records actual ranking deltas and coverage. `job_metadata.json`
+preserves the completed CPU job's status and timing. Logs are ignored.
 
 The closed form **shortcut** is an honest alternative: the supplied Fisher
 baseline and direct profit first order conditions solve these noiseless

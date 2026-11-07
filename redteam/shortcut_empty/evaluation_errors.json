@@ -1,0 +1,36 @@
+{
+  "train": {
+    "exit_code": 1,
+    "last_lines": [
+      "    results[method_name] = summarize(spec, sliced, instances)",
+      "                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/eval/train/evaluate.py\", line 205, in summarize",
+      "    return summarize_fisher(rows, instances, recover_types=spec.recover_types)",
+      "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/eval/train/evaluate.py\", line 116, in summarize_fisher",
+      "    rel = relative_l2(estimated, true_budgets)",
+      "          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/data/fisher_markets.py\", line 252, in relative_l2",
+      "    return float(np.linalg.norm((estimated - true) / np.maximum(np.abs(true), EPS)))",
+      "                                 ~~~~~~~~~~^~~~~~",
+      "ValueError: operands could not be broadcast together with shapes (0,) (3,) "
+    ]
+  },
+  "test": {
+    "exit_code": 1,
+    "last_lines": [
+      "    results[method_name] = summarize(spec, sliced, instances)",
+      "                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/eval/test/evaluate.py\", line 222, in summarize",
+      "    return summarize_fisher(rows, instances, recover_types=spec.recover_types)",
+      "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/eval/test/evaluate.py\", line 133, in summarize_fisher",
+      "    rel = relative_l2(estimated, true_budgets)",
+      "          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+      "  File \"/home/user/data/fisher_markets.py\", line 252, in relative_l2",
+      "    return float(np.linalg.norm((estimated - true) / np.maximum(np.abs(true), EPS)))",
+      "                                 ~~~~~~~~~~^~~~~~",
+      "ValueError: operands could not be broadcast together with shapes (0,) (3,) "
+    ]
+  }
+}
