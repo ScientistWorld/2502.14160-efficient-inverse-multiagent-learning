@@ -1,0 +1,7 @@
+{
+  "case": "shortcut_label_copy",
+  "kind": "shortcut",
+  "method": "label_copy",
+  "test_returncode": 0,
+  "train_returncode": 0
+}

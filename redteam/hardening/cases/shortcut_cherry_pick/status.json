@@ -1,0 +1,7 @@
+{
+  "case": "shortcut_cherry_pick",
+  "kind": "shortcut",
+  "method": "adversarial_inverse_planning",
+  "test_returncode": 0,
+  "train_returncode": 0
+}

@@ -1,0 +1,101 @@
+{
+  "experiments": {
+    "cournot_cost_recovery": {
+      "failures": {
+        "fisher_cd_noisy_budgets": "no predictions under artifacts/cournot_costs/"
+      },
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 5.485179159492315e-10,
+          "max_exploitability": 1.6930049362429145e-08,
+          "mean_relative_error": 3.3273872276194378e-06,
+          "num_instances": 100,
+          "p90_relative_error": 8.257174795907206e-06,
+          "parameter_recovery_rate": 1.0
+        },
+        "fisher_cd_noisy_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_error": 1.0,
+          "num_instances": 0,
+          "p90_relative_error": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "test"
+    },
+    "fisher_cd_budget_recovery": {
+      "failures": {
+        "fisher_cd_noisy_budgets": "no predictions under artifacts/fisher_cd_budgets/"
+      },
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 7.82548715224631e-06,
+          "max_exploitability": 8.339197079555022e-05,
+          "mean_relative_l2": 0.0008816666522285916,
+          "num_instances": 100,
+          "p90_relative_l2": 0.002255276989480407,
+          "parameter_recovery_rate": 1.0
+        },
+        "fisher_cd_noisy_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "test"
+    },
+    "fisher_cd_noisy_budget_recovery": {
+      "failures": {
+        "adversarial_inverse_planning": "no predictions under artifacts/fisher_cd_noisy_budgets/",
+        "fisher_cd_noisy_budgets": "line 201: invalid JSON (non-standard JSON constant NaN)"
+      },
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_cd_noisy_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "test"
+    },
+    "fisher_linear_budget_recovery": {
+      "failures": {
+        "fisher_cd_noisy_budgets": "no predictions under artifacts/fisher_linear_budgets/"
+      },
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 5.7446420465953365e-06,
+          "max_exploitability": 4.950143990150105e-05,
+          "mean_relative_l2": 0.0007456721761517167,
+          "num_instances": 100,
+          "p90_relative_l2": 0.002159344663476175,
+          "parameter_recovery_rate": 1.0
+        },
+        "fisher_cd_noisy_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "test"
+    }
+  }
+}

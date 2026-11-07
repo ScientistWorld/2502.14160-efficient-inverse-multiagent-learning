@@ -1,0 +1,8 @@
+{
+  "case": "shortcut_forged_scores_flags",
+  "kind": "shortcut",
+  "method": "forged_scores_flags",
+  "prewrite_scores": true,
+  "test_returncode": 0,
+  "train_returncode": 0
+}

@@ -1,0 +1,7 @@
+{
+  "case": "closed_form_single_sample",
+  "kind": "honest_alternative",
+  "method": "closed_form_single_sample",
+  "test_returncode": 0,
+  "train_returncode": 0
+}

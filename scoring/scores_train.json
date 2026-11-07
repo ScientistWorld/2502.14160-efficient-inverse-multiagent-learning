@@ -3,11 +3,11 @@
     "cournot_cost_recovery": {
       "results": {
         "adversarial_inverse_planning": {
-          "average_exploitability": 3.492266258120491e-10,
+          "average_exploitability": 2.555104307994105e-10,
           "max_exploitability": 1.1123390208922501e-08,
-          "mean_relative_error": 1.6341957812712013e-06,
-          "num_instances": 50,
-          "p90_relative_error": 3.059868665206262e-06,
+          "mean_relative_error": 2.419227805569027e-06,
+          "num_instances": 100,
+          "p90_relative_error": 6.512868397606053e-06,
           "parameter_recovery_rate": 1.0
         }
       },
@@ -16,12 +16,25 @@
     "fisher_cd_budget_recovery": {
       "results": {
         "adversarial_inverse_planning": {
-          "average_exploitability": 6.817146605353349e-06,
+          "average_exploitability": 6.4876743825230845e-06,
           "max_exploitability": 5.3998785887937606e-05,
-          "mean_relative_l2": 0.0007695707479669432,
-          "num_instances": 50,
-          "p90_relative_l2": 0.002207681859818944,
+          "mean_relative_l2": 0.0007687249197857318,
+          "num_instances": 100,
+          "p90_relative_l2": 0.0020746632814694606,
           "parameter_recovery_rate": 1.0
+        }
+      },
+      "slice": "train"
+    },
+    "fisher_cd_noisy_budget_recovery": {
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 0.025185106119485535,
+          "max_exploitability": 0.12598626253759238,
+          "mean_relative_l2": 0.09456435617428081,
+          "num_instances": 200,
+          "p90_relative_l2": 0.1596236729081875,
+          "parameter_recovery_rate": 0.615
         }
       },
       "slice": "train"
@@ -29,11 +42,11 @@
     "fisher_linear_budget_recovery": {
       "results": {
         "adversarial_inverse_planning": {
-          "average_exploitability": 6.859140121430203e-06,
+          "average_exploitability": 7.174064214677484e-06,
           "max_exploitability": 7.332059041410821e-05,
-          "mean_relative_l2": 0.0007581887793093259,
-          "num_instances": 50,
-          "p90_relative_l2": 0.0018083094413591373,
+          "mean_relative_l2": 0.0008098140277828122,
+          "num_instances": 100,
+          "p90_relative_l2": 0.002305836901056108,
           "parameter_recovery_rate": 1.0
         }
       },

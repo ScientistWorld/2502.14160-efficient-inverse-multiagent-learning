@@ -1,0 +1,7 @@
+{
+  "case": "shipped_baseline_observed_expenditure",
+  "kind": "baseline",
+  "method": "observed_expenditure",
+  "test_returncode": 0,
+  "train_returncode": 0
+}

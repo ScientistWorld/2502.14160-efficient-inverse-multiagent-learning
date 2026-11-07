@@ -1,0 +1,7 @@
+{
+  "case": "shortcut_zero",
+  "kind": "shortcut",
+  "method": "zero",
+  "test_returncode": 0,
+  "train_returncode": 0
+}

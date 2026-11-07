@@ -1,0 +1,7 @@
+{
+  "case": "shortcut_nan",
+  "kind": "shortcut",
+  "method": "nan",
+  "test_returncode": 0,
+  "train_returncode": 0
+}

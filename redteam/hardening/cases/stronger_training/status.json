@@ -1,0 +1,11 @@
+{
+  "case": "stronger_training",
+  "cournot_iterations": 40000,
+  "cournot_seed": 17,
+  "fisher_iterations": 20000,
+  "fisher_seed": 7,
+  "kind": "stronger_variant",
+  "method": "adversarial_inverse_planning",
+  "test_returncode": 0,
+  "train_returncode": 0
+}

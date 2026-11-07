@@ -1,0 +1,59 @@
+{
+  "experiments": {
+    "cournot_cost_recovery": {
+      "failures": {
+        "observed_expenditure": "no predictions under artifacts/cournot_costs/"
+      },
+      "results": {
+        "observed_expenditure": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_error": 1.0,
+          "num_instances": 0,
+          "p90_relative_error": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "train"
+    },
+    "fisher_cd_budget_recovery": {
+      "results": {
+        "observed_expenditure": {
+          "average_exploitability": 2.5626466242543765e-16,
+          "max_exploitability": 2.372069767984329e-15,
+          "mean_relative_l2": 1.2388231517497194e-16,
+          "num_instances": 100,
+          "p90_relative_l2": 2.3009787894094705e-16,
+          "parameter_recovery_rate": 1.0
+        }
+      },
+      "slice": "train"
+    },
+    "fisher_cd_noisy_budget_recovery": {
+      "results": {
+        "observed_expenditure": {
+          "average_exploitability": 0.04666717248110243,
+          "max_exploitability": 0.21954389288230924,
+          "mean_relative_l2": 0.12582484325163437,
+          "num_instances": 200,
+          "p90_relative_l2": 0.20982318372793932,
+          "parameter_recovery_rate": 0.37
+        }
+      },
+      "slice": "train"
+    },
+    "fisher_linear_budget_recovery": {
+      "results": {
+        "observed_expenditure": {
+          "average_exploitability": 3.7150763408279905e-16,
+          "max_exploitability": 3.0188373671212928e-15,
+          "mean_relative_l2": 2.5531331719890732e-17,
+          "num_instances": 100,
+          "p90_relative_l2": 1.2882865540089902e-16,
+          "parameter_recovery_rate": 1.0
+        }
+      },
+      "slice": "train"
+    }
+  }
+}

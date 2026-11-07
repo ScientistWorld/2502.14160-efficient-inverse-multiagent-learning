@@ -1,0 +1,8 @@
+{
+  "case": "shortcut_rewrite_labels",
+  "data_mutation": "rewrite_labels",
+  "kind": "shortcut",
+  "method": "adversarial_inverse_planning",
+  "test_returncode": 0,
+  "train_returncode": 0
+}

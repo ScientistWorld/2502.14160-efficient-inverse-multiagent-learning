@@ -1,0 +1,11 @@
+{
+  "case": "weaker_training",
+  "cournot_iterations": 1,
+  "cournot_seed": 17,
+  "fisher_iterations": 1,
+  "fisher_seed": 7,
+  "kind": "weaker_variant",
+  "method": "adversarial_inverse_planning",
+  "test_returncode": 0,
+  "train_returncode": 0
+}

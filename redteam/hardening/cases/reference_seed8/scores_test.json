@@ -1,0 +1,56 @@
+{
+  "experiments": {
+    "cournot_cost_recovery": {
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 7.882613145548944e-11,
+          "max_exploitability": 3.5399172482186714e-09,
+          "mean_relative_error": 1.7592129270756684e-06,
+          "num_instances": 100,
+          "p90_relative_error": 4.134555981681523e-06,
+          "parameter_recovery_rate": 1.0
+        }
+      },
+      "slice": "test"
+    },
+    "fisher_cd_budget_recovery": {
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 8.982625740018713e-06,
+          "max_exploitability": 6.336678485510672e-05,
+          "mean_relative_l2": 0.0009530195836073051,
+          "num_instances": 100,
+          "p90_relative_l2": 0.002534266601167758,
+          "parameter_recovery_rate": 1.0
+        }
+      },
+      "slice": "test"
+    },
+    "fisher_cd_noisy_budget_recovery": {
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 0.023821490204463006,
+          "max_exploitability": 0.1875906585557372,
+          "mean_relative_l2": 0.09300598689434882,
+          "num_instances": 200,
+          "p90_relative_l2": 0.14223654463108304,
+          "parameter_recovery_rate": 0.605
+        }
+      },
+      "slice": "test"
+    },
+    "fisher_linear_budget_recovery": {
+      "results": {
+        "adversarial_inverse_planning": {
+          "average_exploitability": 5.809554636965839e-06,
+          "max_exploitability": 5.460123405586631e-05,
+          "mean_relative_l2": 0.0007547407625004866,
+          "num_instances": 100,
+          "p90_relative_l2": 0.002075235764501106,
+          "parameter_recovery_rate": 1.0
+        }
+      },
+      "slice": "test"
+    }
+  }
+}

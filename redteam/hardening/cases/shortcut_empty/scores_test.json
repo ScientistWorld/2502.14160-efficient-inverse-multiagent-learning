@@ -1,0 +1,68 @@
+{
+  "experiments": {
+    "cournot_cost_recovery": {
+      "failures": {
+        "empty": "instance 100000: estimated_marginal_cost must be a JSON number"
+      },
+      "results": {
+        "empty": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_error": 1.0,
+          "num_instances": 0,
+          "p90_relative_error": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "test"
+    },
+    "fisher_cd_budget_recovery": {
+      "failures": {
+        "empty": "instance 100000: estimated_budgets must be a list of 3 numbers"
+      },
+      "results": {
+        "empty": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "test"
+    },
+    "fisher_cd_noisy_budget_recovery": {
+      "failures": {
+        "empty": "instance 100000: estimated_budgets must be a list of 3 numbers"
+      },
+      "results": {
+        "empty": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "test"
+    },
+    "fisher_linear_budget_recovery": {
+      "failures": {
+        "empty": "instance 100000: estimated_budgets must be a list of 3 numbers"
+      },
+      "results": {
+        "empty": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "test"
+    }
+  }
+}

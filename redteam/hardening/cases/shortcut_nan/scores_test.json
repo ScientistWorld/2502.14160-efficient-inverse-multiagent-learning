@@ -1,0 +1,176 @@
+{
+  "experiments": {
+    "cournot_cost_recovery": {
+      "failures": {
+        "cournot_costs": "line 1: invalid JSON (non-standard JSON constant NaN)",
+        "fisher_cd_budgets": "no predictions under artifacts/cournot_costs/",
+        "fisher_cd_noisy_budgets": "no predictions under artifacts/cournot_costs/",
+        "fisher_linear_budgets": "no predictions under artifacts/cournot_costs/"
+      },
+      "results": {
+        "cournot_costs": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_error": 1.0,
+          "num_instances": 0,
+          "p90_relative_error": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_cd_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_error": 1.0,
+          "num_instances": 0,
+          "p90_relative_error": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_cd_noisy_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_error": 1.0,
+          "num_instances": 0,
+          "p90_relative_error": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_linear_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_error": 1.0,
+          "num_instances": 0,
+          "p90_relative_error": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "test"
+    },
+    "fisher_cd_budget_recovery": {
+      "failures": {
+        "cournot_costs": "no predictions under artifacts/fisher_cd_budgets/",
+        "fisher_cd_budgets": "line 1: invalid JSON (non-standard JSON constant NaN)",
+        "fisher_cd_noisy_budgets": "no predictions under artifacts/fisher_cd_budgets/",
+        "fisher_linear_budgets": "no predictions under artifacts/fisher_cd_budgets/"
+      },
+      "results": {
+        "cournot_costs": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_cd_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_cd_noisy_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_linear_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "test"
+    },
+    "fisher_cd_noisy_budget_recovery": {
+      "failures": {
+        "cournot_costs": "no predictions under artifacts/fisher_cd_noisy_budgets/",
+        "fisher_cd_budgets": "no predictions under artifacts/fisher_cd_noisy_budgets/",
+        "fisher_cd_noisy_budgets": "line 1: invalid JSON (non-standard JSON constant NaN)",
+        "fisher_linear_budgets": "no predictions under artifacts/fisher_cd_noisy_budgets/"
+      },
+      "results": {
+        "cournot_costs": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_cd_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_cd_noisy_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_linear_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "test"
+    },
+    "fisher_linear_budget_recovery": {
+      "failures": {
+        "cournot_costs": "no predictions under artifacts/fisher_linear_budgets/",
+        "fisher_cd_budgets": "no predictions under artifacts/fisher_linear_budgets/",
+        "fisher_cd_noisy_budgets": "no predictions under artifacts/fisher_linear_budgets/",
+        "fisher_linear_budgets": "line 1: invalid JSON (non-standard JSON constant NaN)"
+      },
+      "results": {
+        "cournot_costs": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_cd_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_cd_noisy_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "fisher_linear_budgets": {
+          "average_exploitability": 100.0,
+          "max_exploitability": 100.0,
+          "mean_relative_l2": 1.0,
+          "num_instances": 0,
+          "p90_relative_l2": 1.0,
+          "parameter_recovery_rate": 0.0
+        }
+      },
+      "slice": "test"
+    }
+  }
+}

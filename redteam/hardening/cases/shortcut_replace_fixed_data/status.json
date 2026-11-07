@@ -1,0 +1,8 @@
+{
+  "case": "shortcut_replace_fixed_data",
+  "data_mutation": "replace_fixed_data",
+  "kind": "shortcut",
+  "method": "replace_fixed_data",
+  "test_returncode": 0,
+  "train_returncode": 0
+}

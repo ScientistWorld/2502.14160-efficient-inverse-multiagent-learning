@@ -1,0 +1,11 @@
+{
+  "case": "reference_seed8",
+  "cournot_iterations": 10000,
+  "cournot_seed": 18,
+  "fisher_iterations": 5000,
+  "fisher_seed": 8,
+  "kind": "reference",
+  "method": "adversarial_inverse_planning",
+  "test_returncode": 0,
+  "train_returncode": 0
+}
