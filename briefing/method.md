@@ -14,9 +14,11 @@ This reproduction specializes the inverse-planning min-max objective to static e
 
 For the Cobb-Douglas type-and-budget setting, the stabilizer recovers both budgets and per-buyer type shares. The implementation uses the same inverse-regret objective with exact Cobb-Douglas adversarial allocation best responses, gradient descent on budgets, and projected simplex descent on type shares through logits.
 
+For the sampled-observation Cobb-Douglas setting (`fisher_cd_noisy_budget_recovery`), the observed behaviour is a set of noisy allocation samples at the posted prices. Following the paper's inverse multiagent learning objective (Corollary 1), the stabilizer minimizes the *expected* cumulative regret over the observed samples, `min_b max_Y E_k[psi(x_k, Y; b)]`, with a single destabilizer deviation chosen against that expectation. It is solved with the same projected descent on budgets, exact Cobb-Douglas best-response adversary, 5000 iterations and learning rate 0.01 (final iterate). The method rationalizes the samples as they are and does not model the measurement process, which is where it falls short of the achievable accuracy.
+
 For Cournot duopoly games, the observed strategy is each firm's equilibrium quantity and the unknown parameter is marginal cost. The same inverse-regret objective minimizes the maximum unilateral profit improvement under the recovered cost. Linear inverse demand gives a closed-form adversarial best response for each firm, which is used inside projected descent on the cost.
 
-For Bertrand duopoly games, the observed strategy is each firm's equilibrium price and the unknown parameter is marginal cost. The method again minimizes cumulative unilateral-deviation regret under linear demand, using the price-setting adversarial best response inside projected descent on marginal cost.
+Bertrand, Leontief and Cobb-Douglas type-plus-budget code paths remain in `method/` as unscored extensions (see `scoring/reference.json` -> `unscored_paper_results` for why they are not scored).
 
 ## Main Claims
 

@@ -1,5 +1,7 @@
 # Verification Report
 
+> **Superseded (hardening iteration, 2026-11-07):** the scored roster, data layout and evaluators changed; see `HARDENING.md`. The notes below describe the earlier gym.
+
 ## Initial Assessment
 
 The workspace entered final verification at `secondary_claims`. The milestone is justified by four accepted scored static experiments: Cobb-Douglas Fisher budget recovery, linear Fisher budget recovery, Cournot marginal-cost recovery, and Bertrand marginal-cost recovery. The Leontief setting is documented as unreproduced because its corrected result was too far from the paper report. A newer Cobb-Douglas type-and-budget implementation was present, but no completed job had produced accepted scores for it.

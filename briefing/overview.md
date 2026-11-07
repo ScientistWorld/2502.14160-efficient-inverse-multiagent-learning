@@ -17,3 +17,7 @@ The paper studies how to infer unknown game parameters from observed equilibrium
 - Static Leontief Fisher budget recovery: 36.8% parameters recovered, average exploitability 0.2240.
 - Cournot marginal-cost recovery: 95.2% parameters recovered, average exploitability 0.0000.
 - Bertrand marginal-cost recovery: 78% parameters recovered, average exploitability 0.0011.
+
+## Scored Gym Settings
+
+The gym scores four experiments on a hidden test split: Cobb-Douglas and linear Fisher budget recovery and Cournot cost recovery (paper settings, exact observations), plus Cobb-Douglas Fisher budget recovery from noisy sampled observations (the paper's inverse multiagent learning setting, weight 0.4). Leontief, Cobb-Douglas type-plus-budget and Bertrand results are kept in `scoring/reference.json` as unscored paper results.

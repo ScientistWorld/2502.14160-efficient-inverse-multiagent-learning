@@ -43,5 +43,10 @@
 - The Cobb-Douglas type-and-budget code remains available as an unscored extension, but it is not listed as a current target because no completed job produced accepted scores for it.
 - Confirmed the current milestone remains `secondary_claims`.
 
+### [2026-11-07] - secondary_claims (hardening)
+- Hidden test split with private-seed instances in `eval/test/`; visible test inputs carry no labels; strict coverage/validity rules score invalid runs as failed.
+- Fixed scored roster: CD Fisher, linear Fisher, Cournot (paper settings) plus a new sampled-observation CD Fisher experiment (weight 0.4) that has research headroom; Bertrand, Leontief and CD type+budget moved to unscored paper results.
+- Reference reproduced from the final code: 100% recovery on the three paper settings, 60.5% on the noisy experiment (simple baseline 34%, demonstrated better estimator 91%). Milestone unchanged.
+
 ## Stop Justification
 - Completed at milestone `secondary_claims`.

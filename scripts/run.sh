@@ -1,10 +1,11 @@
 #!/bin/bash
-# Hardening job: build the hidden test split, reproduce the reference, run the
-# better/weaker variants, baselines and shortcuts through scripts/evaluate_test.sh,
-# and regenerate the shipped scores from the reference alone.
+# Reproduce the reference end to end: training data (if missing), the paper's
+# method on train + held-out test inputs, train/test scoring, and validation.
+# (The hardening audit itself is `python -m redteam.hardening.runner`.)
 
 set -euo pipefail
 
 cd /home/user
 
-python -m redteam.hardening.runner
+bash scripts/reproduce.sh
+python validate.py --post-design

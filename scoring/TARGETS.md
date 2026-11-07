@@ -1,13 +1,14 @@
 # Evaluation Targets
 
-Optimize `fisher_cd_budget_recovery`, `cournot_cost_recovery`, and `fisher_linear_budget_recovery` first, then `bertrand_cost_recovery`.
+All four experiments are scored on the hidden test split; `fisher_cd_noisy_budget_recovery` carries weight 0.4 and the other three 0.2 each.
 
-Primary target: maximize `parameter_recovery_rate`, the share of markets whose recovered budgets are within relative L2 error 0.1 of the generating budgets.
+## Primary target
 
-Constraint targets: minimize `average_exploitability` and `mean_relative_l2`. A method that recovers numbers close to the hidden budgets but leaves the observed allocation-price profile exploitable has not solved the inverse-equilibrium problem.
+- `fisher_cd_noisy_budget_recovery`: maximize `parameter_recovery_rate` (share of held-out markets whose recovered budgets are within relative L2 error 0.1) and minimize `mean_relative_l2` when allocations are observed only through noisy samples. Reference: 60.5% recovery, mean relative L2 0.093. Simple observed-expenditure baseline: 34%, 0.127. This is where research gains show up.
 
-For `cournot_cost_recovery`, maximize the share of games whose recovered marginal cost is within relative error 0.1 of the generating cost. Constraint targets are low average exploitability under the recovered cost and low mean relative error.
+## Constraint targets (must hold while improving the primary target)
 
-For `fisher_linear_budget_recovery`, maximize the share of markets whose recovered budgets are within relative L2 error 0.1 of the generating budgets. Constraint targets are low average exploitability and low mean relative L2 error.
-
-For `bertrand_cost_recovery`, maximize the share of games whose recovered marginal cost is within relative error 0.1 of the generating cost. Constraint targets are low average exploitability under the recovered cost and low mean relative error.
+- `fisher_cd_noisy_budget_recovery`: keep `average_exploitability` and `max_exploitability` of the true equilibrium under the recovered budgets low (reference 0.024 / 0.188), and keep the tail error `p90_relative_l2` low (reference 0.143).
+- `fisher_cd_budget_recovery`, `fisher_linear_budget_recovery`: keep 100% budget recovery, mean relative L2 near 1e-3 or better, and average exploitability near 1e-5 or better (paper: 100% / 0.0004 and 100% / 0.0018).
+- `cournot_cost_recovery`: keep 100% cost recovery, mean relative error near 3e-6 or better and near-zero exploitability (paper: 95.2% / 0.0000).
+- Every experiment must have valid predictions for every instance; a missing, duplicated, non-finite or out-of-domain prediction scores that experiment as failed.

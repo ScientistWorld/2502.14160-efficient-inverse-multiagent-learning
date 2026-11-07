@@ -1,5 +1,7 @@
 # Design Notes
 
+> **Superseded (hardening iteration, 2026-11-07):** the scored roster, data layout and evaluators changed; see `HARDENING.md`. The notes below describe the earlier gym.
+
 Checked the train/test split for copy-paste mistakes, method detachment, train/test cross-imports, hardcoded method defaults, missing score stubs, shell syntax, and `reference.json` schema. The split evaluators score pre-generated prediction artifacts rather than re-running the method, so future method changes remain visible through their output files.
 
 Changes made:

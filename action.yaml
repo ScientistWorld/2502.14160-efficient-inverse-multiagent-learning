@@ -1,6 +1,4 @@
 # Once you set action to 'submit' or 'done', STOP immediately.
-action: submit
-gpus: 0
-test: false
+action: done
 milestone: secondary_claims
-notes: "Hardening job: build hidden test split + noisy-observation experiment, rerun reference (3 seeds), stronger/weaker variants, baselines, headroom demo and all shortcuts through evaluate_test.sh; regenerate shipped scores."
+notes: "Hardened gym: hidden private-seed test split in eval/test, label-free test inputs, strict coverage/validity failure rule, fixed 4-experiment roster incl. new noisy-sample Fisher experiment (ref 0.605 recovery vs baseline 0.34, better demo 0.91); all REDTEAM shortcuts now fail or tie; see HARDENING.md."

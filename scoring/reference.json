@@ -177,9 +177,11 @@
       "results": {
         "adversarial_inverse_planning": {
           "type": "proposed",
-          "parameter_recovery_rate": 0.6,
-          "average_exploitability": 0.03,
-          "mean_relative_l2": 0.09,
+          "parameter_recovery_rate": 0.605,
+          "average_exploitability": 0.02383,
+          "mean_relative_l2": 0.093,
+          "p90_relative_l2": 0.142602,
+          "max_exploitability": 0.187765,
           "num_instances": 200
         }
       }

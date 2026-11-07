@@ -20,6 +20,11 @@
 - The accepted milestone remains `secondary_claims`: Cobb-Douglas Fisher, linear Fisher, Cournot, and Bertrand strongly reproduce reported static claims. Leontief remains in `reference.json` as an unreproduced paper target, but it is not included in `scores.json` because the corrected result is too far from the paper report.
 - Added an in-progress Cobb-Douglas type-and-budget recovery implementation that optimizes Algorithm 1's inverse-regret objective over both budgets and type shares. Final verification left it as an unscored extension because no completed job produced accepted scores for that setting.
 
+## Hardening (2026-11-07)
+
+- See `HARDENING.md`. The gym now scores four experiments on a hidden test split (`eval/test/instances/`, private seeds): CD and linear Fisher budget recovery, Cournot cost recovery, and CD Fisher budget recovery from 16 noisy allocation samples at exact posted prices.
+- Reference (final code, seed 7): test recovery 1.0 / 1.0 / 1.0 / 0.605; noisy mean relative L2 0.093. Simple observed-expenditure baseline on noisy: 0.34. Clearing-constrained demo estimator: 0.91.
+
 ## Results
 
 - First CPU run with simultaneous GDA: 28% recovery, 0.2966 mean relative L2, 0.5921 average exploitability on 100 Cobb-Douglas markets. This is a working but failed core-claim reproduction.
