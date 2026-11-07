@@ -1,6 +1,8 @@
-# The system reads this file after the turn ends.
-action: done
+# Once you set action to 'submit' or 'done', STOP immediately.
+# Do NOT sleep, poll, or wait for jobs. The system reads this file
+# only after your turn ends.
+action: pending
 gpus: 0
 test: false
 milestone: secondary_claims
-notes: "Final verification passed; the gym is ready for the four accepted static inverse-game experiments."
+notes: ""

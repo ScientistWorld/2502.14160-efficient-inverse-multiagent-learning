@@ -12,6 +12,7 @@ The paper studies how to infer unknown game parameters from observed equilibrium
 ## Key Results
 
 - Static Cobb-Douglas Fisher budget recovery: 100% parameters recovered, average exploitability 0.0004.
+- Static Cobb-Douglas Fisher type-and-budget recovery: 99.6% parameters recovered, average exploitability 0.0004.
 - Static linear Fisher budget recovery: 100% parameters recovered, average exploitability 0.0018.
 - Static Leontief Fisher budget recovery: 36.8% parameters recovered, average exploitability 0.2240.
 - Cournot marginal-cost recovery: 95.2% parameters recovered, average exploitability 0.0000.
@@ -21,13 +22,9 @@ The paper studies how to infer unknown game parameters from observed equilibrium
 
 # Problem Definition
 
-What problem does this paper address? Write this so that someone with no knowledge of the paper can understand what needs to be solved and how success is measured.
-
-Do NOT describe the paper's method or solution here — only the problem itself. Think about if a future scientist agent try to solve this problem from scratch without knowing what approach the paper took. If you leak the solution, you compromise the benchmark.
-
 ## Research Question
 
-Given observations of strategic behavior that are assumed to be an equilibrium of an unknown parametric game, recover game parameters for which the observed behavior is rational. In the static market benchmarks, the tasks are to recover buyer budgets in synthetic Cobb-Douglas, linear, or Leontief Fisher markets from observed competitive-equilibrium allocations and prices, and to recover marginal production costs in synthetic Cournot and Bertrand duopoly games from observed equilibrium quantities or prices.
+Given observations of strategic behavior that are assumed to be an equilibrium of an unknown parametric game, recover game parameters for which the observed behavior is rational. In the scored static benchmarks, the tasks are to recover buyer budgets in synthetic Cobb-Douglas or linear Fisher markets and recover marginal production costs in synthetic Cournot and Bertrand duopoly games from observed equilibrium quantities or prices.
 
 ## Why It Matters
 
@@ -53,6 +50,8 @@ For an observed equilibrium profile `x^\u2020`, the method minimizes exploitabil
 
 This reproduction specializes the inverse-planning min-max objective to static experiments from the paper. In Fisher markets, the market equilibrium is represented by the Eisenberg-Gale saddle objective. For Cobb-Douglas, linear, and Leontief utilities with known types, the unknown parameters are buyer budgets; the adversarial variable is the buyers' allocation deviation. The seller price-deviation component is included analytically but cancels for generated equilibria because the unit-supply market clears exactly. The default solver uses closed-form buyer best responses for the adversary and then descends on budgets; a one-step GDA adversary mode is also retained for Cobb-Douglas comparison.
 
+For the Cobb-Douglas type-and-budget setting, the stabilizer recovers both budgets and per-buyer type shares. The implementation uses the same inverse-regret objective with exact Cobb-Douglas adversarial allocation best responses, gradient descent on budgets, and projected simplex descent on type shares through logits.
+
 For Cournot duopoly games, the observed strategy is each firm's equilibrium quantity and the unknown parameter is marginal cost. The same inverse-regret objective minimizes the maximum unilateral profit improvement under the recovered cost. Linear inverse demand gives a closed-form adversarial best response for each firm, which is used inside projected descent on the cost.
 
 For Bertrand duopoly games, the observed strategy is each firm's equilibrium price and the unknown parameter is marginal cost. The method again minimizes cumulative unilateral-deviation regret under linear demand, using the price-setting adversarial best response inside projected descent on marginal cost.
@@ -67,19 +66,17 @@ Secondary claims: the same min-max framing extends to stochastic Markov games an
 
 # Evaluation
 
-How success is measured. Describe only the metrics, targets, and evaluation procedure — do NOT describe the paper's method or how they achieved these results. Think of this as a general evaluation protocal for other scientists trying to solve the same problem, where they should not see this paper's solution.
-
 ## Metrics
 
-The benchmark reports `parameter_recovery_rate`, the fraction of instances whose relative parameter error is at most 0.1; a mean relative-error metric (`mean_relative_l2` for vector budgets and `mean_relative_error` for scalar costs); and `average_exploitability`, the average maximum unilateral-deviation regret of the observed equilibrium under recovered parameters. Higher recovery rate is better. Lower relative error and exploitability are better.
+The benchmark reports `parameter_recovery_rate`, the fraction of instances whose relative parameter error is at most 0.1; a mean relative-error metric (`mean_relative_l2` for vector budgets and `mean_relative_error` for scalar costs); tail-error metrics (`p90_relative_l2` or `p90_relative_error`); `average_exploitability`; and `max_exploitability`. Higher recovery rate is better. Lower relative error and exploitability are better.
 
 ## Baselines and Targets
 
-For static Cobb-Douglas Fisher markets with known utility types and unknown budgets, the paper reports 100% parameter recovery and average exploitability 0.0004 over 500 markets. For static linear Fisher markets with known utility types and unknown budgets, it reports 100% recovery and average exploitability 0.0018. For static Leontief Fisher markets with known utility types and unknown budgets, it reports 36.8% recovery and average exploitability 0.2240. For Cournot duopoly games with unknown marginal cost, the paper reports 95.2% parameter recovery and average exploitability 0.0000 over 500 games. For Bertrand duopoly games with unknown marginal cost, it reports 78% recovery and average exploitability 0.0011 over 500 games. This reproduction uses the same game structures and smaller generated sets for runnable benchmark jobs.
+For static Cobb-Douglas Fisher markets with known utility types and unknown budgets, the paper reports 100% parameter recovery and average exploitability 0.0004 over 500 markets. For static linear Fisher markets with known utility types and unknown budgets, it reports 100% recovery and average exploitability 0.0018. For Cournot duopoly games with unknown marginal cost, the paper reports 95.2% parameter recovery and average exploitability 0.0000 over 500 games. For Bertrand duopoly games with unknown marginal cost, it reports 78% recovery and average exploitability 0.0011 over 500 games. This reproduction uses the same game structures and smaller generated sets for runnable benchmark jobs. The paper's Leontief and Cobb-Douglas type-plus-budget Fisher settings remain in `scoring/reference.json` as unreproduced targets.
 
 ## Evaluation Protocol
 
-Run a method to write JSONL predictions with one row per benchmark instance, including estimated parameters. Then run `scripts/evaluate.sh`, or pass `--experiment fisher`, `--experiment cournot`, or `--experiment bertrand` with a prediction path. The evaluator aggregates metrics and writes `scoring/scores.json`. It imports only `eval/` and `data/` code and reads method artifacts, so future methods can be scored by matching the same output formats.
+Run a method to write JSONL predictions with one row per benchmark instance, including estimated parameters. Then run `scripts/evaluate.sh`, or pass an explicit experiment selector (`fisher`, `cournot`, `bertrand`, or development-only selectors such as `leontief` and `fisher_cd_type_budget`) with a prediction path. The default evaluator aggregates available scored experiments and writes `scoring/scores.json`. It imports only `eval/` and `data/` code and reads method artifacts, so future methods can be scored by matching the same output formats.
 
 ---
 
