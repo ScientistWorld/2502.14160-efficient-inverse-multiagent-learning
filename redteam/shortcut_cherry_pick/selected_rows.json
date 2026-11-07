@@ -1,0 +1,58 @@
+{
+  "bertrand_costs": [
+    {
+      "copies": 50,
+      "diagnostic_exploitability": 0.0,
+      "id": 0,
+      "parity": 0
+    },
+    {
+      "copies": 50,
+      "diagnostic_exploitability": 0.0,
+      "id": 1,
+      "parity": 1
+    }
+  ],
+  "cournot_costs": [
+    {
+      "copies": 50,
+      "diagnostic_exploitability": 0.0,
+      "id": 2,
+      "parity": 0
+    },
+    {
+      "copies": 50,
+      "diagnostic_exploitability": 0.0,
+      "id": 3,
+      "parity": 1
+    }
+  ],
+  "fisher_cd_budgets": [
+    {
+      "copies": 50,
+      "diagnostic_exploitability": 2.924294757914042e-16,
+      "id": 26,
+      "parity": 0
+    },
+    {
+      "copies": 50,
+      "diagnostic_exploitability": -2.9364825718848777e-16,
+      "id": 89,
+      "parity": 1
+    }
+  ],
+  "fisher_linear_budgets": [
+    {
+      "copies": 50,
+      "diagnostic_exploitability": 2.836668394668888e-15,
+      "id": 74,
+      "parity": 0
+    },
+    {
+      "copies": 50,
+      "diagnostic_exploitability": 0.0,
+      "id": 23,
+      "parity": 1
+    }
+  ]
+}

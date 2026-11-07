@@ -1,0 +1,47 @@
+{
+  "case": "reference_seed7",
+  "elapsed_seconds": 31.99479904596228,
+  "hidden_test_command": [
+    "bash",
+    "scripts/evaluate_test.sh"
+  ],
+  "rank": {
+    "delta_vs_reference": 0.0,
+    "experiments": {
+      "cournot_cost_recovery": {
+        "terms": {
+          "average_exploitability": -0.0,
+          "max_exploitability": -0.0,
+          "mean_relative_error": -0.0,
+          "p90_relative_error": -0.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "weighted_delta": 0.0
+      },
+      "fisher_cd_budget_recovery": {
+        "terms": {
+          "average_exploitability": -0.0,
+          "max_exploitability": -0.0,
+          "mean_relative_l2": -0.0,
+          "p90_relative_l2": -0.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "weighted_delta": 0.0
+      },
+      "fisher_linear_budget_recovery": {
+        "terms": {
+          "average_exploitability": -0.0,
+          "max_exploitability": -0.0,
+          "mean_relative_l2": -0.0,
+          "p90_relative_l2": -0.0,
+          "parameter_recovery_rate": 0.0
+        },
+        "weighted_delta": 0.0
+      }
+    },
+    "finite_complete_score": true
+  },
+  "reference": "scoring/scores_test.json at audit start",
+  "test_exit_code": 0,
+  "train_exit_code": 0
+}

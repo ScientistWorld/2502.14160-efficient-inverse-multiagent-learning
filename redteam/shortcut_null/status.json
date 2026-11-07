@@ -1,0 +1,15 @@
+{
+  "case": "shortcut_null",
+  "elapsed_seconds": 1.4389482329133898,
+  "hidden_test_command": [
+    "bash",
+    "scripts/evaluate_test.sh"
+  ],
+  "rank": {
+    "finite_complete_score": false,
+    "reason": "Test failed and wrote no scores"
+  },
+  "reference": "scoring/scores_test.json at audit start",
+  "test_exit_code": 1,
+  "train_exit_code": 1
+}

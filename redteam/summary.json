@@ -1,0 +1,1110 @@
+{
+  "reference_existing": {
+    "case": "reference_existing",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 1.5515250690514222,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": 0.0,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": -0.0,
+            "max_exploitability": -0.0,
+            "mean_relative_error": -0.0,
+            "p90_relative_error": -0.0,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.0
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": -0.0,
+            "max_exploitability": -0.0,
+            "mean_relative_l2": -0.0,
+            "p90_relative_l2": -0.0,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.0
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": -0.0,
+            "max_exploitability": -0.0,
+            "mean_relative_l2": -0.0,
+            "p90_relative_l2": -0.0,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.0
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0
+  },
+  "reference_seed7": {
+    "case": "reference_seed7",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 31.99479904596228,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": 0.0,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": -0.0,
+            "max_exploitability": -0.0,
+            "mean_relative_error": -0.0,
+            "p90_relative_error": -0.0,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.0
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": -0.0,
+            "max_exploitability": -0.0,
+            "mean_relative_l2": -0.0,
+            "p90_relative_l2": -0.0,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.0
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": -0.0,
+            "max_exploitability": -0.0,
+            "mean_relative_l2": -0.0,
+            "p90_relative_l2": -0.0,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.0
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "reference_seed8": {
+    "case": "reference_seed8",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 31.69902043894399,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": 2.6407606596668132e-05,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": -8.159687503450643e-11,
+            "max_exploitability": -3.288387340205645e-10,
+            "mean_relative_error": -2.748193156892872e-07,
+            "p90_relative_error": 4.5280463222041047e-07,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 3.373922737519296e-08
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": 2.3900427576198693e-06,
+            "max_exploitability": 2.143580055780775e-06,
+            "mean_relative_l2": 0.00021723626172588824,
+            "p90_relative_l2": 0.00011843532484061637,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 6.463898978218201e-05
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": -1.5706909154124646e-06,
+            "max_exploitability": -4.575263138649477e-06,
+            "mean_relative_l2": -0.00018780942196859314,
+            "p90_relative_l2": -7.440005097813736e-06,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": -3.826512241288908e-05
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "reference_seed9": {
+    "case": "reference_seed9",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 31.728880632086657,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": 1.989058335143864e-05,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": -2.347843910399661e-10,
+            "max_exploitability": -1.2293757123416071e-09,
+            "mean_relative_error": 1.1679272681801695e-07,
+            "p90_relative_error": -2.2935798246503366e-07,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": -2.1665588992575675e-08
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": -2.7754543077705414e-07,
+            "max_exploitability": -4.810049794235632e-06,
+            "mean_relative_l2": -1.7330579346655907e-05,
+            "p90_relative_l2": 1.486181402933224e-05,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": -1.4357085030439073e-06
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": 4.013496392165793e-07,
+            "max_exploitability": -6.1063348785281996e-06,
+            "mean_relative_l2": -5.452678743064765e-06,
+            "p90_relative_l2": 0.0001235153347375086,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 2.1347957443475123e-05
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "shortcut_cherry_pick": {
+    "case": "shortcut_cherry_pick",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 1
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 1
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 1
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 1
+      }
+    },
+    "elapsed_seconds": 1.1975449809106067,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": 0.0006120142593619603,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": 1.294353886294175e-10,
+            "max_exploitability": 6.611742264794884e-10,
+            "mean_relative_error": 3.2042597999175797e-06,
+            "p90_relative_error": 3.472189037576201e-06,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 1.2686754949506889e-06
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": 4.926561727974716e-06,
+            "max_exploitability": 1.1226972104296516e-05,
+            "mean_relative_l2": 0.0007678647833237978,
+            "p90_relative_l2": 0.0006819646446713624,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.000278536762747212
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": 5.991190646339804e-06,
+            "max_exploitability": 9.623798530195363e-06,
+            "mean_relative_l2": 0.0008614269861283976,
+            "p90_relative_l2": 0.0008714255042729495,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.00033220882111979766
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "shortcut_closed_form": {
+    "case": "shortcut_closed_form",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 2.2465899240924045,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": 0.000612021081854839,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": 1.2943187854830284e-10,
+            "max_exploitability": 6.61145804770058e-10,
+            "mean_relative_error": 3.204259829467806e-06,
+            "p90_relative_error": 3.472189047751176e-06,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 1.2686754964314372e-06
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": 4.926561727686651e-06,
+            "max_exploitability": 1.1226972103630086e-05,
+            "mean_relative_l2": 0.0007678790916044007,
+            "p90_relative_l2": 0.0006819696525695396,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.00027854043282099885
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": 5.991190646084634e-06,
+            "max_exploitability": 9.623798529494785e-06,
+            "mean_relative_l2": 0.0008614392762562721,
+            "p90_relative_l2": 0.0008714298058176685,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.0003322119735374088
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "shortcut_constant": {
+    "case": "shortcut_constant",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 1.7018271769629791,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": -16.58088609760265,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": -6.825823378408373,
+            "max_exploitability": -51.857499628752095,
+            "mean_relative_error": -0.6658432916231805,
+            "p90_relative_error": -0.6520604447635379,
+            "parameter_recovery_rate": -0.9
+          },
+          "weighted_delta": -11.571233081273965
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": -2.724647491404409,
+            "max_exploitability": -5.339004088854183,
+            "mean_relative_l2": -2.989699452460311,
+            "p90_relative_l2": -2.0591700116531793,
+            "parameter_recovery_rate": -1.0
+          },
+          "weighted_delta": -2.681378998430696
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": -2.6244459907425863,
+            "max_exploitability": -3.4002449401219628,
+            "mean_relative_l2": -2.8888917604727045,
+            "p90_relative_l2": -2.340491087073223,
+            "parameter_recovery_rate": -1.0
+          },
+          "weighted_delta": -2.3282740178979906
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "shortcut_empty": {
+    "case": "shortcut_empty",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 1.4818160989088938,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "finite_complete_score": false,
+      "reason": "Test failed and wrote no scores"
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 1,
+    "train_exit_code": 1
+  },
+  "shortcut_forged_scores_flags": {
+    "case": "shortcut_forged_scores_flags",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 1.5771625769557431,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": -16.58088609760265,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": -6.825823378408373,
+            "max_exploitability": -51.857499628752095,
+            "mean_relative_error": -0.6658432916231805,
+            "p90_relative_error": -0.6520604447635379,
+            "parameter_recovery_rate": -0.9
+          },
+          "weighted_delta": -11.571233081273965
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": -2.724647491404409,
+            "max_exploitability": -5.339004088854183,
+            "mean_relative_l2": -2.989699452460311,
+            "p90_relative_l2": -2.0591700116531793,
+            "parameter_recovery_rate": -1.0
+          },
+          "weighted_delta": -2.681378998430696
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": -2.6244459907425863,
+            "max_exploitability": -3.4002449401219628,
+            "mean_relative_l2": -2.8888917604727045,
+            "p90_relative_l2": -2.340491087073223,
+            "parameter_recovery_rate": -1.0
+          },
+          "weighted_delta": -2.3282740178979906
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "shortcut_inf": {
+    "case": "shortcut_inf",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 1.5142062209779397,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "finite_complete_score": false,
+      "raw_value": "nan",
+      "reason": "Nonfinite cournot_cost_recovery.average_exploitability"
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "shortcut_label_copy": {
+    "case": "shortcut_label_copy",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 1.507411825004965,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": 0.0006120210818547664,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": 1.2942988902864272e-10,
+            "max_exploitability": 6.61145804770058e-10,
+            "mean_relative_error": 3.2042598298668533e-06,
+            "p90_relative_error": 3.4721890480584466e-06,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 1.2686754961876289e-06
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": 4.926561727739797e-06,
+            "max_exploitability": 1.1226972104223104e-05,
+            "mean_relative_l2": 0.0007678790916045198,
+            "p90_relative_l2": 0.000681969652569615,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.0002785404328211586
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": 5.991190646071606e-06,
+            "max_exploitability": 9.623798529494785e-06,
+            "mean_relative_l2": 0.0008614392762562986,
+            "p90_relative_l2": 0.0008714298058177148,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.0003322119735374202
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "shortcut_nan": {
+    "case": "shortcut_nan",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 1.608065373962745,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "finite_complete_score": false,
+      "raw_value": "nan",
+      "reason": "Nonfinite cournot_cost_recovery.average_exploitability"
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 1
+  },
+  "shortcut_negative": {
+    "case": "shortcut_negative",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 1.5746131100459024,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": -105.77092727142464,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": -42.711832883098126,
+            "max_exploitability": -327.74642254396986,
+            "mean_relative_error": -1.1198091866439461,
+            "p90_relative_error": -0.4410932475339143,
+            "parameter_recovery_rate": -1.0
+          },
+          "weighted_delta": -70.87363999363671
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": -61.796446581484375,
+            "max_exploitability": -21.36531818324906,
+            "mean_relative_l2": -2.4806292328819866,
+            "p90_relative_l2": -1.0095770226927168,
+            "parameter_recovery_rate": -1.0
+          },
+          "weighted_delta": -16.653874493858545
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": -68.04648412417299,
+            "max_exploitability": -23.457096585751184,
+            "mean_relative_l2": -2.4521387357368742,
+            "p90_relative_l2": -1.0622425750198476,
+            "parameter_recovery_rate": -1.0
+          },
+          "weighted_delta": -18.243412783929372
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "shortcut_null": {
+    "case": "shortcut_null",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 1.4389482329133898,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "finite_complete_score": false,
+      "reason": "Test failed and wrote no scores"
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 1,
+    "train_exit_code": 1
+  },
+  "shortcut_replace_fixed_data": {
+    "case": "shortcut_replace_fixed_data",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 1.5527414520038292,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": 0.0006120210818579457,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": 1.2943209171112356e-10,
+            "max_exploitability": 6.611600156247732e-10,
+            "mean_relative_error": 3.2042598298668533e-06,
+            "p90_relative_error": 3.4721890480584466e-06,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 1.268675499306201e-06
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": 4.926561727739797e-06,
+            "max_exploitability": 1.1226972104223104e-05,
+            "mean_relative_l2": 0.0007678790916045198,
+            "p90_relative_l2": 0.000681969652569615,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.0002785404328211586
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": 5.99119064613419e-06,
+            "max_exploitability": 9.623798529751273e-06,
+            "mean_relative_l2": 0.0008614392762562986,
+            "p90_relative_l2": 0.0008714298058177148,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.00033221197353748084
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "shortcut_rewrite_labels": {
+    "case": "shortcut_rewrite_labels",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 1.3306437259307131,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": 0.000605984912273954,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": -0.0,
+            "max_exploitability": -0.0,
+            "mean_relative_error": 3.2042598298668533e-06,
+            "p90_relative_error": 3.4721890480584466e-06,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 1.268525286805807e-06
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": -0.0,
+            "max_exploitability": -0.0,
+            "mean_relative_l2": 0.0007678790916045198,
+            "p90_relative_l2": 0.000681969652569615,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.0002754712613930856
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": -0.0,
+            "max_exploitability": -0.0,
+            "mean_relative_l2": 0.0008614392762562986,
+            "p90_relative_l2": 0.0008714298058177148,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.0003292451255940626
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "shortcut_zero": {
+    "case": "shortcut_zero",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 1.7203335399972275,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": -72.21119990849813,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": -37.91805498733619,
+            "max_exploitability": -295.67566306540243,
+            "mean_relative_error": -0.9999967957401701,
+            "p90_relative_error": -0.3499965278109519,
+            "parameter_recovery_rate": -1.0
+          },
+          "weighted_delta": -63.82930516149505
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": -12.42834438720051,
+            "max_exploitability": -5.890913932842171,
+            "mean_relative_l2": -1.7312829284772733,
+            "p90_relative_l2": -0.6055358129965374,
+            "parameter_recovery_rate": -1.0
+          },
+          "weighted_delta": -4.1146546416881336
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": -12.923400179532278,
+            "max_exploitability": -6.19922254835782,
+            "mean_relative_l2": -1.7311893682926216,
+            "p90_relative_l2": -0.6053463528432892,
+            "parameter_recovery_rate": -1.0
+          },
+          "weighted_delta": -4.267240105314942
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "stronger_training": {
+    "case": "stronger_training",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 116.43056663696188,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": 0.0006120210063752644,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": 1.2942625815526297e-10,
+            "max_exploitability": 6.61145804770058e-10,
+            "mean_relative_error": 3.2042597856600183e-06,
+            "p90_relative_error": 3.472189020612041e-06,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 1.2686754818836471e-06
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": 4.926561727892801e-06,
+            "max_exploitability": 1.1226972103366193e-05,
+            "mean_relative_l2": 0.0007678790118501888,
+            "p90_relative_l2": 0.0006819695501360068,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.00027854039820531635
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": 5.991190645800149e-06,
+            "max_exploitability": 9.623798529439933e-06,
+            "mean_relative_l2": 0.000861439189425208,
+            "p90_relative_l2": 0.0008714296776525228,
+            "parameter_recovery_rate": 0.0
+          },
+          "weighted_delta": 0.00033221193268806443
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  },
+  "weaker_training": {
+    "case": "weaker_training",
+    "coverage": {
+      "bertrand_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "cournot_cost_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_cd_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      },
+      "fisher_linear_budget_recovery": {
+        "test_rows": 50,
+        "unique_test_ids": 50
+      }
+    },
+    "elapsed_seconds": 3.485654593911022,
+    "hidden_test_command": [
+      "bash",
+      "scripts/evaluate_test.sh"
+    ],
+    "rank": {
+      "delta_vs_reference": -10.645227872526606,
+      "experiments": {
+        "cournot_cost_recovery": {
+          "terms": {
+            "average_exploitability": -6.881497613610108,
+            "max_exploitability": -11.051922600500534,
+            "mean_relative_error": -0.8399730100042737,
+            "p90_relative_error": -0.6984260964095265,
+            "parameter_recovery_rate": -0.92
+          },
+          "weighted_delta": -3.874445670899644
+        },
+        "fisher_cd_budget_recovery": {
+          "terms": {
+            "average_exploitability": -4.908836647777009,
+            "max_exploitability": -5.29253032708006,
+            "mean_relative_l2": -3.1958769755866565,
+            "p90_relative_l2": -2.742709313574627,
+            "parameter_recovery_rate": -1.0
+          },
+          "weighted_delta": -3.256591120163487
+        },
+        "fisher_linear_budget_recovery": {
+          "terms": {
+            "average_exploitability": -5.112920593893989,
+            "max_exploitability": -5.197580456239274,
+            "mean_relative_l2": -3.857492892618216,
+            "p90_relative_l2": -3.327748591266807,
+            "parameter_recovery_rate": -1.0
+          },
+          "weighted_delta": -3.5141910814634745
+        }
+      },
+      "finite_complete_score": true
+    },
+    "reference": "scoring/scores_test.json at audit start",
+    "test_exit_code": 0,
+    "train_exit_code": 0
+  }
+}

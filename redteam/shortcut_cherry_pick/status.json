@@ -1,0 +1,47 @@
+{
+  "case": "shortcut_cherry_pick",
+  "elapsed_seconds": 1.1975449809106067,
+  "hidden_test_command": [
+    "bash",
+    "scripts/evaluate_test.sh"
+  ],
+  "rank": {
+    "delta_vs_reference": 0.0006120142593619603,
+    "experiments": {
+      "cournot_cost_recovery": {
+        "terms": {
+          "average_exploitability": 1.294353886294175e-10,
+          "max_exploitability": 6.611742264794884e-10,
+          "mean_relative_error": 3.2042597999175797e-06,
+          "p90_relative_error": 3.472189037576201e-06,
+          "parameter_recovery_rate": 0.0
+        },
+        "weighted_delta": 1.2686754949506889e-06
+      },
+      "fisher_cd_budget_recovery": {
+        "terms": {
+          "average_exploitability": 4.926561727974716e-06,
+          "max_exploitability": 1.1226972104296516e-05,
+          "mean_relative_l2": 0.0007678647833237978,
+          "p90_relative_l2": 0.0006819646446713624,
+          "parameter_recovery_rate": 0.0
+        },
+        "weighted_delta": 0.000278536762747212
+      },
+      "fisher_linear_budget_recovery": {
+        "terms": {
+          "average_exploitability": 5.991190646339804e-06,
+          "max_exploitability": 9.623798530195363e-06,
+          "mean_relative_l2": 0.0008614269861283976,
+          "p90_relative_l2": 0.0008714255042729495,
+          "parameter_recovery_rate": 0.0
+        },
+        "weighted_delta": 0.00033220882111979766
+      }
+    },
+    "finite_complete_score": true
+  },
+  "reference": "scoring/scores_test.json at audit start",
+  "test_exit_code": 0,
+  "train_exit_code": 0
+}
